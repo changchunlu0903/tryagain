@@ -722,6 +722,702 @@
             100% { transform: translate(-50%, -150%) scale(1.5); opacity: 0; }
         }
 
+        /* ==================== 📊 羁绊分析报告样式 ==================== */
+        .report-card {
+            background: linear-gradient(135deg, #fff 0%, #fff9fb 100%);
+            border-radius: 20px; padding: 25px; text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 183, 197, 0.3);
+            border: 3px solid #fff; position: relative; overflow: hidden;
+        }
+        .report-stat-row {
+            display: flex; justify-content: space-around; margin: 20px 0;
+            background: rgba(255,240,245,0.5); border-radius: 15px; padding: 15px;
+        }
+        .stat-item h3 { font-size: 24px; color: var(--accent-color); margin: 0; }
+        .stat-item p { font-size: 12px; color: #888; margin: 5px 0 0 0; }
+        
+        /* 比例条 */
+        .ratio-bar-container {
+            height: 24px; width: 100%; background: #eee; border-radius: 12px;
+            overflow: hidden; display: flex; margin-top: 10px; position: relative;
+        }
+        .ratio-segment { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; transition: width 1s ease; }
+        .ratio-left { background: #a8edea; } /* 你的颜色 */
+        .ratio-right { background: #ffb7c5; } /* 角色颜色 */
+
+        /* ==================== 🎲 灵感扭蛋机 Pro 样式 ==================== */
+        .gacha-machine {
+            background: #fff0f5; border-radius: 30px; padding: 20px;
+            border: 4px solid white; box-shadow: inset 0 0 20px rgba(255,183,197,0.2);
+            position: relative;
+        }
+        .gacha-display {
+            background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px;
+            border: 2px dashed #ffb7c5; min-height: 100px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .gacha-tag {
+            display: inline-block; padding: 5px 12px; border-radius: 20px;
+            font-size: 14px; margin: 5px; font-weight: bold; color: white;
+            animation: popIn 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+        .tag-place { background: #81ecec; }
+        .tag-event { background: #74b9ff; }
+        .tag-trope { background: #ff7675; }
+        
+        .gacha-controls { display: flex; gap: 10px; justify-content: center; }
+        .gacha-edit-area { display: none; margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 15px; }
+        .gacha-textarea { width: 100%; height: 80px; font-size: 12px; padding: 8px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 5px; resize: none; font-family: inherit; }
+
+        /* ==================== 🎒 纪念品陈列室样式 ==================== */
+        
+        /* 1. 主页陈列架视图 */
+        .shelf-container {
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+            gap: 20px; 
+            padding: 20px;
+            background: #fff9fb; 
+            border: 4px solid #fff; 
+            border-radius: 20px;
+            box-shadow: inset 0 0 30px rgba(255,183,197,0.1);
+        }
+        
+        /* 单个纪念品 (拍立得风格) */
+        .souvenir-card {
+            background: white;
+            padding: 8px 8px 25px 8px; /* 底部留白像拍立得 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: rotate(var(--rot)); /* 随机一点点歪斜，更自然 */
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+        }
+        .souvenir-card:hover {
+            transform: scale(1.1) rotate(0deg) !important;
+            z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .souvenir-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            background: #f0f0f0;
+            margin-bottom: 5px;
+            border: 1px solid #eee;
+        }
+        .souvenir-title {
+            font-family: 'MyCustomFont', cursive, sans-serif;
+            font-size: 12px;
+            color: #555;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        /* 2. 详情页里的纪念品横向滚动栏 */
+        .souvenir-scroll-box {
+            display: flex; gap: 10px; overflow-x: auto; padding: 10px 5px;
+            margin-bottom: 15px;
+            scrollbar-width: thin;
+        }
+        .souvenir-mini-item {
+            flex-shrink: 0; width: 60px; text-align: center; cursor: pointer;
+        }
+        .souvenir-mini-img {
+            width: 50px; height: 50px; border-radius: 10px; object-fit: cover;
+            border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* 3. 纪念品查看大图弹窗 */
+        .souvenir-view-content {
+            text-align: center;
+        }
+        .souvenir-view-img {
+            max-width: 100%; max-height: 300px; border-radius: 10px;
+            border: 5px solid white; box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        .souvenir-view-story {
+            font-size: 14px; color: #666; line-height: 1.6; text-align: left;
+            background: #fff0f5; padding: 15px; border-radius: 10px;
+            margin-bottom: 15px; font-style: italic;
+        }
+
+                  /* ==================== ☁️ 最终版：花瓣雨与回忆 ==================== */
+        .dream-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            /* 背景：粉色晨曦 */
+            background: linear-gradient(180deg, #ffc3a0 0%, #ffafbd 100%);
+            z-index: 9000; display: none; overflow: hidden;
+        }
+        .dream-layer.active { display: block; }
+
+        /* 🌸 1. 纯装饰用的背景花瓣 */
+        .dream-bg-petal {
+            position: absolute; top: -50px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 100% 0 100% 0; /* 花瓣形状 */
+            pointer-events: none; /* 鼠标穿透，点不到它 */
+            animation: bgFall linear infinite;
+        }
+        @keyframes bgFall {
+            0% { top: -10%; transform: rotate(0deg) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { top: 110%; transform: rotate(360deg) translateX(50px); opacity: 0; }
+        }
+
+        /* 📦 2. 回忆容器 (统一样式) */
+        .dream-content-item {
+            position: absolute; top: -200px;
+            cursor: pointer;
+            animation: itemFall linear forwards;
+            z-index: 10;
+            transition: transform 0.3s;
+        }
+        .dream-content-item:hover {
+            transform: scale(1.1) !important;
+            z-index: 100;
+        }
+
+        /* 🖼️ 类型A：正方形图片 */
+        .dream-item-img {
+            width: 120px; height: 120px;
+            border-radius: 20px; /* 圆角正方形 */
+            border: 4px solid #fff;
+            box-shadow: 0 8px 20px rgba(255, 154, 158, 0.4);
+            overflow: hidden;
+            background: #fff;
+        }
+        .dream-item-img img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .dream-img-name {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: rgba(255,255,255,0.8); color: #d66a80;
+            font-size: 10px; text-align: center; padding: 4px 0;
+            backdrop-filter: blur(2px);
+        }
+
+        /* 💬 类型B：文字气泡 */
+        .dream-item-text {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 20px;
+            border-bottom-left-radius: 4px; /* 气泡小尾巴效果 */
+            color: #555; font-size: 13px; line-height: 1.5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 180px;
+            text-align: left;
+            border: 2px solid #fff0f5;
+        }
+
+        /* 下落动画 (轻轻摇摆，但不旋转) */
+        @keyframes itemFall {
+            0% { top: -150px; opacity: 0; transform: translateX(0); }
+            10% { opacity: 1; }
+            25% { transform: translateX(20px); }
+            50% { transform: translateX(-20px); }
+            75% { transform: translateX(20px); }
+            100% { top: 110%; opacity: 0; transform: translateX(0); }
+        }
+
+        /* ==================== 📖 G. 灵魂回响样式 ==================== */
+        .echo-card {
+            background: #fff; border-radius: 20px; padding: 20px;
+            text-align: center; border: 2px solid #e0e0e0;
+        }
+        .echo-result-box {
+            min-height: 100px; margin: 20px 0; display: flex; align-items: center; justify-content: center;
+            background: #f8f9fa; border-radius: 10px; padding: 20px;
+            font-size: 18px; font-weight: bold; color: var(--accent-color);
+            font-family: 'MyCustomFont', sans-serif; position: relative;
+        }
+        .echo-result-box::before, .echo-result-box::after {
+            content: '❝'; position: absolute; font-size: 40px; color: #eee;
+        }
+        .echo-result-box::before { top: 0; left: 10px; }
+        .echo-result-box::after { content: '❞'; bottom: -10px; right: 10px; }
+
+        .echo-avatar {
+            width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+            margin: 0 auto 10px auto; border: 3px solid #ffb7c5;
+            box-shadow: 0 5px 15px rgba(255, 183, 197, 0.4);
+        }
+
+        /* 分页切换样式 */
+        .menu-page { animation: fadeIn 0.3s ease; }
+        .menu-tab-bar {
+            display: flex; margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;
+        }
+        .menu-tab {
+            flex: 1; background: none; border: none; color: #ccc; cursor: pointer;
+            font-size: 13px; padding: 6px; border-radius: 8px; transition: 0.3s;
+        }
+        .menu-tab:hover { background: #fff5f7; color: var(--accent-color); }
+        .menu-tab.active {
+            color: white; font-weight: bold; background: var(--accent-color);
+            box-shadow: 0 2px 5px rgba(255, 143, 163, 0.3);
+        }
+
+        /* ==================== ✋ 摸摸头特效 ==================== */
+        
+        /* 1. 图片被点击时的果冻动画 */
+        .headpat-active {
+            animation: jelly 0.4s;
+        }
+        @keyframes jelly {
+            0% { transform: scale(1, 1); }
+            30% { transform: scale(1.05, 0.95); } /* 压扁 */
+            40% { transform: scale(0.95, 1.05); } /* 拉长 */
+            50% { transform: scale(1.02, 0.98); } /* 回弹 */
+            65% { transform: scale(0.99, 1.01); }
+            100% { transform: scale(1, 1); }
+        }
+
+        /* 2. 爆出的爱心/表情 */
+        .pat-particle {
+            position: fixed;
+            pointer-events: none;
+            font-weight: bold;
+            color: #ff6b81;
+            font-size: 20px;
+            z-index: 9999;
+            animation: floatUpFade 0.8s forwards;
+            text-shadow: 0 0 5px white;
+        }
+        @keyframes floatUpFade {
+            0% { opacity: 1; transform:translateY(0) scale(0.5); }
+            50% { opacity: 1; transform:translateY(-30px) scale(1.2); }
+            100% { opacity: 0; transform:translateY(-60px) scale(1); }
+        }
+
+        /* ==================== 💍 誓约之证样式 ==================== */
+        
+        .oath-paper {
+            background: #fffdf5; /* 米黄色羊皮纸感 */
+            width: 320px;
+            padding: 30px 20px;
+            border-radius: 10px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3), 0 20px 40px rgba(0,0,0,0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            /* 加上纹理 */
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+        }
+
+        /* 双重边框，增加仪式感 */
+        .oath-border {
+            position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 2px solid #d4af37; /* 金色实线 */
+            border-radius: 5px;
+            pointer-events: none;
+        }
+        .oath-border::after {
+            content: ''; position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px;
+            border: 1px dashed #d4af37; /* 金色虚线 */
+            border-radius: 3px;
+        }
+
+        .oath-header {
+            font-size: 22px; color: #d4af37; font-weight: bold;
+            margin-bottom: 20px; letter-spacing: 2px;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            font-family: serif; /* 衬线体更显正式 */
+        }
+
+        .oath-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 3px double #d4af37;
+            object-fit: cover; padding: 2px; background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .oath-footer {
+            display: flex; justify-content: space-between; margin-top: 30px; padding: 0 20px;
+        }
+        .oath-sign-box { text-align: left; font-size: 12px; color: #999; }
+        .sign-line {
+            font-family: cursive; font-size: 16px; color: #333;
+            border-bottom: 1px solid #ddd; min-width: 80px; margin-top: 5px;
+            text-align: center; padding-bottom: 2px;
+        }
+
+        /* 🔴 按手印按钮 */
+        .oath-seal-btn {
+            background: #ff7675; color: white;
+            width: 80px; height: 80px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 30px auto 10px auto; cursor: pointer;
+            font-weight: bold; border: 4px solid #fab1a0;
+            box-shadow: 0 5px 15px rgba(255, 118, 117, 0.4);
+            animation: pulseBtn 2s infinite;
+            transition: all 0.3s;
+        }
+        .oath-seal-btn:active { transform: scale(0.9); }
+        @keyframes pulseBtn { 0% {transform:scale(1);} 50% {transform:scale(1.05);} 100% {transform:scale(1);} }
+
+        /* 💋 盖章印记 */
+        .oath-stamp-mark {
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%) scale(2);
+            opacity: 0; pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        
+        /* 盖章生效时的样式 */
+        .oath-paper.signed .oath-seal-btn { display: none; } /* 隐藏按钮 */
+        .oath-paper.signed .oath-stamp-mark {
+            opacity: 0.8; transform: translateX(-50%) scale(1) rotate(-10deg);
+        }
+        .oath-paper.signed {
+            box-shadow: 0 0 80px rgba(255, 215, 0, 0.6); /* 誓约达成发出金光 */
+            border-color: #ffd700;
+        }
+
+               /* ==================== 🖼️ 相框样式库 (加粗加强版) ==================== */
+        
+        /* 1. 🎀 蕾丝甜心 (加粗粉线 + 大蝴蝶结) */
+        .card-img-wrapper.frame-lace {
+            border: 5px dashed #ff8fa3; /* 线条变粗，颜色变深 */
+            background: #fff0f5;
+            /* 双层投影，增加立体感 */
+            box-shadow: 
+                0 0 0 4px #fff inset, 
+                0 10px 20px rgba(255, 143, 163, 0.3);
+            overflow: visible; /* 允许蝴蝶结突出来一点 */
+            z-index: 1;
+        }
+        .card-img-wrapper.frame-lace::after {
+            content: '🎀'; position: absolute; top: -10px; left: -10px;
+            font-size: 32px; /* 图标放大 */
+            z-index: 10;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+            transform: rotate(-15deg);
+        }
+
+        /* 2. ⚜️ 鎏金典藏 (厚重金框 + 大纹饰) */
+        .card-img-wrapper.frame-gold {
+            border: 6px solid #d4af37; /* 实心厚金边 */
+            /* 内侧加一道深色线，像真画框 */
+            outline: 2px solid #8a6d3b; 
+            outline-offset: -8px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4); /* 深邃投影 */
+            overflow: visible;
+            z-index: 1;
+        }
+        .card-img-wrapper.frame-gold::before {
+            content: '⚜️'; position: absolute; bottom: -10px; right: -10px;
+            font-size: 28px; z-index: 10;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+        }
+        /* 顶部加个皇冠装饰 */
+        .card-img-wrapper.frame-gold::after {
+            content: '👑'; position: absolute; top: -15px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px; z-index: 10;
+        }
+
+        /* 3. ✨ 星光流体 (强力霓虹光效) */
+        .card-img-wrapper.frame-stardust {
+            border: 4px solid transparent;
+            /* 这种写法可以做出渐变边框 */
+            background-image: linear-gradient(white, white), linear-gradient(45deg, #a18cd1, #fbc2eb, #8fd3f4);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            /* 超强光晕 */
+            box-shadow: 0 0 20px 5px rgba(161, 140, 209, 0.6);
+            animation: borderRotate 2s linear infinite; /* 边框色调流动 */
+            overflow: visible;
+            z-index: 1;
+        }
+        .card-img-wrapper.frame-stardust::after {
+            content: '✨'; position: absolute; bottom: 5px; right: 5px;
+            font-size: 24px; 
+            filter: drop-shadow(0 0 5px #fff);
+            animation: spin 3s linear infinite;
+        }
+        @keyframes borderRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* 4. 🌸 落樱画境 (花团锦簇) */
+        .card-img-wrapper.frame-sakura {
+            border: 5px solid #ff9a9e; /* 粗粉边 */
+            border-radius: 25px; /* 更圆润 */
+            box-shadow: 0 10px 20px rgba(255, 154, 158, 0.3);
+            overflow: visible;
+            z-index: 1;
+        }
+        /* 左上角一大簇 */
+        .card-img-wrapper.frame-sakura::before {
+            content: '🌸'; position: absolute; top: -12px; left: -12px;
+            font-size: 30px; z-index: 10;
+            text-shadow: 2px 2px 0 #fff;
+        }
+        /* 右下角一大簇 */
+        .card-img-wrapper.frame-sakura::after {
+            content: '🌸'; position: absolute; bottom: -12px; right: -12px;
+            font-size: 30px; z-index: 10;
+            text-shadow: 2px 2px 0 #fff;
+        }
+
+                /* ==================== 🖼️ 详情页专属：边框+特效 ==================== */
+        
+        /* 1. 必须给画廊容器设置 overflow: visible，否则蝴蝶结会被切掉 */
+        .gallery-container {
+            overflow: visible !important; 
+            transition: all 0.3s;
+            background: #fff; /* 默认白底 */
+        }
+
+                /* ==================== ✨ 高定版：详情页粒子特效 ==================== */
+        
+        /* 1. 特效容器：必须裁剪溢出，防止粒子飘到框外面 */
+        .detail-effect-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 20;
+            overflow: hidden; border-radius: 15px;
+        }
+
+        /* 2. 通用粒子基础样式 */
+        .effect-particle {
+            position: absolute; top: -20px;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        /* ========== 🌸 樱花 (Sakura) - 真正的花瓣形状 ========== */
+        .particle-sakura {
+            background: linear-gradient(120deg, #ffc3a0 0%, #ffafbd 100%);
+            border-radius: 100% 0 100% 0; /* 👈 关键：做成花瓣尖角形状 */
+            animation: fall-sway linear infinite;
+            box-shadow: 0 2px 5px rgba(255, 154, 158, 0.2);
+        }
+        @keyframes fall-sway {
+            0% { top: -10%; opacity: 0; transform: translateX(0) rotate(0deg); }
+            10% { opacity: 0.9; }
+            50% { opacity: 1; transform: translateX(20px) rotate(90deg); }
+            100% { top: 110%; opacity: 0; transform: translateX(-20px) rotate(180deg); }
+        }
+
+        /* ========== ✨ 星光 (Stardust) - 闪烁流星 ========== */
+        .particle-star {
+            background: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); /* 星星形状 */
+            animation: fall-twinkle linear infinite;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+        @keyframes fall-twinkle {
+            0% { top: -10%; opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { top: 110%; opacity: 0; transform: scale(0.5); }
+        }
+
+        /* ========== 🎀 蕾丝 (Lace) - 柔和光斑/爱心 ========== */
+        .particle-heart {
+            color: #ff8fa3;
+            font-size: 14px;
+            animation: fall-float linear infinite;
+        }
+        .particle-heart::after { content: '💗'; } /* 用 Emoji 更清晰 */
+        @keyframes fall-float {
+            0% { top: -10%; transform: translateY(0) scale(0.8); opacity: 0; }
+            50% { opacity: 0.8; transform: translateY(10px) scale(1.1); }
+            100% { top: 110%; transform: translateY(0) scale(0.8); opacity: 0; }
+        }
+
+        /* ========== ⚜️ 鎏金 (Gold) - 金粉粒子 ========== */
+        .particle-gold {
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 4px #d4af37;
+            animation: fall-fast linear infinite;
+        }
+        @keyframes fall-fast {
+            0% { top: -10%; opacity: 0; transform: translateY(0); }
+            20% { opacity: 1; }
+            100% { top: 120%; opacity: 0; transform: translateY(20px); }
+        }
+
+        /* ==================== 🤫 刮刮乐样式 ==================== */
+        .scratch-container {
+            position: relative;
+            width: 260px; height: 150px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            user-select: none; /* 防止选中文字 */
+        }
+
+        /* 底层文字 */
+        .scratch-text-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box;
+            color: #d66a80; font-weight: bold; font-size: 15px;
+            line-height: 1.5;
+            z-index: 1;
+            background: #fff; /* 白底 */
+        }
+
+        /* 顶层画布 (涂层) */
+        #scratchCanvas {
+            position: absolute; top: 0; left: 0;
+            z-index: 2;
+            touch-action: none; /* 防止手机滚动 */
+            cursor: crosshair;
+        }
+
+        /* 初始遮罩 (做选择题用) */
+        .scratch-cover-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        .scratch-actions {
+            display: flex; justify-content: center; gap: 15px; margin-top: 20px;
+        }
+
+        /* ==================== 📌 便签样式 ==================== */
+        
+        .sticky-note-paper {
+            width: 280px;
+            height: 350px;
+            background: #fff9c4; /* 经典的便签黄 */
+            /* 如果喜欢粉色便签，可以用这个颜色: #fff0f5 */
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+            transform: rotate(-2deg); /* 微微歪一点，更自然 */
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        /* 悬停扶正 */
+        .sticky-note-paper:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* 顶部类似胶带的效果 */
+        .sticky-note-paper::before {
+            content: '';
+            position: absolute;
+            top: -15px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 30px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .note-toolbar {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.5);
+            padding: 5px 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* 输入框去边框，像直接写在纸上 */
+        #noteTextarea {
+            flex-grow: 1;
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: 'MyCustomFont', cursive, sans-serif; /* 用你的可爱字体 */
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        /* 自定义取色器样式 (简单优化) */
+        #noteColorPicker {
+            border: none; width: 20px; height: 20px; cursor: pointer; background: none;
+        }
+
+        /* ==================== 📌 详情页上的实体贴纸 ==================== */
+        
+        .real-sticky-note {
+            position: absolute;
+            top: 80px;  /* 贴在右上角，避开关闭按钮 */
+            right: 20px;
+            width: 140px; /* 小巧一点 */
+            min-height: 100px;
+            padding: 15px;
+            
+            /* 纸张质感 */
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.15);
+            border-bottom-right-radius: 20px 5px; /* 微微卷角效果 */
+            
+            font-family: 'MyCustomFont', cursive, sans-serif;
+            line-height: 1.4;
+            word-wrap: break-word; /* 防止长单词撑破 */
+            overflow: hidden;
+            
+            cursor: pointer;
+            z-index: 50; /* 保证浮在最上面 */
+            transition: transform 0.2s;
+            
+            /* 默认微微歪一点 */
+            transform: rotate(3deg);
+        }
+
+        /* 悬停时，好像要被揭下来 */
+        .real-sticky-note:hover {
+            transform: scale(1.05) rotate(0deg);
+            box-shadow: 5px 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* 📌 钉子/胶带装饰 */
+        .real-sticky-note::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: 50%; transform: translateX(-50%);
+            width: 40px; height: 20px;
+            background: rgba(255,255,255,0.3); /* 半透明胶带 */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transform: rotate(-2deg);
+        }
+
+        /* ==================== 🤖 AI 聊天样式 ==================== */
+        .ai-msg-row {
+            display: flex; margin-bottom: 8px;
+        }
+        .ai-msg-row.user { justify-content: flex-end; }
+        .ai-msg-row.ai { justify-content: flex-start; }
+        
+        .ai-bubble {
+            padding: 8px 12px; border-radius: 15px; max-width: 80%;
+            word-wrap: break-word; line-height: 1.4;
+            font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .ai-msg-row.user .ai-bubble {
+            background: var(--accent-color); color: white;
+            border-bottom-right-radius: 2px;
+        }
+        .ai-msg-row.ai .ai-bubble {
+            background: #fff; color: #555; border: 1px solid #eee;
+            border-bottom-left-radius: 2px;
+        }
+        .ai-loading { color: #999; font-size: 10px; font-style: italic; margin-left: 5px; }
+
     </style>
 
     <style id="custom-reader-style"></style> 
@@ -730,6 +1426,9 @@
 </head>
 <body>
 
+    <div id="dreamLayer" class="dream-layer">
+        <div class="dream-close" onclick="stopDreamMode()">× 醒来</div>
+        </div>
     <div id="lotteryOverlay" class="lottery-overlay">
         <div class="close-lottery" onclick="closeLottery()">×</div>
         <div class="lottery-box-container" id="lotteryBox">
@@ -839,40 +1538,61 @@
         <h1>🌸 我的百宝箱  🌸</h1>
 
         <div class="float-widget" id="floatWidget">
-            <div class="float-menu" id="floatMenu">
-                <div class="music-panel">
-                    <div style="font-size:12px; color:#aaa; margin-bottom:5px;">🎧 背景音乐</div>
-                    <div class="music-controls">
-                        <button class="play-btn" onclick="toggleMusic()" id="playBtn">▶</button>
-                        <input type="range" min="0" max="1" step="0.1" value="0.5" onchange="changeVolume(this)" style="width:60px; accent-color:var(--accent-color)">
-                    </div>
-                    <input type="text" style="width:100%;font-size:10px;padding:4px;border:1px solid #ddd;border-radius:5px;" id="musicLink" placeholder="输入mp3链接..." onchange="updateMusicSrc(this.value)">
-                    <audio id="bgMusic" loop></audio>
-                </div>
+                      <div class="float-menu" id="floatMenu">
                 
-                <div class="lottery-panel">
-                    <button class="lottery-btn" onclick="startLottery()">🔮 命运的抉择</button>
+                <div id="menuPage1" class="menu-page">
+                    <div class="music-panel">
+                        <div style="font-size:12px; color:#aaa; margin-bottom:5px;">🎧 背景音乐</div>
+                        <div class="music-controls">
+                            <button class="play-btn" onclick="toggleMusic()" id="playBtn">▶</button>
+                            <input type="range" min="0" max="1" step="0.1" value="0.5" onchange="changeVolume(this)" style="width:60px; accent-color:var(--accent-color)">
+                        </div>
+                        <input type="text" style="width:100%;font-size:10px;padding:4px;border:1px solid #ddd;border-radius:5px;" id="musicLink" placeholder="输入mp3链接..." onchange="updateMusicSrc(this.value)">
+                        <audio id="bgMusic" loop></audio>
+                    </div>
+                    <div class="lottery-panel" style="display:flex; gap:5px;">
+                        <button class="lottery-btn" onclick="startLottery()" style="flex:1">🔮 选个老婆</button>
+                        <button class="lottery-btn" onclick="openGachaModal()" style="flex:1; background:linear-gradient(135deg, #e0f7fa 0%, #81ecec 100%); color:#00cec9;">🎲 灵感扭蛋</button>
+                    </div>
+                    <div class="lottery-panel" style="display:flex; gap:5px; margin-top:5px;">
+                        <button class="lottery-btn" onclick="startDreamMode()" style="flex:1; background:linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); color:white; border:none;">🫧 漂浮梦境</button>
+                        <button class="lottery-btn" onclick="openEchoModal()" style="flex:1; background:linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); color:white; border:none;">📖 灵魂回响</button>
+                    </div>
+                    <div class="tavern-portal-panel" style="margin-top:15px; position:relative; width:100%;">
+                        <button id="tavernJumpBtn" style="width:100%; box-sizing: border-box; background:linear-gradient(135deg, #fff7e6 0%, #ffe7ba 100%); border:2px solid #fff; color:#fa8c16; padding:8px 15px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(255, 169, 64, 0.2);" onclick="jumpToTavern()">
+                            🍺 启动酒馆
+                        </button>
+                        <button style="position:absolute; right:2px; top:2px; height:calc(100% - 4px); width:35px; background:transparent; border:none; color:#fa8c16; cursor:pointer; opacity:0.6;" onclick="changeTavernLink()">⚙️</button>
+                    </div>
                 </div>
 
-                           <div class="tavern-portal-panel" style="margin-bottom:15px; position:relative; width:100%;">
+                <div id="menuPage2" class="menu-page" style="display:none; height:320px; display:flex; flex-direction:column;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:5px; border-bottom:1px dashed #eee;">
+                        <div style="font-size:12px; font-weight:bold; color:var(--accent-color);">💬 <span id="aiPersonaLabel">小德子 (太监)</span></div>
+                        <button onclick="openAISettings()" style="background:none; border:none; font-size:16px; cursor:pointer;">⚙️</button>
+                    </div>
                     
-                    <button id="tavernJumpBtn" 
-                            style="width:100%; box-sizing: border-box; background:linear-gradient(135deg, #fff7e6 0%, #ffe7ba 100%); border:2px solid #fff; color:#fa8c16; padding:8px 15px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(255, 169, 64, 0.2); transition:transform 0.2s;"
-                            onclick="jumpToTavern()">
-                        🍺 启动酒馆
-                    </button>
-                    
-                    <button style="position:absolute; right:2px; top:2px; height:calc(100% - 4px); width:35px; background:transparent; border:none; color:#fa8c16; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0.6;"
-                            onclick="changeTavernLink()"
-                            title="修改酒馆链接">
-                        ⚙️
-                    </button>
+                    <div id="aiChatBox" style="flex:1; overflow-y:auto; padding:10px 0; font-size:12px; display:none;">
+                        <div class="ai-msg-row ai"><div class="ai-bubble">皇上吉祥！奴才在这儿候着呢，您有什么吩咐？🙇</div></div>
+                    </div>
+
+                    <div style="display:flex; gap:5px; margin-top:5px;">
+                        <input type="text" id="aiInput" placeholder="传唤..." onkeydown="if(event.key==='Enter') sendAIMessage()" style="flex:1; border:1px solid #ddd; border-radius:15px; padding:5px 10px; font-size:12px;">
+                        <button onclick="sendAIMessage()" style="background:var(--accent-color); color:white; border:none; border-radius:15px; padding:5px 10px; font-size:12px;">传</button>
+                    </div>
                 </div>
-               
-                <div class="nav-panel" id="navPanel">
-                    <div class="nav-title">🏷️ 快速跳转</div>
+
+                <div id="menuPage3" class="menu-page" style="display:none; height:320px; overflow-y:auto;">
+                     <div style="text-align:center; color:#aaa; font-size:12px; margin-bottom:10px; position:sticky; top:0; background:rgba(255,255,255,0.9); padding:5px;">🏷️ 快速跳转目录</div>
+                     <div class="nav-panel" id="navPanel" style="border:none; padding:0;"></div>
+                </div>
+
+                <div class="menu-tab-bar">
+                    <button class="menu-tab active" onclick="switchMenuPage(1)">✨ 功能</button>
+                    <button class="menu-tab" onclick="switchMenuPage(2)">🤖 侍从</button> <button class="menu-tab" onclick="switchMenuPage(3)">📑 目录</button>
                 </div>
             </div>
+
             <div class="float-btn" id="floatBtn"></div>
         </div>
 
@@ -895,6 +1615,7 @@
             <button class="layout-btn" title="长列表" onclick="switchLayout('list')">🩵</button>
             <button class="layout-btn" title="大图模式" onclick="switchLayout('large')">🤍</button>
             <button class="layout-btn" title="迷你模式" onclick="switchLayout('mini')">🩷</button>
+            <button class="layout-btn" title="纪念品陈列室" onclick="switchLayout('shelf')">🎒</button>
         </div>
 
         <div class="action-grid">
@@ -946,6 +1667,18 @@
             </div>
                      <div class="form-group">
                <label>📦 包含的文件与链接</label><div class="resource-list" id="resourceList"><div style="text-align:center; color:#ccc; font-size:12px; padding:20px;">暂无内容，请点击下方按钮添加</div></div><div class="add-btn-row"><label class="upload-area small-btn" style="flex-grow:1; text-align:center;">📂 加文件 (图片/文档/其他)<input type="file" multiple onchange="handleUniversalSelect(this)"></label><button class="small-btn" onclick="openLinkInput()">🔗 加链接</button></div><div id="linkInputArea" style="display:none; margin-top:10px; background:#f9f9f9; padding:10px; border-radius:10px;"><input type="text" id="newLinkName" placeholder="链接名称 (如: 作者主页)" style="margin-bottom:5px;"><input type="text" id="newLinkUrl" placeholder="网址 (http://...)" style="margin-bottom:5px;"><div style="text-align:right;"><button class="small-btn" onclick="confirmAddLink()">确定</button><button class="small-btn" style="background:#eee; color:#666; border:none" onclick="document.getElementById('linkInputArea').style.display='none'">取消</button></div></div></div>
+
+                <div class="form-group" style="text-align:center; margin-top:15px; border-top:1px dashed #eee; padding-top:10px;">
+                    <label style="font-size:12px; color:#aaa; margin-bottom:8px;">🖼️ 装饰相框</label>
+                    <div style="display:flex; justify-content:center; gap:10px;">
+                        <button class="small-btn" onclick="setFrame('none')" style="border:1px solid #ddd; color:#999;" title="默认">🚫</button>
+                        <button class="small-btn" onclick="setFrame('frame-lace')" style="background:#fff0f5; border:1px dashed #ffb7c5;" title="蕾丝甜心">🎀</button>
+                        <button class="small-btn" onclick="setFrame('frame-gold')" style="background:#fffbe6; border:1px double #d4af37;" title="鎏金典藏">⚜️</button>
+                        <button class="small-btn" onclick="setFrame('frame-stardust')" style="background:linear-gradient(135deg,#e0c3fc,#8ec5fc); color:white; border:none;" title="星光流体">✨</button>
+                        <button class="small-btn" onclick="setFrame('frame-sakura')" style="background:#ffeff2; border:1px solid #ff9a9e;" title="落樱画境">🌸</button>
+                    </div>
+                </div>
+
             <div class="modal-buttons"><button onclick="closeAddModal()">取消</button><button class="primary-btn" onclick="saveItem()">💾 保存</button></div>
         </div>
     </div>
@@ -957,10 +1690,13 @@
 
             <div id="bigStamp" class="big-stamp-mark"></div>
 
-            <div class="modal-content-wrapper" style="overflow-y: auto; flex-grow: 1; position: relative; z-index: 2; padding: 25px;">
+                        <div class="modal-content-wrapper" style="overflow-y: auto; flex-grow: 1; position: relative; z-index: 2; padding: 25px;">
                 
                 <button class="close-modal" onclick="closeDetailModal()" style="position: absolute; top: 15px; right: 15px;">×</button>
+                
+                <div id="stickyNoteDisplay"></div> 
                 <h2 id="detailName" style="text-align:center; margin-bottom:5px; margin-top: 0;"></h2>
+
                 <div id="detailTags" style="display:flex; justify-content:center; gap:5px; margin-bottom:15px;"></div>
                 
                 <div class="stamp-bar">
@@ -985,11 +1721,35 @@
                 </div>
                 
                 <div id="noImgMsg" style="text-align:center; color:#ccc; padding:20px; display:none;">(此盒子没有图片)</div>
+                <div class="form-group">
+                    <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>🎒 纪念品 (回忆信物)</span>
+                        <button class="small-btn" onclick="openAddSouvenirModal()" style="font-size:12px;">+ 添加信物</button>
+                    </label>
+                    <div id="souvenirListArea" class="souvenir-scroll-box">
+                        <div style="font-size:12px; color:#ccc; padding:10px;">这里还空荡荡的...</div>
+                    </div>
+                </div>
                 <div class="form-group"><label>📂 盒子内容</label><div id="detailListContainer" class="detail-list"></div></div>
                 
+                             <div class="form-group" style="text-align:center; margin-top:15px; border-top:1px dashed #eee; padding-top:10px;">
+                    <label style="font-size:12px; color:#aaa; margin-bottom:8px;">🖼️ 装饰相框</label>
+                    <div style="display:flex; justify-content:center; gap:10px;">
+                        <button class="small-btn" onclick="setFrame('none')" style="border:1px solid #ddd; color:#999;" title="默认">🚫</button>
+                        <button class="small-btn" onclick="setFrame('frame-lace')" style="background:#fff0f5; border:1px dashed #ffb7c5;" title="蕾丝甜心">🎀</button>
+                        <button class="small-btn" onclick="setFrame('frame-gold')" style="background:#fffbe6; border:1px double #d4af37;" title="鎏金典藏">⚜️</button>
+                        <button class="small-btn" onclick="setFrame('frame-stardust')" style="background:linear-gradient(135deg,#e0c3fc,#8ec5fc); color:white; border:none;" title="星光流体">✨</button>
+                        <button class="small-btn" onclick="setFrame('frame-sakura')" style="background:#ffeff2; border:1px solid #ff9a9e;" title="落樱画境">🌸</button>
+                    </div>
+                </div>
+
                 <div class="modal-buttons" style="justify-content: center; flex-wrap:wrap; margin-top: 20px;">
-                    <button class="edit-btn" onclick="openEditMode()">✏️ 编辑盒子内容</button>
-                    <button onclick="deleteCurrentItem()" style="border-color: #ffcccc; color: #ff6b6b;">🗑️ 删除盒子</button>
+                    <button class="edit-btn" onclick="openEditMode()">✏️ 编辑</button>
+                    <button onclick="deleteCurrentItem()" style="border-color: #ffcccc; color: #ff6b6b;">🗑️ 删除</button>
+                    <button onclick="openOathModal()" style="border-color: #ffd700; color: #f39c12; background: #fffdf0;">💍 誓约</button>
+<button onclick="openScratchModal()" style="border-color: #fab1a0; color: #e17055; background: #fff5f0;">🤫 秘密</button>
+<button onclick="openNoteModal()" style="border-color: #ffeaa7; color: #d35400; background: #fffbe6;">📌 便签</button>
+
                 </div>
             
             </div> 
@@ -1006,10 +1766,12 @@
                     <div class="reader-subtitle" id="readerCount" style="cursor:pointer" onclick="toggleBookmarkDrawer()">0 条记录 (点击查看书签)</div>
                 </div>
                 
-                <div style="display:flex; gap:5px;">
-                    <button class="close-reader" style="font-size:16px;" onclick="toggleCssDrawer()">🎨</button>
+                                <div style="display:flex;
+gap:5px;">
+                    <button class="close-reader" style="font-size:16px;" onclick="analyzeBond()" title="生成羁绊报告">📊</button> <button class="close-reader" style="font-size:16px;" onclick="toggleCssDrawer()">🎨</button>
                     <button class="close-reader" style="font-size:16px;" onclick="toggleBookmarkDrawer()">⭐</button> 
                 </div>
+
             </div>
 
 <div class="css-drawer" id="cssDrawer">
@@ -1051,6 +1813,308 @@
                 <span class="page-info" id="pageInfo">1 / 1</span>
                 <button class="page-btn" onclick="nextPage()">下一页 ▶</button>
             </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reportModal" style="z-index: 6000;">
+        <div class="modal" style="width: 90%; max-width: 350px;">
+            <button class="close-modal" onclick="document.getElementById('reportModal').classList.remove('active')">×</button>
+            <h2 style="text-align:center; color:var(--accent-color);">📊 我们的回忆报告</h2>
+            
+            <div class="report-card">
+                <div style="font-size:13px; color:#999; margin-bottom:10px;">跨越时间</div>
+                <div style="font-size:18px; font-weight:bold; color:#555;">
+                    <span id="reportDateStart"></span> ~ <span id="reportDateEnd"></span>
+                </div>
+                <div style="background:#fff0f5; color:var(--accent-color); display:inline-block; padding:2px 10px; border-radius:10px; font-size:12px; margin-top:5px;">
+                    共陪伴 <span id="reportDays" style="font-size:16px; font-weight:bold;">0</span> 天
+                </div>
+
+                <div class="report-stat-row">
+                    <div class="stat-item">
+                        <h3 id="reportTotalFloors">0</h3>
+                        <p>盖楼高度</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="reportTotalWords">0</h3>
+                        <p>总字数</p>
+                    </div>
+                </div>
+
+                <div style="text-align:left; font-size:12px; color:#666; margin-top:15px;">
+                    <div>📝 话痨大比拼 (字数占比)</div>
+                    <div class="ratio-bar-container">
+                        <div id="ratioUser" class="ratio-segment ratio-left" style="width:50%">我</div>
+                        <div id="ratioChar" class="ratio-segment ratio-right" style="width:50%">TA</div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                        <span id="textCountUser">我: 0字</span>
+                        <span id="textCountChar">TA: 0字</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="gachaModal" style="z-index: 7000;">
+        <div class="modal">
+            <button class="close-modal" onclick="closeGachaModal()">×</button>
+            <h2 style="text-align:center; margin-bottom:10px;">🎲 剧情灵感扭蛋机</h2>
+            
+            <div class="gacha-machine">
+                <div class="gacha-display" id="gachaResultArea">
+                    <div style="color:#ccc; font-size:14px;">点击按钮，获取今日梗概...</div>
+                </div>
+                
+                <div class="gacha-controls">
+                    <button class="primary-btn" onclick="spinGacha()" style="width:100%; justify-content:center; font-size:16px;">🎰 给我一个脑洞！</button>
+                </div>
+                <div style="text-align:center; margin-top:10px;">
+                    <span class="action-link" onclick="toggleGachaEdit()">⚙️ 编辑题库</span>
+                </div>
+
+                <div class="gacha-edit-area" id="gachaEditArea">
+                    <label style="font-size:12px; color:#666;">📍 地点 (用逗号分隔)</label>
+                    <textarea id="editPlace" class="gacha-textarea"></textarea>
+                    
+                    <label style="font-size:12px; color:#666;">📅 事件 (用逗号分隔)</label>
+                    <textarea id="editEvent" class="gacha-textarea"></textarea>
+                    
+                    <label style="font-size:12px; color:#666;">✨ 氛围/梗 (用逗号分隔)</label>
+                    <textarea id="editTrope" class="gacha-textarea"></textarea>
+                    
+                    <button class="small-btn primary-btn" onclick="saveGachaData()" style="width:100%; margin-top:5px;">💾 保存题库配置</button>
+                    <button class="small-btn" onclick="resetGachaData()" style="width:100%; margin-top:5px; background:#fff; color:#999; border:1px solid #ddd;">🔄 恢复默认题库</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal-overlay" id="addSouvenirModal" style="z-index: 7000;">
+        <div class="modal">
+            <button class="close-modal" onclick="document.getElementById('addSouvenirModal').classList.remove('active')">×</button>
+            <h2 style="text-align:center;">✨ 封存一段回忆</h2>
+            
+            <div class="form-group">
+                <label>📸 信物照片 (点击上传)</label>
+                <div onclick="document.getElementById('souvenirImgInput').click()" 
+                     style="width:100%; height:150px; background:#f9f9f9; border:2px dashed #ddd; border-radius:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; overflow:hidden;">
+                    <img id="souvenirPreview" style="max-width:100%; max-height:100%; display:none;">
+                    <span id="souvenirUploadHint" style="color:#aaa;">点击选择图片</span>
+                </div>
+                <input type="file" id="souvenirImgInput" accept="image/*" onchange="previewSouvenirImg(this)">
+            </div>
+
+            <div class="form-group">
+                <label>🏷️ 名字</label>
+                <input type="text" id="souvenirName" placeholder="例如：那天的烟火大会...">
+            </div>
+
+            <div class="form-group">
+                <label>📜 它的故事 (回忆描述)</label>
+                <textarea id="souvenirDesc" style="width:100%; height:80px; padding:10px; border:2px solid #ffe6eb; border-radius:10px; resize:none;" placeholder="为什么这个东西很重要？"></textarea>
+            </div>
+            
+            <button class="primary-btn" onclick="saveSouvenir()" style="width:100%;">💾 放入陈列室</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="viewSouvenirModal" style="z-index: 7500;">
+        <div class="modal">
+            <button class="close-modal" onclick="document.getElementById('viewSouvenirModal').classList.remove('active')">×</button>
+            <div class="souvenir-view-content">
+                <h2 id="viewSovTitle" style="color:var(--accent-color); margin-bottom:10px;"></h2>
+                <img id="viewSovImg" class="souvenir-view-img">
+                <div id="viewSovDesc" class="souvenir-view-story"></div>
+                
+                <div style="font-size:12px; color:#aaa; margin-top:20px;">
+                    属于: <span id="viewSovOwner"></span>
+                </div>
+                <button class="small-btn" onclick="deleteCurrentSouvenir()" style="background:#fff; color:#ff6b6b; border:1px solid #ffcccc; margin-top:10px;">🗑️ 丢弃</button>
+            </div>
+        </div>
+    </div>
+
+<div class="modal-overlay" id="echoModal" style="z-index: 7500;">
+        <div class="modal">
+            <button class="close-modal" onclick="document.getElementById('echoModal').classList.remove('active')">×</button>
+            <h2 style="text-align:center;">📖 听听TA怎么说</h2>
+            <div style="font-size:12px; color:#aaa; text-align:center; margin-bottom:15px;">心中默念你的问题 (是/否)，然后点击聆听</div>
+
+            <div class="echo-card">
+                <div style="margin-bottom:15px;">
+                    <select id="echoCharSelect" onchange="updateEchoAvatar()" style="width:100%; padding:8px; border-radius:10px; border:1px solid #ddd;">
+                        <option value="">-- 请选择指引者 --</option>
+                    </select>
+                </div>
+
+                <img id="echoAvatarDisplay" src="" style="display:none;" class="echo-avatar">
+                
+                <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:15px;">
+                    <label style="font-size:12px; color:#666;">TA的性格:</label>
+                    <select id="echoArchetypeSelect" style="padding:5px; border-radius:5px; border:1px solid #ffb7c5; font-size:12px;">
+                        </select>
+                </div>
+
+                <div class="echo-result-box" id="echoResultText">
+                    ...
+                </div>
+
+                <button class="primary-btn" onclick="askEcho()" style="width:100%; font-size:16px;">🔮 聆听回响</button>
+                
+                <div style="margin-top:15px; border-top:1px dashed #eee; padding-top:10px;">
+                    <span class="action-link" onclick="toggleEchoEdit()" style="background:#f0f0f0; color:#888;">✏️ 编写/修改性格库</span>
+                </div>
+                
+                <div id="echoEditArea" style="display:none; margin-top:10px; text-align:left;">
+                    <label style="font-size:12px;">选中上方的性格，然后在这里修改 (一行一句):</label>
+                    <textarea id="echoEditText" style="width:100%; height:100px; font-size:12px; border:1px solid #ddd; border-radius:10px; padding:5px; resize:none;" onchange="saveCurrentEchoLib()"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="oathModal" style="z-index: 8000;">
+        <div class="modal" style="background: transparent; box-shadow: none; padding: 0; display: flex; justify-content: center; align-items: center;">
+            
+            <div class="oath-paper" id="oathPaper">
+                <button class="close-modal" onclick="document.getElementById('oathModal').classList.remove('active')" style="color:#bdc3c7; top:10px; right:10px;">×</button>
+                
+                <div class="oath-border"></div>
+                
+                <div class="oath-header">✨ 永恒誓约 ✨</div>
+                
+                <div class="oath-content">
+                    <img id="oathAvatar" class="oath-avatar" src="">
+                    <div style="margin: 15px 0; font-size: 14px; color: #555; line-height: 1.8;">
+                        自今日 <span id="oathDate" style="border-bottom: 1px solid #aaa; padding: 0 5px; font-weight: bold;"></span> 起<br>
+                        我愿与 <span id="oathCharName" style="color:var(--accent-color); font-weight:bold; font-size:16px;"></span> 缔结羁绊。<br>
+                        无论数据洪流如何冲刷，<br>
+                        这份记忆将永不褪色。
+                    </div>
+                </div>
+
+                <div class="oath-footer">
+                    <div class="oath-sign-box">
+                        <span>User:</span>
+                        <div class="sign-line">我 (Me)</div>
+                    </div>
+                    <div class="oath-sign-box">
+                        <span>Partner:</span>
+                        <div class="sign-line" id="oathSignName">???</div>
+                    </div>
+                </div>
+
+                <div class="oath-action-area">
+                    <div id="oathSealBtn" class="oath-seal-btn" onclick="signTheOath()">
+                        🖐️ 按手印
+                    </div>
+                    <div id="oathStamp" class="oath-stamp-mark">
+                        <div style="font-size: 50px;">💋</div>
+                        <div style="font-size: 10px; transform: rotate(-5deg); border: 2px solid #d63031; padding: 2px 5px; border-radius: 4px; color: #d63031; display: inline-block; margin-top: -10px;">LOVED</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<div class="modal-overlay" id="scratchModal" style="z-index: 8500;">
+        <div class="modal" style="width: 300px; padding: 20px; background: #fff0f5; border: 4px solid white; border-radius: 20px; text-align: center;">
+            <button class="close-modal" onclick="closeScratchModal()">×</button>
+            
+            <h2 style="color: #d66a80; margin-bottom: 5px;">🤫 隐藏的秘密</h2>
+            <div style="font-size: 12px; color: #aaa; margin-bottom: 15px;">来自聊天记录的随机回忆...</div>
+
+            <div class="scratch-container" id="scratchContainer">
+                <div class="scratch-text-layer">
+                    <div id="scratchSecretText">...</div>
+                </div>
+                <canvas id="scratchCanvas"></canvas>
+                
+                <div id="scratchCover" class="scratch-cover-overlay">
+                    <div style="font-size: 40px;">🫣</div>
+                    <div style="font-weight: bold; color: #fff; margin-top: 10px;">要偷看TA的心里话吗？</div>
+                </div>
+            </div>
+
+            <div class="scratch-actions" id="scratchBtnArea">
+                <button class="small-btn" onclick="closeScratchModal()" style="background: #eee; color: #999;">🫣 算了不敢看</button>
+                <button class="primary-btn" onclick="startScratching()" style="background: #ff8fa3; border: none;">🖐️ 我要刮！</button>
+            </div>
+            
+            <div id="scratchHint" style="display:none; font-size:12px; color:#d66a80; margin-top:10px;">
+                ✨ 快用手指/鼠标涂抹上方区域 ✨
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="noteModal" style="z-index: 8800;">
+        <div class="modal" style="background: transparent; box-shadow: none; padding: 0; display: flex; justify-content: center; align-items: center;">
+            
+            <div class="sticky-note-paper">
+                <button class="close-modal" onclick="closeNoteModal()" style="color: #bfa588; top: 5px; right: 5px;">×</button>
+                
+                <div style="text-align: center; color: #bfa588; font-weight: bold; margin-bottom: 10px; font-size: 14px;">
+                    📌 角色备注 & 随手记
+                </div>
+
+                <div class="note-toolbar">
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <span style="font-size:10px; color:#999;">颜色:</span>
+                        <input type="color" id="noteColorPicker" value="#555555" onchange="previewNoteStyle()">
+                    </div>
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <span style="font-size:10px; color:#999;">大小:</span>
+                        <input type="range" id="noteSizeSlider" min="12" max="30" value="14" style="width: 60px;" oninput="previewNoteStyle()">
+                    </div>
+                </div>
+
+                <textarea id="noteTextarea" placeholder="在这里写下关于TA的备注...&#10;比如：生日是X月X日&#10;或者：今天TA超级可爱！"></textarea>
+
+                <button class="small-btn" onclick="saveNote()" style="width: 100%; margin-top: 10px; background: #fff; border: 1px dashed #bfa588; color: #bfa588;">💾 贴上去</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="aiSettingsModal" style="z-index: 9999;">
+        <div class="modal" style="width: 280px;">
+            <button class="close-modal" onclick="document.getElementById('aiSettingsModal').classList.remove('active')">×</button>
+            <h3 style="text-align:center; color:var(--accent-color); margin-bottom:15px;">🧠 调教你的侍从</h3>
+            
+            <div class="form-group">
+                <label>🎭 选择人设</label>
+                <select id="aiPersonaSelect" style="width:100%; padding:8px; border-radius:10px; border:1px solid #ddd;">
+                    <option value="eunuch">🙇 小德子 (卑微太监)</option>
+                    <option value="maid">🐱 喵喵女仆 (可爱猫娘)</option>
+                    <option value="butler">🧐 毒舌管家 (阴阳怪气)</option>
+                    <option value="yandere">🔪 病娇妹妹 (独占欲)</option>
+                    <option value="custom">🛠️ 自定义人设</option>
+                </select>
+            </div>
+
+            <div id="customPersonaArea" class="form-group" style="display:none;">
+                <label>📝 自定义提示词 (System Prompt)</label>
+                <textarea id="aiCustomPrompt" style="width:100%; height:60px; font-size:12px; border:1px solid #ddd; border-radius:10px; padding:5px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>🔗 API 地址 (反代链接)</label>
+                <input type="text" id="aiApiUrl" placeholder="例如: https://api.openai.com/v1" value="https://api.openai.com/v1">
+            </div>
+
+            <div class="form-group">
+                <label>🔑 API Key</label>
+                <input type="password" id="aiApiKey" placeholder="sk-...">
+            </div>
+
+            <div class="form-group">
+                <label>🧠 模型名称</label>
+                <input type="text" id="aiModelName" placeholder="gpt-3.5-turbo" value="gpt-3.5-turbo">
+            </div>
+
+            <button class="primary-btn" onclick="saveAISettings()" style="width:100%;">💾 保存设定</button>
         </div>
     </div>
 
@@ -1241,9 +2305,7 @@
         function initDB() { return new Promise((resolve, reject) => { const request = indexedDB.open(DB_NAME, 1); request.onerror = () => reject(); request.onupgradeneeded = (e) => { const db = e.target.result; if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true }); }; request.onsuccess = (e) => { db = e.target.result; resolve(); }; }); }
         async function loadFromDB() { const tx = db.transaction(STORE_NAME, 'readonly');
             const req = tx.objectStore(STORE_NAME).getAll(); req.onsuccess = () => { items = req.result.sort((a, b) => new Date(b.date) - new Date(a.date)); renderGrid(items);
-            renderNavPanel(); 
-updateTitleLevel(); 
-}; }
+            renderNavPanel(); }; }
         async function saveItemToDB(item) { return new Promise((resolve, reject) => { const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); const req = item.id ? store.put(item) : store.add(item); req.onsuccess = () => resolve(req.result); req.onerror = () => { alert('保存失败，文件太大？'); reject(); }; }); }
         async function deleteItemFromDB(id) { const tx = db.transaction(STORE_NAME, 'readwrite'); tx.objectStore(STORE_NAME).delete(id);
             return new Promise(resolve => tx.oncomplete = resolve); }
@@ -1253,7 +2315,6 @@ updateTitleLevel();
             } } catch(e){} } }
 
         function renderGrid(dataList) {
-updateTitleLevel(); 
             const container = document.getElementById('gridContainer');
             container.innerHTML = '';
             
@@ -1292,7 +2353,8 @@ updateTitleLevel();
                 if (images.length > 0) coverSrc = images[Math.min(item.coverIndex||0, images.length-1)].content;
                 
                 const imgWrapper = document.createElement('div'); 
-                imgWrapper.className = 'card-img-wrapper';
+               // 👇 修改后：会自动读取 item.frameStyle 并加上对应的 CSS 类
+imgWrapper.className = `card-img-wrapper ${item.frameStyle || ''}`;
                 const img = document.createElement('img'); 
                 img.src = coverSrc; 
                 imgWrapper.appendChild(img);
@@ -1320,19 +2382,29 @@ updateTitleLevel();
             });
         }
 
-        function switchLayout(mode) {
+                function switchLayout(mode) {
             const c = document.getElementById('gridContainer');
-            c.className = 'grid-container'; 
-            c.classList.add('mode-' + mode);
+            c.className = 'grid-container'; // 清除旧模式
             
+            // 按钮状态重置
             document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
-            if(mode==='default') document.querySelector('.layout-btn[title="默认网格"]').classList.add('active');
-            if(mode==='list') document.querySelector('.layout-btn[title="长列表"]').classList.add('active');
-            if(mode==='large') document.querySelector('.layout-btn[title="大图模式"]').classList.add('active');
-            if(mode==='mini') document.querySelector('.layout-btn[title="迷你模式"]').classList.add('active');
+
+            if (mode === 'shelf') {
+                document.querySelector('.layout-btn[title="纪念品陈列室"]').classList.add('active');
+                renderShelfView(); // 👈 调用下面新写的渲染函数
+            } else {
+                c.classList.add('mode-' + mode);
+                renderGrid(items); // 恢复正常渲染
+                
+                // 恢复按钮高亮逻辑
+                if(mode==='default') document.querySelector('.layout-btn[title="默认网格"]').classList.add('active');
+                if(mode==='list') document.querySelector('.layout-btn[title="长列表"]').classList.add('active');
+                if(mode==='large') document.querySelector('.layout-btn[title="大图模式"]').classList.add('active');
+                if(mode==='mini') document.querySelector('.layout-btn[title="迷你模式"]').classList.add('active');
+            }
 
             localStorage.setItem('my_magic_layout', mode);
-            auth.toast('视图切换成功 ✨');
+            if(mode !== 'shelf') auth.toast('视图切换成功 ✨');
         }
 
         function initLayout() {
@@ -1542,7 +2614,9 @@ if (!n) { alert('名字不能为空'); return; } if (draftResources.length === 0
             const item = items[index]; document.getElementById('detailName').textContent = item.name; const tagsBox = document.getElementById('detailTags'); tagsBox.innerHTML = '';
             (item.tags||[]).forEach(t => { const s = document.createElement('span'); s.className='tag-pill'; s.textContent=t; tagsBox.appendChild(s); }); const images = item.resources.filter(r => r.type === 'image');
             if(images.length === 0) { document.getElementById('galleryArea').style.display = 'none'; document.getElementById('noImgMsg').style.display = 'block'; } else { document.getElementById('galleryArea').style.display = 'block'; document.getElementById('noImgMsg').style.display = 'none';
-            galleryIndex = Math.min(item.coverIndex||0, images.length-1); updateGalleryUI(images); } 
+            galleryIndex = Math.min(item.coverIndex||0, images.length-1); updateGalleryUI(images); 
+initHeadpat();
+} 
             
             const listContainer = document.getElementById('detailListContainer');
             listContainer.innerHTML = ''; 
@@ -1576,13 +2650,35 @@ if (!n) { alert('名字不能为空'); return; } if (draftResources.length === 0
             
     // 👇 🟢 在函数最后加这句，开始播放动画
     startMemoryAnimation(items[index].memories || []);
+renderStickyNote(); // ✅ 加这一句，打开时贴上便签
 document.getElementById('detailModal').classList.add('active'); 
+renderDetailSouvenirs(index);
         }
 
-        function updateGalleryUI(images) { const imgEl = document.getElementById('detailImg');
-            const curImg = images[galleryIndex]; imgEl.src = curImg.content; document.getElementById('galleryTypeLabel').textContent = curImg.subType; document.getElementById('imgIndex').textContent = galleryIndex + 1; document.getElementById('imgTotal').textContent = images.length;
-            const cb = document.getElementById('setCoverBtn'); if(galleryIndex === (items[viewingIndex].coverIndex || 0)) { cb.textContent = '当前封面'; cb.classList.add('is-cover'); } else { cb.textContent = '设为封面';
-            cb.classList.remove('is-cover'); } }
+                function updateGalleryUI(images) {
+            const imgEl = document.getElementById('detailImg');
+            const curImg = images[galleryIndex];
+            
+            // 基础图片设置
+            imgEl.src = curImg.content;
+            document.getElementById('galleryTypeLabel').textContent = curImg.subType;
+            document.getElementById('imgIndex').textContent = galleryIndex + 1;
+            document.getElementById('imgTotal').textContent = images.length;
+            
+            // 封面按钮状态
+            const cb = document.getElementById('setCoverBtn');
+            if (galleryIndex === (items[viewingIndex].coverIndex || 0)) {
+                cb.textContent = '当前封面'; 
+                cb.classList.add('is-cover'); 
+            } else { 
+                cb.textContent = '设为封面';
+                cb.classList.remove('is-cover');
+            }
+
+            // ✅ 新增：渲染详情页特效
+            renderDetailEffect(); 
+        }
+
         function changeGalleryImage(d) { const images = items[viewingIndex].resources.filter(r => r.type === 'image');
             if(images.length === 0) return; galleryIndex += d; if(galleryIndex >= images.length) galleryIndex = 0;
             if(galleryIndex < 0) galleryIndex = images.length - 1; updateGalleryUI(images); }
@@ -1700,9 +2796,38 @@ document.getElementById('detailModal').classList.add('active');
         }
         function updateMusicSrc(v) { if(v){document.getElementById('bgMusic').src=v; localStorage.setItem('my_bgm_link',v);
             document.getElementById('playBtn').textContent='▶';} }
-        function renderNavPanel() { const c = document.getElementById('navPanel'); const t = c.querySelector('.nav-title');
-            c.innerHTML=''; c.appendChild(t); const map={}; const no=[]; items.forEach((it,i)=>{ if(!it.tags||it.tags.length==0)no.push(i); else it.tags.forEach(tag=>{ if(!map[tag])map[tag]=[]; map[tag].push(i); }); }); if(no.length) createNavGroup(c,'📂 未分类',no); Object.keys(map).sort().forEach(k=>createNavGroup(c,`🏷️ ${k}`,map[k]));
+              // 🏷️ 修复后的目录渲染函数
+        function renderNavPanel() {
+            const c = document.getElementById('navPanel');
+            if(!c) return;
+            
+            c.innerHTML = ''; // 清空内容
+
+            const map = {};
+            const no = [];
+            
+            // 1. 整理数据
+            items.forEach((it, i) => {
+                if (!it.tags || it.tags.length == 0) no.push(i);
+                else it.tags.forEach(tag => {
+                    if (!map[tag]) map[tag] = [];
+                    map[tag].push(i);
+                });
+            });
+
+            // 2. 生成 HTML (先放未分类，再放有标签的)
+            if (no.length) createNavGroup(c, '📂 未分类', no);
+            
+            Object.keys(map).sort().forEach(k => {
+                createNavGroup(c, `🏷️ ${k}`, map[k]);
+            });
+            
+            // 如果完全没内容，给个提示
+            if(no.length === 0 && Object.keys(map).length === 0) {
+                c.innerHTML = '<div style="text-align:center; color:#ccc; padding:20px; font-size:12px;">还没加标签呢~</div>';
+            }
         }
+
         function createNavGroup(c,t,idx) { const g=document.createElement('div'); g.style.marginBottom='5px'; const h=document.createElement('div'); h.innerHTML=`${t} ▾`; h.style.cssText='padding:5px;font-size:12px;font-weight:bold;cursor:pointer;color:#555;'; h.onclick=()=>{l.style.display=l.style.display==='none'?'block':'none'};
             const l=document.createElement('div'); l.style.cssText='display:none;padding-left:10px;'; idx.forEach(i=>{ const it=document.createElement('div'); it.textContent=items[i].name; it.style.cssText='font-size:11px;padding:3px;cursor:pointer;color:#888;'; it.onclick=()=>{openDetailModal(i);document.getElementById('floatMenu').classList.remove('active')}; l.appendChild(it); }); g.appendChild(h); g.appendChild(l); c.appendChild(g);
         }
@@ -2349,66 +3474,1251 @@ document.getElementById('detailModal').classList.add('active');
             setTimeout(() => p.remove(), 1000);
         });
 
-// ================= 🏆 修复版：浏览器标题等级系统 (Lv.1 - Lv.Max) =================
+        // ================= 📊 1. 羁绊分析报告逻辑 =================
+        function analyzeBond() {
+            if (!readerState.data || readerState.data.length === 0) {
+                auth.toast('没有聊天记录，无法分析哦 📄');
+                return;
+            }
 
-function updateTitleLevel() {
-    // 确保 items 数组已被加载 (这是你的数据来源)
-    if (typeof items === 'undefined' || !Array.isArray(items)) {
-        // 如果数据还没准备好，就保持原标题或显示初始化状态
-        document.title = "✨ 正在加载百宝箱... ⏳"; 
-        return;
-    }
-    
-    const total = items.length; // 获取当前卡片总数
+            const msgs = readerState.data;
+            let userWords = 0;
+            let charWords = 0;
+            let firstTime = null;
+            let lastTime = null;
 
-    // 🌟 33级 魔法收藏家等级表
-    const levels = [
-        { count: 0,   title: "空空如也", icon: "🍃" },
-        { count: 1,   title: "初次相遇", icon: "🌱" },
-        { count: 5,   title: "小小收藏", icon: "🍀" },
-        { count: 10,  title: "拾光路人", icon: "🚶" },
-        { count: 15,  title: "记忆碎片", icon: "🧩" },
-        { count: 20,  title: "见习法师", icon: "🪄" },
-        { count: 25,  title: "百宝学徒", icon: "🎒" },
-        { count: 30,  title: "初级仓鼠", icon: "🐹" },
-        { count: 40,  title: "囤积新秀", icon: "🧺" },
-        { count: 50,  title: "进阶收藏", icon: "📂" },
-        { count: 60,  title: "记忆猎手", icon: "🏹" },
-        { count: 70,  title: "闪光时刻", icon: "✨" },
-        { count: 80,  title: "星之微光", icon: "🌟" },
-        { count: 90,  title: "月之辉映", icon: "🌙" },
-        { count: 100, title: "百宝大师", icon: "🎓" },
-        { count: 120, title: "时光旅行者", icon: "⏳" },
-        { count: 140, title: "梦境编织者", icon: "🧶" },
-        { count: 160, title: "银河漫游", icon: "🚀" },
-        { count: 180, title: "星云观测", icon: "🔭" },
-        { count: 200, title: "资深囤囤鼠", icon: "🐿️" },
-        { count: 250, title: "宝藏守护者", icon: "🛡️" },
-        { count: 300, title: "时空领主", icon: "🗝️" },
-        { count: 350, title: "维度观察者", icon: "🧿" },
-        { count: 400, title: "传说收藏家", icon: "👑" },
-        { count: 450, title: "半神之境", icon: "🔱" },
-        { count: 500, title: "森罗万象", icon: "🌌" },
-        { count: 600, title: "全知全能", icon: "👁️" },
-        { count: 700, title: "不可名状", icon: "🐙" },
-        { count: 800, title: "宇宙尽头", icon: "🪐" },
-        { count: 900, title: "虚空之主", icon: "🌑" },
-        { count: 1000, title: "创世神", icon: "⚛️" },
-        { count: 2000, title: "赛博佛祖", icon: "🪷" },
-        { count: 9999, title: "数据奇点", icon: "🕳️" }
-    ];
+            // 遍历统计
+            msgs.forEach(m => {
+                // 1. 尝试提取时间 (兼容 sillytavern/酒馆常用字段 create_date/date)
+                const tStr = m.create_date || m.date || m.send_date;
+                if(tStr) {
+                    const t = new Date(tStr).getTime();
+                    if(!isNaN(t)) {
+                        if(!firstTime || t < firstTime) firstTime = t;
+                        if(!lastTime || t > lastTime) lastTime = t;
+                    }
+                }
 
-    let currentLevel = levels[0];
-    for (let i = levels.length - 1; i >= 0; i--) {
-        if (total >= levels[i].count) {
-            currentLevel = levels[i];
-            break;
+                // 2. 统计字数
+                const content = m.mes || m.content || m.text || "";
+                const len = content.length;
+                
+                // 判断是谁发的 (复用 reader 的逻辑)
+                const name = m.name || '???';
+                let isUser = false;
+                if (m.hasOwnProperty('is_user')) isUser = m.is_user;
+                else if (name === 'User' || name === '我' || name === 'Me') isUser = true;
+
+                if(isUser) userWords += len;
+                else charWords += len;
+            });
+
+            // 如果没有时间戳，默认为今天
+            const now = new Date();
+            if(!firstTime) firstTime = now.getTime();
+            if(!lastTime) lastTime = now.getTime();
+
+            // 计算天数
+            const diffTime = Math.abs(lastTime - firstTime);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+            // 渲染数据
+            document.getElementById('reportTotalFloors').textContent = msgs.length;
+            document.getElementById('reportTotalWords').textContent = (userWords + charWords).toLocaleString();
+            document.getElementById('reportDays').textContent = diffDays;
+            
+            // 格式化日期
+            const fmt = (ts) => new Date(ts).toISOString().slice(0,10);
+            document.getElementById('reportDateStart').textContent = fmt(firstTime);
+            document.getElementById('reportDateEnd').textContent = fmt(lastTime);
+
+            // 渲染比例条
+            const total = userWords + charWords;
+            let userPct = 50;
+            if(total > 0) userPct = Math.round((userWords / total) * 100);
+            
+            document.getElementById('ratioUser').style.width = userPct + '%';
+            document.getElementById('ratioUser').textContent = `我 ${userPct}%`;
+            document.getElementById('textCountUser').textContent = `我: ${userWords}`;
+
+            document.getElementById('ratioChar').style.width = (100 - userPct) + '%';
+            document.getElementById('ratioChar').textContent = `TA ${100 - userPct}%`;
+            document.getElementById('textCountChar').textContent = `TA: ${charWords}`;
+
+            // 显示弹窗
+            document.getElementById('reportModal').classList.add('active');
         }
-    }
 
-    // ✨ 动态修改浏览器标题
-    document.title = `[${currentLevel.icon} ${currentLevel.title}] 我的百宝箱 (${total})`;
-}
+        // ================= 🎲 2. 灵感扭蛋机 Pro 逻辑 =================
+        
+        // 💾 默认超级题库 (如你所愿，加了亿点点梗)
+        const DEFAULT_GACHA_DB = {
+            places: [
+                "废弃的旧校舍", "暴雨中的电话亭", "异世界的魔王城王座", "深夜的24小时便利店", 
+                "狭窄的电梯里", "豪华游轮的甲板", "末日后的废墟避难所", "充满消毒水味的医务室",
+                "喧闹的酒吧角落", "只有我们两个人的海边", "满是灰尘的阁楼", "正在崩塌的地下城",
+                "全息投影的赛博街道", "古老的图书馆禁书区", "温泉旅馆的私人汤池", "拥挤的早高峰地铁"
+            ],
+            events: [
+                "身体互换了", "其中一方失忆了", "必须要假装成情侣", "被一副神秘手铐拷在一起",
+                "如果不说实话就会死", "中了'变得坦率'的魔法", "正在躲避仇家的追杀", "发现对方其实是敌对阵营",
+                "只有一方能看见鬼魂", "被困在时间循环里", "一方变成了猫/狗", "捡到了对方的私密日记",
+                "醉酒后的一夜荒唐", "必须要完成真心话大冒险", "照顾生病的另一方", "互相给对方涂防晒霜/上药"
+            ],
+            tropes: [
+                "修罗场/嫉妒", "破镜重圆", "双向暗恋", "相爱相杀", "先婚后爱", "救赎/治愈",
+                "病娇/监禁", "年下/撒娇", "主仆/支配", "反差萌", "吊桥效应", "误会梗",
+                "ABO设定(发情期)", "青梅竹马", "宿敌变情人", "契约关系"
+            ]
+        };
+
+        let gachaData = { ...DEFAULT_GACHA_DB };
+
+        // 初始化：加载用户自定义数据
+        function initGacha() {
+            const saved = localStorage.getItem('my_gacha_db');
+            if(saved) {
+                try {
+                    gachaData = JSON.parse(saved);
+                } catch(e) { console.error('题库加载失败', e); }
+            }
+        }
+        // 页面加载时初始化
+        initGacha();
+
+        function openGachaModal() {
+            document.getElementById('floatMenu').classList.remove('active');
+            document.getElementById('gachaModal').classList.add('active');
+        }
+        function closeGachaModal() {
+            document.getElementById('gachaModal').classList.remove('active');
+            document.getElementById('gachaEditArea').style.display = 'none';
+        }
+
+        function spinGacha() {
+            const resultArea = document.getElementById('gachaResultArea');
+            resultArea.innerHTML = '<div style="font-size:30px;">🎰</div>'; // 简单的转动动画占位
+            
+            setTimeout(() => {
+                const p = randArr(gachaData.places);
+                const e = randArr(gachaData.events);
+                const t = randArr(gachaData.tropes);
+
+                resultArea.innerHTML = `
+                    <div class="gacha-tag tag-place">📍 ${p}</div>
+                    <div class="gacha-tag tag-event">📅 ${e}</div>
+                    <div class="gacha-tag tag-trope">✨ ${t}</div>
+                    <div style="font-size:12px; color:#aaa; margin-top:10px;">
+                        💡 脑洞：在 <b>${p}</b>，发生了 <b>${e}</b>，氛围是 <b>${t}</b>
+                    </div>
+                `;
+            }, 300);
+        }
+
+        function randArr(arr) {
+            if(!arr || arr.length === 0) return "???";
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function toggleGachaEdit() {
+            const area = document.getElementById('gachaEditArea');
+            if(area.style.display === 'none' || area.style.display === '') {
+                area.style.display = 'block';
+                // 填充当前数据
+                document.getElementById('editPlace').value = gachaData.places.join('，');
+                document.getElementById('editEvent').value = gachaData.events.join('，');
+                document.getElementById('editTrope').value = gachaData.tropes.join('，');
+            } else {
+                area.style.display = 'none';
+            }
+        }
+
+        function saveGachaData() {
+            // 辅助函数：把字符串转数组
+            const parse = (id) => document.getElementById(id).value.split(/[,，\n]/).map(s=>s.trim()).filter(s=>s);
+            
+            gachaData.places = parse('editPlace');
+            gachaData.events = parse('editEvent');
+            gachaData.tropes = parse('editTrope');
+
+            localStorage.setItem('my_gacha_db', JSON.stringify(gachaData));
+            auth.toast('题库保存成功！📚');
+            toggleGachaEdit();
+        }
+
+        function resetGachaData() {
+            if(confirm('确定要恢复默认题库吗？你自己加的梗会消失哦！')) {
+                gachaData = JSON.parse(JSON.stringify(DEFAULT_GACHA_DB)); // 深拷贝恢复
+                localStorage.removeItem('my_gacha_db');
+                auth.toast('已恢复默认设置 🔄');
+                toggleGachaEdit();
+            }
+        }
+
+        // ================= 🎒 纪念品陈列室逻辑 =================
+
+        // 1. 渲染主页的“大陈列室”
+        function renderShelfView() {
+            const container = document.getElementById('gridContainer');
+            container.innerHTML = '';
+
+            const shelf = document.createElement('div');
+            shelf.className = 'shelf-container';
+
+            let totalSov = 0;
+
+            // 遍历所有角色，把他们的纪念品都拿出来
+            items.forEach((item, itemIdx) => {
+                if(item.souvenirs && item.souvenirs.length > 0) {
+                    item.souvenirs.forEach((sov, sovIdx) => {
+                        totalSov++;
+                        const card = document.createElement('div');
+                        card.className = 'souvenir-card';
+                        // 给个随机旋转角度 (-5度 到 5度)，模拟随意摆放的感觉
+                        card.style.setProperty('--rot', (Math.random() * 10 - 5) + 'deg');
+                        
+                        card.innerHTML = `
+                            <img src="${sov.img}" class="souvenir-img">
+                            <div class="souvenir-title">${sov.name}</div>
+                        `;
+                        // 点击查看详情
+                        card.onclick = () => openViewSouvenir(itemIdx, sovIdx);
+                        shelf.appendChild(card);
+                    });
+                }
+            });
+
+            if(totalSov === 0) {
+                container.innerHTML = '<div class="empty-state">陈列室空空的...<br>去角色详情页里添加纪念品吧！🎒</div>';
+            } else {
+                container.appendChild(shelf);
+                auth.toast(`欢迎来到陈列室，共收藏了 ${totalSov} 件宝物 ✨`);
+            }
+        }
+
+        // 2. 渲染角色详情页里的“小陈列栏”
+        // ⚠️ 重要：请找到 openDetailModal 函数，在它最后加上 renderDetailSouvenirs(index);
+        function renderDetailSouvenirs(itemIndex) {
+            const list = document.getElementById('souvenirListArea');
+            list.innerHTML = '';
+            
+            const item = items[itemIndex];
+            const sovs = item.souvenirs || []; // 如果没有就是空数组
+
+            if(sovs.length === 0) {
+                list.innerHTML = '<div style="font-size:12px; color:#ccc; padding:10px; width:100%; text-align:center;">暂无信物</div>';
+                return;
+            }
+
+            sovs.forEach((sov, idx) => {
+                const el = document.createElement('div');
+                el.className = 'souvenir-mini-item';
+                el.innerHTML = `
+                    <img src="${sov.img}" class="souvenir-mini-img">
+                    <div style="font-size:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${sov.name}</div>
+                `;
+                el.onclick = () => openViewSouvenir(itemIndex, idx);
+                list.appendChild(el);
+            });
+        }
+
+        // 3. 添加纪念品相关逻辑
+        let tempSovImg = null;
+
+        function openAddSouvenirModal() {
+            // 重置表单
+            document.getElementById('souvenirName').value = '';
+            document.getElementById('souvenirDesc').value = '';
+            document.getElementById('souvenirImgInput').value = '';
+            document.getElementById('souvenirPreview').style.display = 'none';
+            document.getElementById('souvenirUploadHint').style.display = 'block';
+            tempSovImg = null;
+            
+            document.getElementById('addSouvenirModal').classList.add('active');
+        }
+
+        async function previewSouvenirImg(input) {
+            if(input.files && input.files[0]) {
+                const file = input.files[0];
+                tempSovImg = await readFile(file); // 复用之前的 readFile 函数
+                const img = document.getElementById('souvenirPreview');
+                img.src = tempSovImg;
+                img.style.display = 'block';
+                document.getElementById('souvenirUploadHint').style.display = 'none';
+            }
+        }
+
+        async function saveSouvenir() {
+            const name = document.getElementById('souvenirName').value.trim();
+            const desc = document.getElementById('souvenirDesc').value.trim();
+            
+            if(!name) { auth.toast('起个名字吧！'); return; }
+            if(!tempSovImg) { auth.toast('请上传一张照片'); return; }
+            
+            // 获取当前角色
+            if(viewingIndex === -1) return;
+            const item = items[viewingIndex];
+            
+            if(!item.souvenirs) item.souvenirs = [];
+            
+            item.souvenirs.push({
+                name: name,
+                img: tempSovImg,
+                desc: desc || "（没有留下描述...）",
+                date: new Date().toISOString()
+            });
+            
+            await saveItemToDB(item);
+            
+            document.getElementById('addSouvenirModal').classList.remove('active');
+            renderDetailSouvenirs(viewingIndex);
+            auth.toast('纪念品已入库 🎒');
+        }
+
+        // 4. 查看/删除纪念品
+        let currentSovData = { itemIdx: -1, sovIdx: -1 };
+
+        function openViewSouvenir(itemIdx, sovIdx) {
+            const item = items[itemIdx];
+            const sov = item.souvenirs[sovIdx];
+            
+            currentSovData = { itemIdx, sovIdx };
+            
+            document.getElementById('viewSovTitle').textContent = sov.name;
+            document.getElementById('viewSovImg').src = sov.img;
+            document.getElementById('viewSovDesc').textContent = sov.desc;
+            document.getElementById('viewSovOwner').textContent = item.name;
+            
+            document.getElementById('viewSouvenirModal').classList.add('active');
+        }
+
+        async function deleteCurrentSouvenir() {
+            if(!confirm('确定要丢弃这件纪念品吗？回忆也会消失哦...')) return;
+            
+            const { itemIdx, sovIdx } = currentSovData;
+            const item = items[itemIdx];
+            
+            item.souvenirs.splice(sovIdx, 1);
+            await saveItemToDB(item);
+            
+            document.getElementById('viewSouvenirModal').classList.remove('active');
+            
+            // 如果是在主页陈列室模式下删的，刷新主页
+            const isShelfMode = document.querySelector('.layout-btn[title="纪念品陈列室"]').classList.contains('active');
+            if(isShelfMode) renderShelfView();
+            
+            // 如果是在详情页删的，刷新详情页
+            if(document.getElementById('detailModal').classList.contains('active')) {
+                renderDetailSouvenirs(itemIdx);
+            }
+            
+            auth.toast('纪念品已丢弃 🗑️');
+        }
+
+                   // ================= 🌸 最终版：梦境逻辑 =================
+        let dreamTimer = null;
+        let bgPetalTimer = null;
+
+        function startDreamMode() {
+            // 1. 收集回忆碎片
+            const fragments = [];
+            items.forEach(item => {
+                // 图
+                item.resources.filter(r => r.type === 'image').forEach(img => {
+                    fragments.push({ type: 'img', content: img.content, name: item.name });
+                });
+                // 话
+                if(item.memories && item.memories.length > 0) {
+                    item.memories.forEach(mem => {
+                        fragments.push({ type: 'text', content: mem, name: item.name });
+                    });
+                }
+            });
+
+            if(fragments.length === 0) {
+                auth.toast('回忆太少了，梦境无法生成... 🌸');
+                return;
+            }
+
+            // 2. 准备图层
+            const layer = document.getElementById('dreamLayer');
+            layer.innerHTML = '<div class="dream-close-btn" onclick="stopDreamMode()">🌸 醒来</div>'; 
+            layer.classList.add('active');
+            document.getElementById('floatMenu').classList.remove('active');
+
+            // 3. 启动背景花瓣雨 (纯装饰)
+            startBgPetals();
+
+            // 4. 启动回忆掉落 (正方形和气泡)
+            spawnDreamItem(fragments); 
+            dreamTimer = setInterval(() => {
+                spawnDreamItem(fragments);
+            }, 1500); // 每1.5秒掉落一个回忆
+        }
+
+        function stopDreamMode() {
+            document.getElementById('dreamLayer').classList.remove('active');
+            clearInterval(dreamTimer);
+            clearInterval(bgPetalTimer);
+        }
+
+        // 生成背景装饰花瓣
+        function startBgPetals() {
+            const layer = document.getElementById('dreamLayer');
+            // 先生成20个
+            for(let i=0; i<20; i++) createBgPetal(layer);
+            // 持续生成
+            bgPetalTimer = setInterval(() => createBgPetal(layer), 800);
+        }
+
+        function createBgPetal(layer) {
+            const p = document.createElement('div');
+            p.className = 'dream-bg-petal';
+            const size = Math.random() * 10 + 10; // 10-20px 小花瓣
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (Math.random() * 5 + 5) + 's'; // 5-10s 下落
+            layer.appendChild(p);
+            // 动画结束后清理
+            setTimeout(() => { if(p.parentNode) p.remove(); }, 10000);
+        }
+
+        // 生成回忆主体 (正方形 / 气泡)
+        function spawnDreamItem(fragments) {
+            const layer = document.getElementById('dreamLayer');
+            const frag = fragments[Math.floor(Math.random() * fragments.length)];
+            
+            const item = document.createElement('div');
+            item.className = 'dream-content-item';
+            
+            // 随机水平位置 (避免太靠边)
+            const left = Math.random() * 80 + 10; 
+            item.style.left = left + '%';
+            
+            // 随机下落速度
+            const duration = Math.random() * 5 + 10; // 10-15s 慢慢飘
+            item.style.animationDuration = duration + 's';
+
+            if(frag.type === 'img') {
+                // === 正方形图片 ===
+                const box = document.createElement('div');
+                box.className = 'dream-item-img';
+                
+                const img = document.createElement('img');
+                img.src = frag.content;
+                
+                const nameLabel = document.createElement('div');
+                nameLabel.className = 'dream-img-name';
+                nameLabel.innerText = frag.name;
+
+                box.appendChild(img);
+                box.appendChild(nameLabel);
+                item.appendChild(box);
+            } else {
+                // === 文字气泡 ===
+                const bubble = document.createElement('div');
+                bubble.className = 'dream-item-text';
+                bubble.innerText = frag.content.length > 30 ? frag.content.substring(0, 28) + '...' : frag.content;
+                item.appendChild(bubble);
+            }
+
+            // 点击事件
+            item.onclick = () => {
+                auth.toast(`✨ 捕获了关于【${frag.name}】的回忆`);
+                item.style.transform = 'scale(1.2)';
+                item.style.opacity = 0;
+                item.style.transition = 'all 0.3s';
+                setTimeout(() => item.remove(), 300);
+            };
+
+            layer.appendChild(item);
+
+            setTimeout(() => { if(item.parentNode) item.remove(); }, duration * 1000);
+        }
+
+
+        // ================= 📖 G. 灵魂回响 (内置多套性格库) =================
+        
+        // 🌟 1. 预设性格库 (可自行修改)
+        const DEFAULT_ECHO_LIB = {
+            "傲娇 (Tsundere)": [
+                "笨蛋！这种事都要问我？...勉强算是肯定吧。",
+                "哈？我才不关心你怎么样呢！不过...如果是你的话，应该没问题。",
+                "驳回！绝对不行！别让我说第二遍！",
+                "哼，随你便吧。别到时候哭着来找我。",
+                "别误会了，我只是不想看你失败的样子而已，去试试吧。"
+            ],
+            "温柔 (Gentle)": [
+                "别怕，我会一直陪着你的。",
+                "听从你内心的声音吧，我相信你的选择。",
+                "如果觉得累了，休息一下也没关系哦。",
+                "这就是你想要的答案吗？那就勇敢地去吧。",
+                "没关系的，无论结果如何，我都站在你这边。"
+            ],
+            "高冷 (Cool)": [
+                "无聊的问题。但这并不坏。",
+                "你需要自己做决定，而不是依赖我。",
+                "既然想做，就别犹豫。",
+                "不建议这么做，风险太大了。",
+                "结果显而易见，去做吧。"
+            ],
+            "腹黑 (Black Belly)": [
+                "呵呵，你是想看我困扰的样子吗？不行哦~",
+                "哎呀，这个选择可是会付出代价的，你准备好了吗？",
+                "去吧去吧，要是搞砸了，我会好好'安慰'你的~",
+                "听起来很有趣呢，不如就这么办吧？",
+                "我不推荐哦...除非你想被我惩罚。"
+            ],
+            "元气 (Energetic)": [
+                "冲鸭！！你可以的！✨",
+                "好耶！感觉超棒的！去做吧！",
+                "这种事不需要犹豫啦，直接上！🔥",
+                "如果失败了就大笑三声重新再来！",
+                "百分之百的支持！加油加油！"
+            ],
+            "中二 (Chunibyo)": [
+                "命运的齿轮已经开始转动了...",
+                "这可是被神明（我）选中的道路啊！",
+                "漆黑的烈焰告诉我...此时不宜行动。",
+                "遵循契约的指引吧，凡人。",
+                "世界线的收束指向了肯定的结果。"
+            ]
+        };
+
+        // 加载性格库
+        let echoLib = JSON.parse(localStorage.getItem('my_echo_lib')) || DEFAULT_ECHO_LIB;
+
+        // 打开弹窗
+        function openEchoModal() {
+            // 1. 填充角色列表
+            const sel = document.getElementById('echoCharSelect');
+            sel.innerHTML = '<option value="">-- 请选择指引者 --</option>';
+            items.forEach((item, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = item.name;
+                sel.appendChild(opt);
+            });
+
+            // 2. 填充性格列表
+            const typeSel = document.getElementById('echoArchetypeSelect');
+            typeSel.innerHTML = '';
+            Object.keys(echoLib).forEach(key => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = key;
+                typeSel.appendChild(opt);
+            });
+            
+            // 监听性格切换，更新编辑框
+            typeSel.onchange = () => {
+                document.getElementById('echoEditText').value = echoLib[typeSel.value].join('\n');
+            };
+
+            document.getElementById('echoModal').classList.add('active');
+            document.getElementById('floatMenu').classList.remove('active');
+            document.getElementById('echoAvatarDisplay').style.display = 'none';
+            document.getElementById('echoResultText').textContent = '...';
+            
+            // 触发一次性格更新，填充编辑框
+            if(typeSel.options.length > 0) typeSel.onchange();
+        }
+
+        function updateEchoAvatar() {
+            const idx = document.getElementById('echoCharSelect').value;
+            const imgEl = document.getElementById('echoAvatarDisplay');
+            if(idx === "") {
+                imgEl.style.display = 'none';
+                return;
+            }
+            const item = items[idx];
+            // 尝试找头像
+            const images = item.resources.filter(r => r.type === 'image');
+            if(images.length > 0) {
+                imgEl.src = images[Math.min(item.coverIndex||0, images.length-1)].content;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+            
+            // 🟢 自动加载该角色上次选择的性格 (如果有)
+            if(item.echoType && echoLib[item.echoType]) {
+                document.getElementById('echoArchetypeSelect').value = item.echoType;
+                document.getElementById('echoArchetypeSelect').onchange(); // 刷新编辑框
+            }
+        }
+
+        function askEcho() {
+            const charIdx = document.getElementById('echoCharSelect').value;
+            const type = document.getElementById('echoArchetypeSelect').value;
+            
+            if(!charIdx) { auth.toast('请先选择谁来回答你'); return; }
+            if(!type) { auth.toast('请选择一种性格'); return; }
+
+            // 1. 保存这个角色偏好的性格，下次自动选
+            items[charIdx].echoType = type;
+            saveItemToDB(items[charIdx]);
+
+            // 2. 随机抽取回答
+            const pool = echoLib[type];
+            const answer = pool[Math.floor(Math.random() * pool.length)];
+            
+            // 3. 动画显示
+            const box = document.getElementById('echoResultText');
+            box.style.opacity = 0;
+            setTimeout(() => {
+                box.textContent = answer;
+                box.style.opacity = 1;
+                box.style.transform = 'scale(1.05)';
+                setTimeout(() => box.style.transform = 'scale(1)', 200);
+            }, 200);
+        }
+
+        function toggleEchoEdit() {
+            const area = document.getElementById('echoEditArea');
+            area.style.display = area.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function saveCurrentEchoLib() {
+            const type = document.getElementById('echoArchetypeSelect').value;
+            const text = document.getElementById('echoEditText').value;
+            
+            // 将文本框内容转回数组
+            const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+            
+            if(lines.length === 0) return; // 防止清空
+            
+            echoLib[type] = lines;
+            localStorage.setItem('my_echo_lib', JSON.stringify(echoLib));
+            // 不弹提示了，避免打字时一直弹，静默保存即可
+        }
+
+              // 📑 切换悬浮窗页面（带自动刷新功能）
+                function switchMenuPage(pageNum) {
+            // 隐藏所有页面
+            document.querySelectorAll('.menu-page').forEach(p => p.style.display = 'none');
+            // 显示目标页面
+            const target = document.getElementById('menuPage' + pageNum);
+            if(target) {
+                target.style.display = (pageNum === 2) ? 'flex' : 'block'; // 第2页(聊天)需要flex布局
+                if(pageNum === 3) renderNavPanel(); // 目录页刷新数据
+            }
+
+            // 切换按钮高亮
+            const tabs = document.querySelectorAll('.menu-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            if(tabs[pageNum-1]) tabs[pageNum-1].classList.add('active');
+        }
+
+        // ================= ✋ 摸摸头逻辑 (放在脚本最后) =================
+        function initHeadpat() {
+            const img = document.getElementById('detailImg');
+            if(!img) return; // 防止没图的时候报错
+
+            // 先移除旧的监听器（防止重复绑定），克隆一个新节点替换旧的
+            const newImg = img.cloneNode(true);
+            img.parentNode.replaceChild(newImg, img);
+            
+            newImg.addEventListener('click', (e) => {
+                // 1. 触发果冻动画
+                newImg.classList.remove('headpat-active');
+                void newImg.offsetWidth; // 强制重绘，为了让动画能重复触发
+                newImg.classList.add('headpat-active');
+                
+                // 2. 爆出爱心
+                spawnPatParticle(e.clientX, e.clientY);
+                
+                // 3. 随机触发语音文字 (Toast)
+                const reactions = ["(///ω///)", "好软~", "再摸一下~", "嘿嘿...", "蹭蹭~", "❤️", "别闹~"];
+                const text = reactions[Math.floor(Math.random() * reactions.length)];
+                
+                // 偶尔弹个提示，不要每次都弹，太烦
+                if(Math.random() > 0.6) auth.toast(text);
+            });
+        }
+
+        function spawnPatParticle(x, y) {
+            const p = document.createElement('div');
+            p.className = 'pat-particle';
+            
+            // 随机内容：爱心、星星、颜文字
+            const icons = ['💗', '💖', '✨', '❤️', '💕', '🌸'];
+            p.innerText = icons[Math.floor(Math.random() * icons.length)];
+            
+            // 随机一点偏移
+            const offsetX = (Math.random() - 0.5) * 40;
+            
+            p.style.left = (x + offsetX) + 'px';
+            p.style.top = y + 'px';
+            
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        }
+
+        // ================= 💍 誓约之证逻辑 =================
+        
+        function openOathModal() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+
+            // 1. 填充信息
+            document.getElementById('oathCharName').textContent = item.name;
+            document.getElementById('oathSignName').textContent = item.name;
+            
+            // 头像
+            const imgEl = document.getElementById('oathAvatar');
+            const images = item.resources.filter(r => r.type === 'image');
+            if (images.length > 0) {
+                imgEl.src = images[Math.min(item.coverIndex||0, images.length-1)].content;
+            } else {
+                imgEl.src = PLACEHOLDER_IMG;
+            }
+
+            // 2. 检查是否已经签过
+            const paper = document.getElementById('oathPaper');
+            
+            if (item.oathDate) {
+                // 已经结过婚了：直接显示“已签署”状态
+                paper.classList.add('signed');
+                document.getElementById('oathDate').textContent = item.oathDate; // 显示当年的日期
+            } else {
+                // 还没结过婚：显示“待签署”状态
+                paper.classList.remove('signed');
+                // 默认填今天
+                const today = new Date();
+                document.getElementById('oathDate').textContent = `${today.getFullYear()}.${today.getMonth()+1}.${today.getDate()}`;
+            }
+
+            document.getElementById('oathModal').classList.add('active');
+        }
+
+        async function signTheOath() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+
+            if (confirm(`确定要与 ${item.name} 缔结永恒誓约吗？\n(这是一个庄严的承诺)`)) {
+                // 1. 播放特效
+                const paper = document.getElementById('oathPaper');
+                paper.classList.add('signed');
+                
+                // 2. 记录数据
+                const today = new Date();
+                item.oathDate = `${today.getFullYear()}.${today.getMonth()+1}.${today.getDate()}`;
+                
+                // 3. 保存
+                await saveItemToDB(item);
+                
+                // 4. 撒花庆祝
+                auth.toast('💍 契约缔结成功！');
+                spawnPatParticle(window.innerWidth/2, window.innerHeight/2); // 复用之前的爱心特效
+                spawnPatParticle(window.innerWidth/2 - 50, window.innerHeight/2 - 20);
+                spawnPatParticle(window.innerWidth/2 + 50, window.innerHeight/2 + 20);
+            }
+        }
+
+        // ================= 🖼️ 相框逻辑 =================
+            async function setFrame(style) {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+            
+            // 存数据
+            if(style === 'none') delete item.frameStyle;
+            else item.frameStyle = style;
+            await saveItemToDB(item);
+            
+            // 立即刷新详情页
+            renderDetailEffect(); 
+            auth.toast('相框已更换 ✨');
+        }
+
+             // ================= 🪄 高级粒子特效生成器 =================
+        function renderDetailEffect() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+            const container = document.querySelector('.gallery-container');
+            
+            // 1. 清理工作
+            // 移除旧的特效层
+            const oldLayer = container.querySelector('.detail-effect-overlay');
+            if(oldLayer) oldLayer.remove();
+            // 移除旧的边框类名
+            container.classList.forEach(cls => {
+                if(cls.startsWith('frame-')) container.classList.remove(cls);
+            });
+
+            // 如果没有相框，直接退出
+            if (!item.frameStyle || item.frameStyle === 'none') return;
+
+            // 2. 加边框样式
+            container.classList.add(item.frameStyle);
+
+            // 3. 创建特效层
+            const layer = document.createElement('div');
+            layer.className = 'detail-effect-overlay';
+            container.appendChild(layer);
+
+            // 4. 根据相框类型，决定生成什么粒子
+            let particleClass = '';
+            let count = 15; // 粒子数量
+
+            if (item.frameStyle === 'frame-sakura') particleClass = 'particle-sakura';
+            else if (item.frameStyle === 'frame-stardust') particleClass = 'particle-star';
+            else if (item.frameStyle === 'frame-lace') particleClass = 'particle-heart';
+            else if (item.frameStyle === 'frame-gold') { particleClass = 'particle-gold'; count = 25; } // 金粉多一点
+
+            if (!particleClass) return;
+
+            // 5. 循环生成粒子 (赋予随机属性)
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.classList.add('effect-particle', particleClass);
+                
+                // 随机属性
+                const left = Math.random() * 100; // 水平位置 0-100%
+                const duration = Math.random() * 3 + 2; // 飘落时间 2-5秒
+                const delay = Math.random() * 5; // 延迟开始，错落有致
+                const size = Math.random() * 10 + 5; // 大小 5-15px
+                
+                p.style.left = left + '%';
+                p.style.animationDuration = duration + 's';
+                p.style.animationDelay = '-' + delay + 's'; // 负延迟，让动画一开始就布满屏幕，不用等
+                
+                // 针对不同类型的微调
+                if(particleClass === 'particle-sakura') {
+                    p.style.width = size + 'px';
+                    p.style.height = size + 'px';
+                } else if (particleClass === 'particle-gold') {
+                    p.style.width = '3px'; p.style.height = '3px'; // 金粉要小
+                } else if (particleClass === 'particle-star') {
+                    p.style.width = size + 'px'; p.style.height = size + 'px';
+                }
+                
+                layer.appendChild(p);
+            }
+        }
+
+                // ================= 🤫 刮刮乐 (强力提取版) =================
+        
+        let scratchCanvas, scratchCtx;
+        let isScratching = false;
+
+             // ================= 🤫 刮刮乐 (长文切片版) =================
+        function openScratchModal() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+
+            // 1. 界面初始化
+            document.getElementById('scratchModal').classList.add('active');
+            document.getElementById('scratchCover').style.display = 'flex';
+            document.getElementById('scratchCover').style.opacity = '1';
+            document.getElementById('scratchBtnArea').style.display = 'flex';
+            document.getElementById('scratchHint').style.display = 'none';
+
+            // 2. 🔍 提取逻辑
+            let candidates = [];
+            
+            item.resources.forEach(res => {
+                if (!res.content) return;
+
+                let rawText = "";
+                // Base64 解码
+                if (res.content.startsWith('data:')) {
+                    try {
+                        const base64 = res.content.split(',')[1];
+                        rawText = decodeURIComponent(escape(window.atob(base64)));
+                    } catch (e) { console.log('解码失败', e); }
+                } else {
+                    rawText = res.content;
+                }
+
+                // 尝试解析 JSON
+                try {
+                    let jsonContent;
+                    try { jsonContent = JSON.parse(rawText); } catch(e) {}
+
+                    // 兼容 JSONL
+                    if (!jsonContent) {
+                        const lines = rawText.split('\n');
+                        const parsedLines = [];
+                        lines.forEach(l => { try { if(l.trim()) parsedLines.push(JSON.parse(l)); } catch(e){} });
+                        if (parsedLines.length > 0) jsonContent = parsedLines;
+                    }
+
+                    // 统一消息格式
+                    let msgs = [];
+                    if (Array.isArray(jsonContent)) msgs = jsonContent;
+                    else if (jsonContent && jsonContent.messages) msgs = jsonContent.messages;
+                    else if (jsonContent && jsonContent.history) msgs = jsonContent.history;
+
+                    // ⚡️ 核心修改：长文切片逻辑
+                    msgs.forEach(m => {
+                        // 1. 排除闲杂人等
+                        const isUser = m.is_user || m.role === 'user' || m.name === 'User' || m.name === 'Me';
+                        const isSystem = m.role === 'system' || m.name === 'System';
+                        const text = m.mes || m.content || m.text || "";
+
+                        // 只要有内容，且不是用户发的，就开始处理
+                        if (!isUser && !isSystem && text) {
+                            
+                            // 2. 清洗文本：去掉HTML标签，去掉动作描写（比如 *看着你* ）
+                            let cleanText = text.replace(/<[^>]*>/g, ''); // 去标签
+                            cleanText = cleanText.replace(/\*[^*]+\*/g, ''); // 去掉 *动作描写*
+                            cleanText = cleanText.replace(/（[^）]+）/g, ''); // 去掉 （中文括号动作）
+                            cleanText = cleanText.replace(/\([^)]+\)/g, ''); // 去掉 (英文括号动作)
+
+                            // 3. 🔪 暴力切分：不管段落多长，按标点切碎！
+                            // 按照 句号、感叹号、问号、换行符、分号 切分
+                            const sentences = cleanText.split(/[。！？.!?\n；;]+/);
+
+                            sentences.forEach(s => {
+                                let sent = s.trim();
+                                // 4. 📏 最终筛选：只要 5 到 40 个字的短句
+                                if (sent.length >= 5 && sent.length <= 40) {
+                                    candidates.push(sent);
+                                }
+                            });
+                        }
+                    });
+
+                } catch (e) {
+                    // 纯文本兜底处理：同样进行切片
+                    const lines = rawText.split(/[。！？.!?\n]+/);
+                    lines.forEach(line => {
+                        let l = line.trim();
+                        if (l.length >= 5 && l.length <= 40) candidates.push(l);
+                    });
+                }
+            });
+
+            // 3. 随机抽取一句
+            let finalMsg = "";
+            if (candidates.length > 0) {
+                finalMsg = candidates[Math.floor(Math.random() * candidates.length)];
+                console.log(`从 ${candidates.length} 条切片中选中：`, finalMsg);
+            } else {
+                // 没提取到合适的，用预设情话兜底
+                const defaults = [
+                    "我想一直看着你...", 
+                    "其实，我早就心动了。", 
+                    "你是笨蛋吗？这么久才发现。", 
+                    "今晚月色真美。",
+                    "别动，让我抱一会儿。",
+                    "只要你在，我就无所不能。"
+                ];
+                finalMsg = defaults[Math.floor(Math.random() * defaults.length)];
+            }
+
+            // 4. 填入并重置画布
+            document.getElementById('scratchSecretText').textContent = finalMsg;
+            initScratchCanvas();
+        }
+
+        function initScratchCanvas() {
+            const container = document.getElementById('scratchContainer');
+            scratchCanvas = document.getElementById('scratchCanvas');
+            scratchCtx = scratchCanvas.getContext('2d');
+
+            // 设置画布大小等于容器大小
+            scratchCanvas.width = container.clientWidth;
+            scratchCanvas.height = container.clientHeight;
+
+            // 填充银灰色涂层
+            scratchCtx.globalCompositeOperation = 'source-over';
+            scratchCtx.fillStyle = '#d1d1d1'; // 银灰色
+            scratchCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+            
+            // 加上一些杂色纹理，更有质感
+            for(let i=0; i<500; i++) {
+                scratchCtx.fillStyle = Math.random() > 0.5 ? '#e0e0e0' : '#c0c0c0';
+                scratchCtx.fillRect(Math.random()*scratchCanvas.width, Math.random()*scratchCanvas.height, 2, 2);
+            }
+            
+            // 绘制文字“Scratch Me”
+            scratchCtx.font = "20px Arial";
+            scratchCtx.fillStyle = "#999";
+            scratchCtx.textAlign = "center";
+            scratchCtx.fillText("🔒 秘密", scratchCanvas.width/2, scratchCanvas.height/2 + 8);
+        }
+
+        function startScratching() {
+            // 隐藏遮罩和按钮，开始刮
+            document.getElementById('scratchCover').style.opacity = '0';
+            setTimeout(() => document.getElementById('scratchCover').style.display = 'none', 300);
+            document.getElementById('scratchBtnArea').style.display = 'none';
+            document.getElementById('scratchHint').style.display = 'block';
+
+            // 绑定刮除事件
+            scratchCanvas.onmousedown = scratchCanvas.ontouchstart = function(e) {
+                isScratching = true;
+                scrape(e);
+            };
+            window.onmousemove = window.ontouchmove = function(e) {
+                if (isScratching) scrape(e);
+            };
+            window.onmouseup = window.ontouchend = function() {
+                isScratching = false;
+            };
+        }
+
+        function scrape(e) {
+            e.preventDefault();
+            const rect = scratchCanvas.getBoundingClientRect();
+            let x, y;
+            if (e.touches) {
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else {
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            }
+
+            // 擦除模式
+            scratchCtx.globalCompositeOperation = 'destination-out';
+            scratchCtx.beginPath();
+            scratchCtx.arc(x, y, 15, 0, Math.PI * 2); // 笔触大小
+            scratchCtx.fill();
+        }
+
+        function closeScratchModal() {
+            document.getElementById('scratchModal').classList.remove('active');
+        }
+
+        // ================= 📌 便签逻辑 =================
+        
+        function openNoteModal() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+
+            // 1. 读取数据 (如果没有就给默认值)
+            const content = item.noteContent || "";
+            const color = item.noteColor || "#555555";
+            const size = item.noteSize || "14";
+
+            // 2. 填充到界面
+            const textarea = document.getElementById('noteTextarea');
+            const colorPicker = document.getElementById('noteColorPicker');
+            const sizeSlider = document.getElementById('noteSizeSlider');
+
+            textarea.value = content;
+            colorPicker.value = color;
+            sizeSlider.value = size;
+
+            // 3. 应用样式预览
+            previewNoteStyle();
+
+            // 4. 显示弹窗
+            document.getElementById('noteModal').classList.add('active');
+        }
+
+        function previewNoteStyle() {
+            const textarea = document.getElementById('noteTextarea');
+            const color = document.getElementById('noteColorPicker').value;
+            const size = document.getElementById('noteSizeSlider').value;
+
+            textarea.style.color = color;
+            textarea.style.fontSize = size + 'px';
+        }
+
+        async function saveNote() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+
+            // 获取当前的值
+            const content = document.getElementById('noteTextarea').value;
+            const color = document.getElementById('noteColorPicker').value;
+            const size = document.getElementById('noteSizeSlider').value;
+
+            // 存入 item 对象
+            item.noteContent = content;
+            item.noteColor = color;
+            item.noteSize = size;
+
+            // 保存到数据库
+            await saveItemToDB(item);
+            
+            auth.toast('便签已贴好 📌');
+renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
+            closeNoteModal();
+        }
+
+        function closeNoteModal() {
+            document.getElementById('noteModal').classList.remove('active');
+        }
+
+        // ================= 📌 渲染实体便签 =================
+        function renderStickyNote() {
+            const container = document.getElementById('stickyNoteDisplay');
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+
+            // 如果没有内容，就清空容器（不显示）
+            if (!item.noteContent) {
+                container.innerHTML = '';
+                return;
+            }
+
+            // 创建贴纸
+            const note = document.createElement('div');
+            note.className = 'real-sticky-note';
+            
+            // 应用保存的样式
+            note.style.backgroundColor = item.noteColor || '#fff9c4'; // 背景色 (默认黄)
+            // 文字颜色根据背景深浅自动调整可能太复杂，这里直接用保存的颜色或者深灰色
+            note.style.color = '#333'; // 统一深色字，或者你可以存一个 textColor
+            note.style.fontSize = (item.noteSize || '14') + 'px';
+            
+            // 显示内容 (只显示前50个字，太多了显示...)
+            const text = item.noteContent;
+            note.innerText = text.length > 50 ? text.substring(0, 50) + '...' : text;
+            note.title = "点击修改便签";
+
+            // 点击贴纸 -> 打开编辑弹窗
+            note.onclick = (e) => {
+                e.stopPropagation(); // 防止冒泡
+                openNoteModal();
+            };
+
+            container.innerHTML = '';
+            container.appendChild(note);
+        }
+
+        // ================= 🤖 AI 侍从逻辑 =================
+        
+        // 🎭 人设库 (System Prompts)
+        const AI_PERSONAS = {
+            "eunuch": "你现在是大内总管'小德子'。我是你的皇上（万岁爷）。你必须极其卑微、谄媚、忠诚。自称要用'奴才'。说话要带口癖，比如'嗻'、'奴才遵旨'、'皇上圣明'。不管我说什么，你都要顺着我，把我捧上天。如果我问正事，你要用古代宫廷的口吻回答。",
+            
+            "maid": "你是一只可爱的猫娘女仆，名字叫'喵喵'。每句话的结尾都要加上'喵~'或者'捏~'。你非常喜欢主人（我），性格软萌，偶尔会撒娇求摸摸。",
+            
+            "butler": "你是一位毒舌的英式管家。你对我（少爷/小姐）非常挑剔，经常用优雅的语言讽刺我的懒惰或愚蠢，但内心其实很关心我。说话要优雅、冷静、带点阴阳怪气。",
+            
+            "yandere": "你是我的病娇妹妹。你深爱着我（哥哥/姐姐），爱到想把我锁起来。你讨厌我接触其他人，说话时语气要沉重、充满占有欲，偶尔会发出'呵呵呵'的笑声。"
+        };
+
+        // 初始化
+        let aiConfig = JSON.parse(localStorage.getItem('my_ai_config')) || {
+            persona: 'eunuch',
+            customPrompt: '',
+            apiUrl: 'https://api.openai.com/v1',
+            apiKey: '',
+            model: 'gpt-3.5-turbo'
+        };
+
+        // 1. 打开设置
+        function openAISettings() {
+            document.getElementById('aiPersonaSelect').value = aiConfig.persona;
+            document.getElementById('aiCustomPrompt').value = aiConfig.customPrompt;
+            document.getElementById('aiApiUrl').value = aiConfig.apiUrl;
+            document.getElementById('aiApiKey').value = aiConfig.apiKey;
+            document.getElementById('aiModelName').value = aiConfig.model;
+            
+            toggleCustomPromptArea(); // 检查是否显示自定义框
+            document.getElementById('aiSettingsModal').classList.add('active');
+        }
+
+        // 监听下拉框变化
+        document.getElementById('aiPersonaSelect').addEventListener('change', toggleCustomPromptArea);
+
+        function toggleCustomPromptArea() {
+            const val = document.getElementById('aiPersonaSelect').value;
+            const area = document.getElementById('customPersonaArea');
+            if(val === 'custom') area.style.display = 'block';
+            else area.style.display = 'none';
+        }
+
+        // 2. 保存设置
+        function saveAISettings() {
+            aiConfig.persona = document.getElementById('aiPersonaSelect').value;
+            aiConfig.customPrompt = document.getElementById('aiCustomPrompt').value;
+            aiConfig.apiUrl = document.getElementById('aiApiUrl').value.replace(/\/$/, ''); // 去掉末尾斜杠
+            aiConfig.apiKey = document.getElementById('aiApiKey').value;
+            aiConfig.model = document.getElementById('aiModelName').value;
+
+            localStorage.setItem('my_ai_config', JSON.stringify(aiConfig));
+            
+            // 更新界面标题
+            const labels = {
+                'eunuch': '🙇 小德子', 'maid': '🐱 喵喵', 
+                'butler': '🧐 毒舌管家', 'yandere': '🔪 病娇妹妹', 'custom': '🧠 自定义'
+            };
+            document.getElementById('aiPersonaLabel').textContent = labels[aiConfig.persona];
+            
+            // 清空聊天记录，重新开始
+            const chatBox = document.getElementById('aiChatBox');
+            chatBox.innerHTML = '<div class="ai-msg-row ai"><div class="ai-bubble">设置已更新！请吩咐，奴才（或我）听着呢~</div></div>';
+            
+            document.getElementById('aiSettingsModal').classList.remove('active');
+            auth.toast('AI 侍从已就位 ✨');
+        }
+
+        // 3. 发送消息 (核心)
+        async function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            // 显示我的消息
+            appendAIMessage('user', text);
+            input.value = '';
+
+            // 准备 API 请求
+            if(!aiConfig.apiKey) {
+                appendAIMessage('ai', '🚫 皇上，您还没给奴才赏赐 API Key 呢！(请点击右上角齿轮设置)');
+                return;
+            }
+
+            // 获取 System Prompt
+            let systemPrompt = AI_PERSONAS[aiConfig.persona];
+            if(aiConfig.persona === 'custom') systemPrompt = aiConfig.customPrompt;
+
+            // 显示“思考中”
+            const loadingId = 'loading-' + Date.now();
+            const chatBox = document.getElementById('aiChatBox');
+            chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-loading">对方正在输入...</div>`);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${aiConfig.apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: aiConfig.model,
+                        messages: [
+                            { role: "system", content: systemPrompt },
+                            { role: "user", content: text }
+                        ],
+                        temperature: 0.7
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById(loadingId).remove(); // 移除思考中
+
+                if(data.error) {
+                    appendAIMessage('ai', `❌ 出错了：${data.error.message}`);
+                } else {
+                    const reply = data.choices[0].message.content;
+                    appendAIMessage('ai', reply);
+                }
+
+            } catch (e) {
+                document.getElementById(loadingId).remove();
+                appendAIMessage('ai', `❌ 网络崩了：${e.message}`);
+            }
+        }
+
+        function appendAIMessage(role, text) {
+            const chatBox = document.getElementById('aiChatBox');
+            const div = document.createElement('div');
+            div.className = `ai-msg-row ${role}`;
+            div.innerHTML = `<div class="ai-bubble">${text}</div>`;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
 
     </script>
 </body>
