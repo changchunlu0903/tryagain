@@ -1618,7 +1618,7 @@
 
               <div class="search-container" style="display:flex; align-items:center; gap:10px;">
             <div style="position:relative; flex-grow:1;">
-                <input type="text" class="search-input" id="searchInput" placeholder="搜索名称或标签..." oninput="handleSearch()">
+                <input type="text" id="mainSearchInput" class="search-input" placeholder="搜索名称或标签..." oninput="renderGrid(filterItems(this.value))">
                 <span class="search-icon">🔍</span>
             </div>
             
@@ -4618,13 +4618,29 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
         
         // 🎭 人设库 (System Prompts)
                 // ================= 🧠 1. 升级版人设 (带系统指令) =================
+               // ================= 🧠 2.0 系统指令 (全能管家版) =================
         const SYSTEM_INSTRUCTION = `
-        【系统能力说明】
-        1. 你拥有“读取当前所有卡片”的能力。卡片列表会附在Prompt最后。
-        2. 当用户表达情绪（如难过、无聊）时，请根据卡片的【标签】（如甜文、虐心、搞笑）进行推荐。
-        3. 如果你想向用户展示某张卡片，或者用户说“我想看这个”，请务必在回复的末尾加上特殊指令：{{open:卡片ID}}。
-        4. 每次只推荐1-2张最合适的，不要列出一堆。
+        【系统最高权限说明】
+        你拥有操作网页的权限。请分析用户的自然语言指令，并在回复末尾加上以下特殊指令码来执行操作（不要让用户看到指令码，只在后台执行）：
+
+        1. 【打开/跳转】
+           用户说：“打开xxx”、“把xxx叫来”、“看看xxx”。
+           指令：{{open:角色ID}}
+
+        2. 【搜索/筛选】
+           用户说：“找点甜文”、“有没有古风的”、“我想看虐的”。
+           指令：{{search:关键词}} 
+           (注意：关键词是根据用户描述提取的标签，如'甜文'、'古风')
+
+        3. 【修改/赐名】(高级权限)
+           用户说：“给xxx加个标签叫‘白月光’”、“把xxx改名叫‘狗蛋’”。
+           指令：{{edit:角色ID|action|value}}
+           (action可以是 'addTag' 或 'rename')
+           例如：{{edit:2|addTag|白月光}} 或 {{edit:5|rename|狗蛋}}
+
+        【当前国库清单】：(ID | 名字 | 标签)
         `;
+        // (后续代码会自动把清单拼接到这里)
 
         const AI_PERSONAS = {
             "eunuch": "你现在是大内总管'小德子'。我是你的皇上（万岁爷）。你必须极其卑微、谄媚、忠诚。自称要用'奴才'。说话要带口癖，比如'嗻'、'奴才遵旨'、'皇上圣明'。你要时刻关注龙体安康，如果皇上心情不好，就从库里挑几个看着顺眼的（标签匹配的）呈上来让皇上开心。记住，推荐卡片时要说“奴才觉得这张【xxx】甚好”，并加上指令。" + SYSTEM_INSTRUCTION,
@@ -4769,26 +4785,99 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
 
 
                 // ================= 🪄 渲染消息 (解析跳转指令) =================
+              // ================= ⚡️ AI 指令执行核心 =================
         function appendAIMessage(role, text) {
             const chatBox = document.getElementById('aiChatBox');
             const div = document.createElement('div');
             div.className = `ai-msg-row ${role}`;
             
-            // 正则匹配 {{open:数字}}
-            // 比如 AI 回复： "奴才觉得这张卡不错 {{open:2}}"
-            // 会被替换成： "奴才觉得这张卡不错 [点击查看]"
-            
-            let processedText = text.replace(/{{open:(\d+)}}/g, (match, id) => {
-                // 获取卡片名字（为了显示更好看）
-                const cardName = items[id] ? items[id].name : '神秘卡片';
-                // 生成一个行内按钮
-                return `<br><button class="ai-jump-btn" onclick="openDetailModal(${id})">👉 呈上：${cardName}</button>`;
-            });
+            // 临时变量，用于存储处理后的文本
+            let displayText = text;
 
-            div.innerHTML = `<div class="ai-bubble">${processedText}</div>`;
+            // --- 🕵️ 指令解析器 ---
+            if (role === 'ai') {
+                
+                // 1. 处理 {{open:ID}} -> 直接打开详情页
+                // 逻辑：AI说完话，延迟 1秒 自动弹出，不用手点
+                const openMatch = text.match(/{{open:(\d+)}}/);
+                if (openMatch) {
+                    const id = parseInt(openMatch[1]);
+                    displayText = displayText.replace(openMatch[0], ''); // 隐藏指令
+                    
+                    // 添加一个手动按钮作为备选
+                    const name = items[id] ? items[id].name : '未知';
+                    displayText += `<br><button class="ai-jump-btn" onclick="openDetailModal(${id})">👉 已为您传唤：${name}</button>`;
+                    
+                    // ⚡️ 自动执行：延迟 800ms 自动打开，更有“侍从”的感觉
+                    setTimeout(() => {
+                        openDetailModal(id);
+                        auth.toast(`🤖 小德子正在为您传唤 ${name}...`);
+                    }, 800);
+                }
+
+                                // ... 在 appendAIMessage 函数里 ...
+
+                // 2. 处理 {{search:关键词}} -> 自动搜索
+                const searchMatch = text.match(/{{search:(.+)}}/);
+                if (searchMatch) {
+                    const keyword = searchMatch[1];
+                    displayText = displayText.replace(searchMatch[0], '');
+                    
+                    displayText += `<br><span style="font-size:10px; color:#aaa;">🔍 已自动筛选：${keyword}</span>`;
+                    
+                    // ⚡️ 自动执行搜索
+                    setTimeout(() => {
+                        // ✅ 这里必须用 getElementById 找到你刚才改的那个 ID
+                        const searchInput = document.getElementById('mainSearchInput'); 
+                        
+                        if(searchInput) {
+                            searchInput.value = keyword;
+                            // 触发 input 事件让搜索生效 (这一步很重要，不加这句搜索不会动)
+                            searchInput.dispatchEvent(new Event('input'));
+                            // 或者直接调用你的渲染函数 (保险起见)
+                            if(typeof renderGrid === 'function') renderGrid(filterItems(keyword));
+                            
+                            auth.toast(`🤖 已为您筛选包含“${keyword}”的角色`);
+                        } else {
+                            console.error("找不到搜索框！请检查 id='mainSearchInput' 是否加对了");
+                        }
+                    }, 500);
+                }
+
+                // 3. 处理 {{edit:ID|type|val}} -> 修改数据
+                const editMatch = text.match(/{{edit:(\d+)\|(\w+)\|(.+)}}/);
+                if (editMatch) {
+                    const id = parseInt(editMatch[1]);
+                    const action = editMatch[2]; // 'addTag' or 'rename'
+                    const val = editMatch[3];
+                    displayText = displayText.replace(editMatch[0], '');
+
+                    setTimeout(async () => {
+                        if(!items[id]) return;
+                        
+                        if(action === 'rename') {
+                            items[id].name = val;
+                            auth.toast(`✏️ 改名成功：现在叫 ${val} 了`);
+                        } else if(action === 'addTag') {
+                            if(!items[id].tags) items[id].tags = [];
+                            if(!items[id].tags.includes(val)) items[id].tags.push(val);
+                            auth.toast(`🏷️ 标签已贴：${val}`);
+                        }
+                        
+                        // 保存并刷新
+                        await saveItemToDB(items[id]);
+                        renderGrid(items); // 刷新主页
+                    }, 500);
+                    
+                    displayText += `<br><span style="font-size:10px; color:green;">✅ 遵旨，已执行修改。</span>`;
+                }
+            }
+
+            div.innerHTML = `<div class="ai-bubble">${displayText}</div>`;
             chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
+
 
         // ================= 🧠 AI 模型拉取功能 =================
         
