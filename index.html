@@ -1509,6 +1509,79 @@
             pointer-events: none;
         }
 
+/* ==================== 📱 朋友圈样式 ==================== */
+.moment-card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    animation: fadeInUp 0.4s ease;
+}
+
+.moment-header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.moment-user-avatar {
+    width: 40px; height: 40px;
+    border-radius: 5px;
+    background: #ffb7c5;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: bold; font-size: 18px;
+}
+
+.moment-content {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.moment-meta {
+    font-size: 12px;
+    color: #999;
+    display: flex; justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* 评论区的小三角 */
+.moment-comments-area {
+    background: #f7f7f7;
+    border-radius: 4px;
+    padding: 8px;
+    position: relative;
+    margin-top: 10px;
+}
+.moment-comments-area::before {
+    content: '';
+    position: absolute;
+    top: -6px; left: 15px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #f7f7f7;
+}
+
+.moment-comment-row {
+    font-size: 13px;
+    margin-bottom: 5px;
+    line-height: 1.4;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 4px;
+}
+.moment-comment-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.moment-role-name {
+    color: #576b95; /* 经典朋友圈蓝名 */
+    font-weight: bold;
+    cursor: pointer;
+}
+
     </style>
 
     <style id="custom-reader-style"></style> 
@@ -1737,6 +1810,11 @@
                 <div class="kitty-icon">🎬</div>
                 <div>小剧场</div>
             </div>
+
+<div class="action-card" onclick="openMomentsModal()">
+    <div class="kitty-icon">📱</div>
+    <div>朋友圈</div>
+</div>
 
             <div class="action-card" onclick="exportAllData()">
                 <div class="kitty-icon">💾</div>
@@ -2273,6 +2351,27 @@ gap:5px;">
             </div>
         </div>
     </div>
+
+<div class="modal-overlay" id="momentsModal" style="z-index: 9600;">
+    <div class="modal" style="width: 350px; height: 80vh; padding: 0; display: flex; flex-direction: column; background: #f2f2f2;">
+        
+        <div style="background: rgba(255,255,255,0.95); padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e0e0;">
+            <span style="font-weight: bold; font-size: 16px;">朋友圈</span>
+            <button class="close-modal" onclick="closeMomentsModal()" style="position: static; color: #333; font-size: 24px; width: auto; height: auto; background: none;">×</button>
+        </div>
+
+        <div id="momentsFeed" style="flex: 1; overflow-y: auto; padding: 15px;">
+            <div style="text-align: center; color: #999; margin-top: 50px; font-size: 13px;">
+                快发一条动态，<br>看看谁会秒回你？✨
+            </div>
+        </div>
+
+        <div style="background: white; padding: 10px; border-top: 1px solid #ddd; display: flex; gap: 10px; align-items: flex-end;">
+            <textarea id="momentInput" placeholder="分享此刻的心情..." style="flex: 1; border: none; background: #f5f5f5; padding: 10px; border-radius: 8px; resize: none; height: 40px; font-family: inherit; transition: height 0.2s;" onfocus="this.style.height='80px'" onblur="if(!this.value)this.style.height='40px'"></textarea>
+            <button id="momentSendBtn" class="primary-btn" onclick="postMoment()" style="border-radius: 8px; padding: 0 15px; height: 40px; display: flex; align-items: center; justify-content: center;">发布</button>
+        </div>
+    </div>
+</div>
 
     <div id="deleteBar" class="delete-bar">
         <button class="delete-btn-cancel" onclick="toggleBatchDeleteMode()">取消</button>
@@ -5549,6 +5648,157 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
                 document.getElementById('letterText').textContent = '❌ 信件在途中丢失了... (网络错误)';
             }
         }
+
+// ================= 📱 朋友圈 (Moments) 逻辑 =================
+
+function openMomentsModal() {
+    document.getElementById('momentsModal').classList.add('active');
+}
+
+function closeMomentsModal() {
+    document.getElementById('momentsModal').classList.remove('active');
+}
+
+async function postMoment() {
+    const input = document.getElementById('momentInput');
+    const text = input.value.trim();
+    
+    if (!text) { auth.toast('写点什么再发吧~'); return; }
+    if (items.length === 0) { auth.toast('还没有认识的角色给你点赞哦...'); return; }
+    if (!aiConfig.apiKey) { auth.toast('🔑 没 API Key，大家收不到你的动态！'); return; }
+
+    const btn = document.getElementById('momentSendBtn');
+    const originalBtnText = btn.innerText;
+    btn.innerText = '发送中...';
+    btn.disabled = true;
+
+    // 1. 随机抽取 3-5 个角色 (如果不重复)
+    let candidates = [...items]; // 复制一份
+    // 简单的随机乱序
+    candidates.sort(() => Math.random() - 0.5);
+    // 取前 3 到 5 个
+    const pickCount = Math.min(candidates.length, Math.floor(Math.random() * 3) + 3);
+    const selectedChars = candidates.slice(0, pickCount);
+
+    // 2. 在界面上先显示“用户的内容” (假装发送成功)
+    const feed = document.getElementById('momentsFeed');
+    const postId = 'post-' + Date.now();
+    
+    // 获取当前时间
+    const now = new Date();
+    const timeStr = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+    const postHtml = `
+        <div class="moment-card" id="${postId}">
+            <div class="moment-header">
+                <div class="moment-user-avatar">我</div>
+                <div style="display:flex; flex-direction:column; justify-content:center;">
+                    <div style="font-weight:bold; color:#576b95; font-size:14px;">User</div>
+                </div>
+            </div>
+            <div class="moment-content">${text}</div>
+            <div class="moment-meta">
+                <span>${timeStr}</span>
+                <span>Wait for replies...</span>
+            </div>
+            <div class="moment-comments-area" id="${postId}-comments">
+                <div style="color:#999; font-size:12px;">☁️ 正在同步到异世界...</div>
+            </div>
+        </div>
+    `;
+    
+    // 插入到最前面
+    if(feed.querySelector('.moment-card')) {
+        feed.insertAdjacentHTML('afterbegin', postHtml);
+    } else {
+        feed.innerHTML = postHtml;
+    }
+    
+    input.value = ''; // 清空输入框
+
+    // 3. 构建 Prompt 让 AI 扮演这几个人
+    let charInfo = "";
+    selectedChars.forEach((char, index) => {
+        charInfo += `${index+1}. 名字：${char.name}，性格标签：${(char.tags||[]).join(',')}。\n`;
+    });
+
+    const systemPrompt = `
+    你现在需要同时扮演以下几位角色，并在用户的朋友圈动态下进行评论。
+    
+    【用户动态】："${text}"
+    
+    【角色列表】：
+    ${charInfo}
+    
+    【要求】：
+    1. 请为每一位角色写一句评论（20字以内）。
+    2. 评论要极度符合该角色的性格标签（例如毒舌的要嘲讽，温柔的要关心，病娇的要吃醋）。
+    3. 输出格式严格如下（不要包含其他内容）：
+    角色名1：评论内容
+    角色名2：评论内容
+    ...
+    `;
+
+    // 4. 调用 AI
+    try {
+        const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${aiConfig.apiKey}`
+            },
+            body: JSON.stringify({
+                model: aiConfig.model || 'gpt-3.5-turbo',
+                messages: [{ role: "user", content: systemPrompt }]
+            })
+        });
+
+        const data = await response.json();
+        
+        if (data.choices) {
+            const rawContent = data.choices[0].message.content;
+            const lines = rawContent.split('\n');
+            
+            const commentsArea = document.getElementById(`${postId}-comments`);
+            commentsArea.innerHTML = ''; // 清空“正在同步”的提示
+
+            // 5. 渲染评论
+            // 加上点赞行 (假装大家都赞了)
+            const likeNames = selectedChars.map(c => c.name).join('，');
+            const likesHtml = `<div style="font-size:12px; color:#576b95; margin-bottom:5px; border-bottom:1px solid #eee; padding-bottom:5px;">♡ ${likeNames}</div>`;
+            commentsArea.innerHTML += likesHtml;
+
+            lines.forEach(line => {
+                // 简单的解析： 名字：内容
+                // 为了防止AI输出格式略有偏差，我们用冒号分割
+                const parts = line.split('：'); 
+                if (parts.length < 2) return;
+                
+                const name = parts[0].trim();
+                const content = parts.slice(1).join('：').trim(); // 防止内容里也有冒号
+                
+                // 查找对应的角色ID以便点击跳转（可选功能）
+                const charObj = items.find(i => i.name === name);
+                
+                const commentHtml = `
+                    <div class="moment-comment-row">
+                        <span class="moment-role-name">${name}</span>：${content}
+                    </div>
+                `;
+                commentsArea.innerHTML += commentHtml;
+            });
+            
+            auth.toast('朋友圈更新啦！🔔');
+        }
+
+    } catch (e) {
+        console.error(e);
+        document.getElementById(`${postId}-comments`).innerHTML = '<div style="color:red; font-size:12px;">❌ 网络错误，评论加载失败</div>';
+    } finally {
+        btn.innerText = originalBtnText;
+        btn.disabled = false;
+    }
+}
 
     </script>
 </body>
