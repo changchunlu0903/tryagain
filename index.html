@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>✨ 梨梨的百宝箱 (最终完美版 v15.0) ✨</title>
+    <style>
+        /* --- 引入定制字体 --- */
+        @font-face {
+            font-family: 'MyCustomFont';
+            src: url('https://files.catbox.moe/cweam3.ttf') format('truetype');
+            font-display: swap;
+        }
+
+        :root {
+            --primary-color: #ffb7c5;
+            --secondary-color: #ffe6eb;
+            --accent-color: #ff8fa3;
+            --text-color: #6d5c5c;
+            --radius: 20px;
+            --shadow: 0 8px 24px rgba(255, 183, 197, 0.4);
+            --lock-bg: #fff0f5;
+
+            /* 👇 🟢 阅读器设置 🟢 👇 */
+            --reader-bubble-width: 90%; /* 气泡宽度 */
+            --reader-line-height: 1.5; /* 行间距 */
+            --reader-letter-spacing: 0.8px; /* 字间距 */
+            --reader-row-spacing: 2px; /* 段间距 */
+        }
+
+        body {
+            font-family: 'MyCustomFont', 'Microsoft YaHei', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+
+        /* ==================== 🌸 樱花特效 & 锁屏样式 ==================== */
+        
+        #lockScreen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff5f7; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background-image: radial-gradient(#fff 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+
+        /* 飘落樱花 */
+        .sakura {
+            position: absolute;
+            background: #ffc0cb; border-radius: 100% 0 100% 0; opacity: 0.5;
+            animation: fall linear infinite; pointer-events: none;
+        }
+        @keyframes fall {
+            0% { transform: translate(0, -10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translate(100px, 110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 通用卡片样式 */
+        .lock-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            width: 85%; max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 183, 197, 0.3);
+            border: 2px solid #fff;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s;
+        }
+
+        .lock-title { font-size: 24px; color: var(--accent-color); margin-bottom: 10px; font-weight: bold; }
+        .lock-subtitle { color: #999; font-size: 14px; margin-bottom: 30px; line-height: 1.6; }
+
+        .welcome-btn {
+            display: block;
+            width: 100%; padding: 18px; border-radius: 50px;
+            margin-bottom: 15px; border: none; font-size: 16px; color: white;
+            font-family: inherit; cursor: pointer; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.2s;
+        }
+        .welcome-btn:active { transform: scale(0.98); }
+        .btn-gesture { background: #ffb7c5; }
+        .btn-pin { background: linear-gradient(90deg, #a8edea 0%, #ffb7c5 100%); }
+        .btn-login-pink { background: #ff9eb5; box-shadow: 0 8px 20px rgba(255, 158, 181, 0.4); }
+
+        .pin-display { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .pin-dot {
+            width: 16px;
+            height: 16px; border-radius: 50%;
+            background: #eee; border: 2px solid #ddd; transition: all 0.2s;
+        }
+        .pin-dot.active { background: var(--accent-color); border-color: var(--accent-color); transform: scale(1.2); }
+        
+        .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 280px; margin: 0 auto; }
+        .num-btn {
+            width: 60px;
+            height: 60px; border-radius: 50%; border: none;
+            background: #fff; color: var(--text-color); font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer;
+            font-family: inherit; display: flex; align-items: center; justify-content: center;
+        }
+        .num-btn:active { background: var(--secondary-color); }
+
+        .gesture-container { position: relative; width: 300px; height: 300px; margin: 0 auto; touch-action: none; }
+        .gesture-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: crosshair; }
+        .gesture-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr);
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none;
+        }
+        .gesture-point { display: flex; align-items: center; justify-content: center; }
+        .point-inner {
+            width: 18px;
+            height: 18px; background: #ddd; border-radius: 50%;
+            transition: 0.3s;
+        }
+        .point-inner.active { background: var(--accent-color); box-shadow: 0 0 0 10px rgba(255, 143, 163, 0.2); }
+
+        .lock-input {
+            width: 100%;
+            padding: 12px; margin: 10px 0; border: 2px solid #ffe6eb;
+            border-radius: 12px; text-align: center; font-family: inherit;
+            outline: none; color: var(--text-color);
+        }
+        .lock-input:focus { border-color: var(--accent-color); }
+
+        .back-link { margin-top: 20px; font-size: 13px; color: #bbb; cursor: pointer; text-decoration: underline; }
+
+        .toast {
+            position: fixed;
+            top: 50px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.7); color: white; padding: 10px 20px;
+            border-radius: 30px; font-size: 14px; opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s; z-index: 20000;
+        }
+
+        /* ==================== 🔮 抽签系统样式 ==================== */
+        .lottery-panel { margin-bottom: 15px; text-align: center; }
+        .lottery-btn {
+            background: linear-gradient(135deg, #fff0f5 0%, #ffc0cb 100%);
+            border: 2px solid #fff; color: #d66a80;
+            padding: 8px 15px; border-radius: 20px; font-size: 13px; font-family: inherit;
+            cursor: pointer; width: 100%;
+            box-shadow: 0 4px 10px rgba(255, 183, 197, 0.3);
+            font-weight: bold; transition: transform 0.2s;
+        }
+        .lottery-btn:active { transform: scale(0.95); }
+
+        .lottery-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 230, 235, 0.9); backdrop-filter: blur(8px);
+            z-index: 12000; display: none;
+            flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+        .lottery-overlay.active { display: flex; animation: fadeInLottery 0.3s ease; }
+        @keyframes fadeInLottery { from {opacity:0;} to {opacity:1;} }
+
+        .lottery-box-container { text-align: center; position: relative; }
+        .magic-gift { font-size: 100px; display: block; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
+        .magic-gift.shaking { animation: shakeBox 0.5s infinite; }
+        @keyframes shakeBox {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(10deg) scale(1.1); }
+            50% { transform: rotate(0deg) scale(1); }
+            75% { transform: rotate(-10deg) scale(1.1); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .lottery-result-card {
+            display: none;
+            flex-direction: column; align-items: center;
+            background: white; padding: 20px; border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(255, 100, 150, 0.3);
+            border: 4px solid #fff;
+            width: 260px; animation: popIn 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+        @keyframes popIn { from {transform: scale(0) rotate(-20deg); opacity: 0;} to {transform: scale(1) rotate(0); opacity: 1;} }
+
+        .lottery-img-wrapper {
+            width: 220px;
+            height: 220px; border-radius: 20px; overflow: hidden;
+            margin-bottom: 15px; border: 2px solid #ffe6eb; background: #fff5f7;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lottery-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .lottery-name { font-size: 20px; color: var(--accent-color); font-weight: bold; margin-bottom: 5px; }
+        .lottery-hint { font-size: 12px; color: #aaa; margin-bottom: 15px; }
+        
+        .go-btn {
+            background: var(--accent-color);
+            color: white; border: none;
+            padding: 10px 30px; border-radius: 25px; font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
+            animation: pulse 2s infinite; font-family: inherit;
+        }
+        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
+        .close-lottery { position: absolute;
+            top: 30px; right: 30px; font-size: 30px; color: #fff; background: rgba(0,0,0,0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; }
+
+        /* ==================== 原有 CSS ==================== */
+        #appContainer {
+            display: none;
+            padding: 20px;
+            padding-bottom: 100px;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { text-align: center; color: var(--accent-color); font-weight: normal; margin: 10px 0 30px 0; text-shadow: 2px 2px 0px #fff; font-size: 32px; }
+
+        /* --- 🐶 悬浮窗 --- */
+        .float-widget { position: fixed; bottom: 30px; right: 30px; z-index: 9999; touch-action: none; }
+        .float-btn {
+            width: 48px;
+            height: 48px; border-radius: 50%;
+            background: #fff; border: 3px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(255, 117, 143, 0.3);
+            display: flex;
+            justify-content: center; align-items: center;
+            font-size: 24px; cursor: move; user-select: none;
+            transition: transform 0.1s; position: relative;
+        }
+        .float-btn:active { transform: scale(0.9); }
+        .float-btn::after { content: '🐶'; }
+        
+        .float-menu {
+            position: absolute;
+            bottom: 60px; right: 0;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-radius: 20px; width: 260px; padding: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 2px solid #fff;
+            transform-origin: bottom right; transform: scale(0); opacity: 0;
+            transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            pointer-events: none; max-height: 60vh; display: flex; flex-direction: column;
+        }
+        .float-menu.active { transform: scale(1); opacity: 1; pointer-events: auto; }
+
+        .music-panel { background: var(--secondary-color); border-radius: 15px; padding: 12px; margin-bottom: 10px; text-align: center; }
+        .music-controls { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .play-btn { background: var(--accent-color); color: white; border: none; border-radius: 50%; width: 32px;
+            height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-panel { flex-grow: 1; overflow-y: auto; border-top: 1px dashed #ddd; padding-top: 10px; }
+        .nav-title { font-weight: bold; color: var(--accent-color); margin-bottom: 8px; font-size: 13px; }
+        
+        .search-container { max-width: 600px; margin: 0 auto 10px auto; position: relative; }
+        .search-input { width: 100%; padding: 15px 50px 15px 25px; border: 2px solid #fff; border-radius: 50px; background: rgba(255, 255, 255, 0.9); font-size: 16px; outline: none; font-family: inherit; }
+        .search-input:focus { border-color: var(--primary-color); }
+        .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--primary-color); }
+
+        /* 🟢 视图切换栏 */
+        .layout-bar {
+            display: flex; align-items: center; justify-content: center;
+            gap: 4px; margin: 0 auto 25px auto;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(5px);
+            padding: 6px 12px 6px 15px; border-radius: 50px; width: fit-content;
+            border: 2px solid #fff0f5; box-shadow: 0 5px 15px rgba(255, 183, 197, 0.25);
+        }
+        .layout-label { font-size: 13px; color: var(--accent-color); font-weight: bold; margin-right: 8px; display: flex; align-items: center; }
+        .layout-btn {
+            background: none; border: none; width: 36px; height: 36px;
+            cursor: pointer; border-radius: 50%; transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            display: flex; align-items: center; justify-content: center; opacity: 0.6; font-size: 18px;
+        }
+        .layout-btn.active { background: #fff; box-shadow: 0 4px 10px rgba(255, 183, 197, 0.3); opacity: 1; transform: scale(1.1); }
+
+        /* 🟢 操作按钮网格 */
+        .action-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 98%; margin: 0 auto 20px auto; }
+        .action-card {
+            background: #fff; border: 2px solid #ffb7c5; border-radius: 20px;
+            padding: 10px 2px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s; color: #ff8fa3; font-weight: bold; font-size: 12px;
+            box-shadow: 0 4px 10px rgba(255, 183, 197, 0.2); height: 70px;
+        }
+        .action-card:active { transform: scale(0.95); }
+        .action-card.primary { background: #fff; border: 2px solid #ff8fa3; color: #ff8fa3; box-shadow: 0 4px 12px rgba(255, 143, 163, 0.3); }
+        .kitty-icon { font-size: 24px; margin-bottom: 2px; filter: drop-shadow(0 2px 2px rgba(255,183,197,0.3)); }
+
+        /* 批量删除相关样式 */
+        .card.is-selecting { animation: shake 0.3s ease; }
+        .card.selected { border-color: #ff6b6b !important; background-color: #fff0f0; position: relative; }
+        .card.selected::after { content: '✅'; position: absolute; top: 5px; right: 5px; font-size: 20px; background: rgba(255,255,255,0.8); border-radius: 50%; }
+
+        /* 🔴 关键修复：隐藏删除条 */
+        .delete-bar {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(200px);
+            opacity: 0; pointer-events: none;
+            background: #fff; padding: 10px 20px; border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; gap: 15px;
+            z-index: 10000; transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); border: 2px solid #ff6b6b;
+        }
+        .delete-bar.active { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+        .delete-btn-confirm { background: #ff6b6b; color: white; border: none; padding: 8px 20px; border-radius: 30px; font-weight: bold; }
+        .delete-btn-cancel { background: #f0f0f0; color: #666; border: none; padding: 8px 20px; border-radius: 30px; }
+        .controls { display: none; }
+
+        /* 🟢 Grid 布局模式 */
+        .grid-container { display: grid; gap: 20px; max-width: 1200px; margin: 0 auto; transition: all 0.3s ease; }
+        .grid-container.mode-default { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+        .grid-container.mode-large { grid-template-columns: repeat(auto-fill, minmax(40%, 1fr)); }
+        .grid-container.mode-mini { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+        .grid-container.mode-mini .card-img-wrapper { height: 120px; }
+        .grid-container.mode-mini .card-title { font-size: 14px; }
+        .grid-container.mode-list { grid-template-columns: 1fr; }
+        .grid-container.mode-list .card { flex-direction: row; height: 100px; }
+        .grid-container.mode-list .card-img-wrapper { width: 100px; height: 100%; flex-shrink: 0; }
+        .grid-container.mode-list .card-content { justify-content: center; }
+        .grid-container.mode-list .tags-container { margin-top: 5px; }
+
+        .card { background: #fff; border-radius: var(--radius); overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s; border: 3px solid #fff; display: flex; flex-direction: column; cursor: pointer; position: relative; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary-color); }
+        .card-img-wrapper { height: 200px; background-color: #fcecef; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .card img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .content-indicators { position: absolute; top: 8px; left: 8px; display: flex; gap: 4px; flex-wrap: wrap; }
+        .indicator { background: rgba(255,255,255,0.95); padding: 2px 6px; border-radius: 6px; font-size: 12px; color: var(--text-color); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        
+        .card-content { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 18px; margin: 0 0 5px 0; color: var(--text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .tags-container { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; }
+        .tag-pill { background: var(--secondary-color); color: var(--accent-color); font-size: 12px; padding: 2px 6px; border-radius: 8px; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%;
+            height: 100%; background: rgba(255, 240, 245, 0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; padding: 25px; border-radius: 25px; width: 90%; max-width: 600px;
+            max-height: 90vh; overflow-y: auto; box-shadow: 0 15px 40px rgba(255, 130, 150, 0.2); position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 28px; cursor: pointer; color: #ccc; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 16px; color: var(--accent-color); }
+        input[type="text"], select { width: 100%; padding: 10px; border: 2px solid var(--secondary-color);
+            border-radius: 12px; outline: none; box-sizing: border-box; background: #fff; font-family: inherit; font-size: 15px; }
+        
+        .tag-input-area { border: 2px solid var(--secondary-color); border-radius: 12px; padding: 8px; display: flex; flex-wrap: wrap; gap: 5px; min-height: 40px; }
+        .tag-input-area input { border: none; outline: none; flex-grow: 1; padding: 5px; font-family: inherit; }
+        .tag-chip { background: var(--primary-color); color: white; padding: 3px 8px; border-radius: 10px; font-size: 14px; display: flex; gap: 5px; align-items: center; }
+
+        .resource-list { border: 1px solid #eee; border-radius: 12px; padding: 10px; max-height: 250px; overflow-y: auto; background: #fafafa; }
+        .resource-item { display: flex; align-items: flex-start; gap: 10px; background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #f0f0f0; flex-wrap: wrap;}
+        .resource-preview { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; background: #eee; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px;}
+        .resource-info { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+        
+        .resource-name-input { width: 100%; border: none; border-bottom: 1px dashed #ccc; padding: 2px 0; font-size: 14px; color: #333; border-radius: 0; background: transparent; outline: none; }
+        .resource-name-input:focus { border-bottom-color: var(--accent-color); }
+        
+        .resource-controls { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+        .resource-type-select { font-size: 12px; padding: 2px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; width: auto; flex-grow: 1; max-width: 120px; }
+        .custom-type-input { font-size: 12px; padding: 2px 5px; border: 1px solid #ffb7c5; border-radius: 4px; width: 80px; display: none; }
+
+        .btn-remove { background: #ffdede; color: #ff6b6b; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; font-weight: bold; margin-left: auto; align-self: center;}
+
+        .add-btn-row { display: flex; gap: 10px; margin-top: 5px; }
+        .small-btn { font-size: 14px; padding: 5px 12px; }
+
+        .gallery-container { position: relative; width: 100%; height: 320px; background: #fafafa; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border: 1px solid #eee; flex-direction: column;}
+        .gallery-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .gallery-type-label { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; z-index: 10; }
+        
+        .gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); user-select: none; z-index: 10; }
+        .nav-prev { left: 10px; } .nav-next { right: 10px; }
+        .cover-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border: 2px solid var(--accent-color); color: var(--accent-color); font-size: 12px; padding: 4px 10px; cursor: pointer; border-radius: 20px; z-index: 10; font-family: inherit; }
+        .cover-btn.is-cover { background: var(--accent-color); color: white; }
+        .download-img-btn { position: absolute; bottom: 10px; right: 10px; background: rgba(255,255,255,0.9); border: 2px solid var(--primary-color); color: var(--primary-color); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; transition: all 0.2s;}
+        
+        .detail-list { margin-top: 10px; }
+        .detail-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 14px; }
+        .detail-item-type { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; color: #888; margin-right: 5px; font-size: 12px; }
+        
+        .action-link { color: var(--accent-color); text-decoration: none; cursor: pointer; font-weight: bold; font-size: 12px; background: #fff0f3; padding: 4px 8px; border-radius: 4px; transition: background 0.2s; }
+        .action-link:hover { background: var(--primary-color); color: white; }
+
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .empty-state { grid-column: 1 / -1; text-align: center; color: #cea0a9; padding: 50px; font-size: 18px; }
+        .edit-btn { background: #fff8e1; border-color: #ffc107; color: #ffb300; }
+        
+        input[type="file"] { display: none; }
+        
+        button { background: #fff; border: 2px solid var(--primary-color); color: var(--accent-color); padding: 8px 18px; border-radius: 50px; cursor: pointer; font-family: inherit; font-size: 14px; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+        button:hover { background: var(--primary-color); color: white; transform: translateY(-2px); }
+        button.primary-btn { background: var(--accent-color); color: white; border: none; }
+
+        /* ==================== 📖 时光放映室 (阅读模式) ==================== */
+        
+        .reader-modal {
+            background: #f5f5f5;
+            width: 100%; height: 100%; top: 0; left: 0;
+            max-width: none; max-height: none; border-radius: 0;
+            display: flex; flex-direction: column; padding: 0;
+        }
+
+        .reader-header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px; border-bottom: 1px solid #eee;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .reader-title { font-weight: bold; color: var(--text-color); font-size: 16px; }
+        .reader-subtitle { font-size: 10px; color: #999; margin-top: 2px; }
+
+        .chat-container {
+            flex-grow: 1;
+            overflow-y: auto; padding: 20px; padding-bottom: 80px;
+            background-image: radial-gradient(#e0e0e0 1px, transparent 1px);
+            background-size: 20px 20px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-row {
+            display: flex;
+            margin-bottom: var(--reader-row-spacing); 
+            align-items: flex-end;
+            position: relative;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .floor-tag {
+            position: absolute;
+            top: -18px; font-size: 10px; color: #ccc;
+            font-family: monospace; background: rgba(255,255,255,0.5);
+            padding: 0 4px; border-radius: 4px;
+        }
+
+        .chat-bubble {
+            max-width: var(--reader-bubble-width);
+            line-height: var(--reader-line-height);
+            letter-spacing: var(--reader-letter-spacing);
+            
+            padding: 12px 16px; border-radius: 18px;
+            font-size: 15px; position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); word-wrap: break-word;
+        }
+
+        .chat-name {
+            font-size: 11px;
+            color: #999; margin-bottom: 4px; margin-left: 4px;
+            text-align: left;
+        }
+
+        .chat-row.left { justify-content: flex-start; }
+        .chat-row.left .floor-tag { left: 10px; }
+        .chat-row.left .chat-bubble { background: #fff; color: #333; border-bottom-left-radius: 4px; }
+
+        .chat-row.right { justify-content: flex-end; }
+        .chat-row.right .chat-name { margin-right: 4px; } 
+        .chat-row.right .floor-tag { right: 10px; }
+        .chat-row.right .chat-bubble { background: var(--accent-color); color: #fff; border-bottom-right-radius: 4px; }
+
+        .close-reader {
+            background: #eee;
+            border: none; width: 32px; height: 32px; border-radius: 50%;
+            font-size: 20px; color: #666; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
+        .reader-footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            border-top: 1px solid #eee;
+            display: flex; justify-content: center; align-items: center; gap: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+        
+        .page-btn {
+            padding: 8px 15px;
+            border-radius: 20px; border: 1px solid #ddd;
+            background: #fff; color: #666; font-size: 13px; cursor: pointer;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .page-btn:active { transform: scale(0.95); background: #f0f0f0; }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .page-info { font-size: 13px; color: var(--accent-color); font-weight: bold; }
+
+             /* ... 上面的 CSS 保持不变 ... */
+
+        /* ==================== 🟢 新增：阅读器编辑与书签样式 ==================== */
+
+        /* 1. 编辑模式样式 (修改版：更大、更清晰) */
+        .bubble-edit-wrapper {
+            width: 100%;
+        }
+        .bubble-textarea {
+            width: 100%;
+            min-height: 200px; /* 🟢 改动：默认高度加大到 200px */
+            padding: 12px;     /* 🟢 改动：内边距加大 */
+            border: 2px solid var(--accent-color);
+            border-radius: 15px;
+            font-family: inherit;
+            font-size: 16px;   /* 🟢 改动：编辑时字体放大，看字更清楚 */
+            line-height: 1.6;
+            resize: vertical;  /* 允许上下拉伸 */
+            outline: none;
+            background: #fff;
+            color: #333;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* 加一点阴影让它浮起来的感觉 */
+        }
+        .edit-btn-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px; /* 按钮间距拉大 */
+        }
+        .edit-confirm-btn {
+            background: var(--accent-color);
+            color: white; border: none; padding: 6px 18px; /* 按钮变大 */
+            border-radius: 20px; font-size: 14px; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .edit-cancel-btn {
+            background: #eee;
+            color: #666; border: none; padding: 6px 18px; /* 按钮变大 */
+            border-radius: 20px; font-size: 14px; cursor: pointer;
+        }
+
+        /* ... 下面的 CSS (书签样式等) 保持不变 ... */
+
+        /* 2. 书签按钮 */
+        .bookmark-icon { margin-left: 5px; cursor: pointer; font-size: 14px; color: #ddd; transition: color 0.2s; }
+        .bookmark-icon.active { color: #ffd700; text-shadow: 0 0 2px rgba(255, 215, 0, 0.5); }
+        .floor-tag { display: flex; align-items: center; pointer-events: auto; }
+
+        /* 3. 书签列表 - 居中弹窗样式 (修复版) */
+        .bookmark-drawer {
+            position: fixed; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%) scale(0.9); 
+            width: 80%; max-width: 320px; height: 60%; max-height: 500px;
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);
+            border-radius: 25px; box-shadow: 0 10px 40px rgba(255, 183, 197, 0.5); z-index: 6000;
+            display: flex; flex-direction: column; border: 2px solid #fff;
+            opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+        .bookmark-drawer.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+
+        /* 🟢 新增：CSS 编辑抽屉样式 (复用书签抽屉的逻辑) */
+        .css-drawer {
+            position: fixed; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%) scale(0.9); 
+            width: 85%; max-width: 400px; height: 70%; max-height: 600px;
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);
+            border-radius: 25px; box-shadow: 0 10px 40px rgba(100, 100, 255, 0.2); 
+            z-index: 6001; /* 比书签层级再高一点 */
+            display: flex; flex-direction: column; border: 2px solid #e0f7fa;
+            opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+        .css-drawer.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+
+        .bookmark-header {
+            padding: 15px 20px; font-weight: bold; color: var(--accent-color);
+            border-bottom: 1px solid #ffe6eb; display: flex; justify-content: space-between; align-items: center;
+            background: #fff0f5; border-radius: 25px 25px 0 0;
+        }
+        .bookmark-list { flex-grow: 1; overflow-y: auto; padding: 10px; }
+        .bookmark-item {
+            background: #fff; border: 1px solid #ffe6eb; border-radius: 10px; padding: 10px; margin-bottom: 8px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .bookmark-item:hover { background: #fff0f5; transform: translateX(-2px); }
+        .bm-floor { font-size: 12px; color: #999; margin-bottom: 4px; font-weight: bold; }
+        .bm-note { font-size: 14px; color: #555; word-break: break-all; }
+        .bm-empty { text-align: center; color: #ccc; font-size: 13px; margin-top: 50px; }
+        
+        .highlight-row { animation: flashRow 2s ease; }
+        @keyframes flashRow { 0% { background: rgba(255, 215, 0, 0.3); } 100% { background: transparent; } }
+
+        /* ==================== 💭 印象深刻的话 (背景弹幕特效) ==================== */
+        .memory-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            pointer-events: none; /* 让鼠标可以穿透，不影响点击 */
+            z-index: 0; /* 放在最底层 */
+        }
+
+        .memory-text {
+            position: absolute;
+            font-family: 'MyCustomFont', sans-serif; /* 用你指定的可爱字体 */
+            white-space: nowrap;
+            color: rgba(255, 183, 197, 0.6); /* 淡淡的粉色，半透明 */
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            animation: floatUp linear forwards;
+        }
+
+        /* 文字向上飘动的动画 */
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.9) rotate(-5deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-20vh) scale(1.1) rotate(5deg);
+                opacity: 0;
+            }
+        }
+
+        /* 为了防止背景文字遮挡内容，我们要给内容加个层级 */
+        .modal-content-wrapper {
+            position: relative;
+            z-index: 2; /* 确保内容在文字上面 */
+        }
+
+        /* ==================== 💮 心情印章系统 ==================== */
+        
+        /* 印章选择栏 */
+        .stamp-bar {
+            display: flex; justify-content: center; gap: 15px; margin: 10px 0 20px 0;
+            padding: 10px; background: rgba(255, 255, 255, 0.6); border-radius: 50px;
+        }
+        
+        .stamp-btn {
+            width: 40px; height: 40px; border-radius: 50%; border: 2px solid transparent;
+            background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 22px; transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); opacity: 0.7; filter: grayscale(0.8);
+        }
+        
+        .stamp-btn:hover { transform: translateY(-3px); }
+        
+        /* 激活状态：变成彩色，发光 */
+        .stamp-btn.active {
+            border-color: var(--accent-color); opacity: 1; filter: grayscale(0);
+            transform: scale(1.1); box-shadow: 0 5px 15px rgba(255, 143, 163, 0.3);
+        }
+
+        /* 盖在右上角的大印章 */
+        .big-stamp-mark {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 100px;
+            opacity: 0;
+            pointer-events: none; /* 让鼠标穿透，不挡操作 */
+            transform: scale(3) rotate(-30deg); /* 初始状态：很大，悬空 */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弹性动画 */
+            z-index: 0; /* 放在底层，背景字之上，内容之下 */
+            filter: drop-shadow(0 0 0 transparent); /* 初始无阴影 */
+        }
+
+        /* 盖下去的状态 */
+        .big-stamp-mark.stamped {
+            opacity: 0.15; /* 淡淡的印记 */
+            transform: scale(1) rotate(-20deg); /* 砸下来 */
+            filter: drop-shadow(2px 2px 0px rgba(255, 100, 100, 0.2));
+        }
+
+        /* ==================== 🙈 防窥模式 (Privacy Blur) ==================== */
+        
+        /* 1. 当 body 加上 privacy-active 类时，模糊所有图片 */
+        body.privacy-active .card img,       /* 首页卡片封面 */
+        body.privacy-active .gallery-img,    /* 详情页大图 */
+        body.privacy-active .resource-preview img { /* 编辑列表里的缩略图 */
+            filter: blur(20px) !important;   /* 强力高斯模糊 */
+            opacity: 0.8;                    /* 稍微变淡一点 */
+            transition: all 0.3s ease;       /* 丝滑过渡 */
+        }
+
+        /* 2. 右上角的眼睛按钮样式 */
+        .privacy-toggle-btn {
+            position: absolute;
+            top: 20px; 
+            right: 20px;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 100; /* 保证在最上层 */
+            
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 10px rgba(255, 183, 197, 0.2);
+            transition: all 0.2s;
+            color: var(--accent-color);
+        }
+        
+        .privacy-toggle-btn:active { transform: scale(0.9); }
+
+        /* ==================== ✨ 指尖魔法 (鼠标+点击特效) ==================== */
+        
+        /* 1. 全局鼠标变可爱 (换成猫爪或魔法棒) */
+        body {
+            /* 这里用的是一个通用的可爱光标链接，如果失效了会退化成默认的 */
+            cursor: url('https://cur.cursors-4u.net/nature/nat-2/nat120.cur'), auto; 
+        }
+        
+        /* 按钮变成手指 */
+        button, .card, .action-card, .stamp-btn {
+            cursor: url('https://cur.cursors-4u.net/nature/nat-2/nat122.cur'), pointer;
+        }
+
+        /* 2. 点击爆出的粒子 */
+        .magic-particle {
+            position: fixed;
+            pointer-events: none; /* 不挡鼠标 */
+            animation: particleFloat 1s ease-out forwards;
+            font-size: 20px;
+            z-index: 9999;
+            user-select: none;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(-50%, -150%) scale(1.5); opacity: 0; }
+        }
+
+    </style>
+
+    <style id="custom-reader-style"></style> 
+</head>
+
+</head>
+<body>
+
+    <div id="lotteryOverlay" class="lottery-overlay">
+        <div class="close-lottery" onclick="closeLottery()">×</div>
+        <div class="lottery-box-container" id="lotteryBox">
+            <div class="magic-gift" id="magicGift">🎁</div>
+            <div class="lottery-result-card" id="lotteryResult">
+                <div class="lottery-img-wrapper"><img id="lotteryImg" src=""></div>
+                <div class="lottery-name" id="lotteryName">???</div>
+                <div class="lottery-hint">✨ 命运选择了它 ✨</div>
+                <button class="go-btn" onclick="goToLotteryItem()">👉 就是你了！</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="lockScreen">
+        <div id="sakuraContainer"></div>
+
+        <div id="view-landing" class="lock-card" style="display:none; text-align:center;">
+            <div style="font-size:50px; margin-bottom:20px;">🌸</div>
+            <div class="lock-title" style="font-size:28px;">欢迎来到你的百宝箱</div>
+            <div class="lock-subtitle">✨ 每一天都是新的开始 ✨</div>
+            <button class="welcome-btn btn-login-pink" style="color:white; margin-top:30px; font-size:18px;" onclick="auth.proceedFromLanding()">✨ 立即登录 ✨</button>
+        </div>
+
+        <div id="view-welcome" class="lock-card" style="display:none;">
+            <div style="font-size:40px; margin-bottom:10px;">🌸</div>
+            <div class="lock-title">设置解锁方式</div>
+            <div class="lock-subtitle">第一次来，先给自己挑一把钥匙吧！</div>
+            <button class="welcome-btn btn-gesture" onclick="auth.startSetup('gesture')">我是手势控 (连线解锁)</button>
+            <button class="welcome-btn btn-pin" onclick="auth.startSetup('pin')">我是数字控 (PIN码解锁)</button>
+        </div>
+
+        <div id="view-setup-question" class="lock-card" style="display:none;">
+            <div class="lock-title">🔐 安全保障</div>
+            <div class="lock-subtitle">万一忘了密码，这个可以救你！</div>
+            <div class="form-group" style="text-align:left;">
+                <label>设置一个安全问题</label>
+                <input type="text" id="secQuestion" class="lock-input" placeholder="例如：我的第一只宠物是？">
+            </div>
+            <div class="form-group" style="text-align:left;">
+                <label>问题的答案</label>
+                <input type="text" id="secAnswer" class="lock-input" placeholder="输入答案">
+            </div>
+            <button class="welcome-btn btn-gesture" onclick="auth.saveSecurityQuestion()">完成设置</button>
+        </div>
+
+        <div id="view-pin" class="lock-card" style="display:none;">
+            <div class="lock-title" id="pinTitle">请输入密码</div>
+            <div class="lock-subtitle" id="pinSub">输入4位数字密码</div>
+            <div class="pin-display" id="pinDots">
+                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+            </div>
+            <div class="numpad">
+                <button class="num-btn" onclick="auth.inputPin(1)">1</button>
+                <button class="num-btn" onclick="auth.inputPin(2)">2</button>
+                <button class="num-btn" onclick="auth.inputPin(3)">3</button>
+                <button class="num-btn" onclick="auth.inputPin(4)">4</button>
+                <button class="num-btn" onclick="auth.inputPin(5)">5</button>
+                <button class="num-btn" onclick="auth.inputPin(6)">6</button>
+                <button class="num-btn" onclick="auth.inputPin(7)">7</button>
+                <button class="num-btn" onclick="auth.inputPin(8)">8</button>
+                <button class="num-btn" onclick="auth.inputPin(9)">9</button>
+                <div></div>
+                <button class="num-btn" onclick="auth.inputPin(0)">0</button>
+                <button class="num-btn" style="color:#ff6b6b" onclick="auth.clearPin()">🔙</button>
+            </div>
+            <div class="back-link" id="pinForgotBtn" onclick="auth.showRecovery()" style="display:none">忘记密码？</div>
+        </div>
+
+        <div id="view-gesture" class="lock-card" style="display:none;">
+            <div class="lock-title" id="gestTitle">绘制图案</div>
+            <div class="lock-subtitle" id="gestSub">请绘制你的解锁图案</div>
+            <div class="gesture-container" id="gestureArea">
+                <div class="gesture-grid">
+                    <div class="gesture-point"><div class="point-inner" data-idx="0"></div></div>
+                    <div class="gesture-point"><div class="point-inner" data-idx="1"></div></div>
+                    <div class="gesture-point"><div class="point-inner" data-idx="2"></div></div>
+                    <div class="gesture-point"><div class="point-inner" data-idx="3"></div></div>
+                    <div class="gesture-point"><div class="point-inner" data-idx="4"></div></div>
+                    <div class="gesture-point"><div class="point-inner" data-idx="5"></div></div>
+                    <div class="gesture-point"><div class="point-inner" data-idx="6"></div></div>
+                    <div class="gesture-point"><div class="point-inner" data-idx="7"></div></div>
+                    <div class="gesture-point"><div class="point-inner" data-idx="8"></div></div>
+                </div>
+                <canvas id="gestureCanvas" width="300" height="300"></canvas>
+            </div>
+            <div class="back-link" id="gestForgotBtn" onclick="auth.showRecovery()" style="display:none">忘记密码？</div>
+            <div class="back-link" id="gestResetBtn" onclick="auth.resetGesture()" style="display:none">重绘</div>
+        </div>
+
+        <div id="view-recovery" class="lock-card" style="display:none;">
+            <div class="lock-title">😟 忘记密码了？</div>
+            <div class="lock-subtitle" id="recoveryQText">回答你的安全问题</div>
+            <input type="text" id="recoveryAnswer" class="lock-input" placeholder="输入答案">
+            <button class="welcome-btn btn-gesture" onclick="auth.checkRecovery()">验证</button>
+            <div class="back-link" onclick="location.reload()">返回</div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">提示信息</div>
+
+    <div id="appContainer">
+        
+        <div class="privacy-toggle-btn" id="privacyBtn" onclick="togglePrivacyMode()" title="点击开启防窥/模糊模式">
+            👁️
+        </div>
+
+        <h1>🌸 我的百宝箱  🌸</h1>
+
+        <div class="float-widget" id="floatWidget">
+            <div class="float-menu" id="floatMenu">
+                <div class="music-panel">
+                    <div style="font-size:12px; color:#aaa; margin-bottom:5px;">🎧 背景音乐</div>
+                    <div class="music-controls">
+                        <button class="play-btn" onclick="toggleMusic()" id="playBtn">▶</button>
+                        <input type="range" min="0" max="1" step="0.1" value="0.5" onchange="changeVolume(this)" style="width:60px; accent-color:var(--accent-color)">
+                    </div>
+                    <input type="text" style="width:100%;font-size:10px;padding:4px;border:1px solid #ddd;border-radius:5px;" id="musicLink" placeholder="输入mp3链接..." onchange="updateMusicSrc(this.value)">
+                    <audio id="bgMusic" loop></audio>
+                </div>
+                
+                <div class="lottery-panel">
+                    <button class="lottery-btn" onclick="startLottery()">🔮 命运的抉择</button>
+                </div>
+
+                           <div class="tavern-portal-panel" style="margin-bottom:15px; position:relative; width:100%;">
+                    
+                    <button id="tavernJumpBtn" 
+                            style="width:100%; box-sizing: border-box; background:linear-gradient(135deg, #fff7e6 0%, #ffe7ba 100%); border:2px solid #fff; color:#fa8c16; padding:8px 15px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(255, 169, 64, 0.2); transition:transform 0.2s;"
+                            onclick="jumpToTavern()">
+                        🍺 启动酒馆
+                    </button>
+                    
+                    <button style="position:absolute; right:2px; top:2px; height:calc(100% - 4px); width:35px; background:transparent; border:none; color:#fa8c16; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0.6;"
+                            onclick="changeTavernLink()"
+                            title="修改酒馆链接">
+                        ⚙️
+                    </button>
+                </div>
+               
+                <div class="nav-panel" id="navPanel">
+                    <div class="nav-title">🏷️ 快速跳转</div>
+                </div>
+            </div>
+            <div class="float-btn" id="floatBtn"></div>
+        </div>
+
+              <div class="search-container" style="display:flex; align-items:center; gap:10px;">
+            <div style="position:relative; flex-grow:1;">
+                <input type="text" class="search-input" id="searchInput" placeholder="搜索名称或标签..." oninput="handleSearch()">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <label style="font-size:12px; color:var(--accent-color); cursor:pointer; display:flex; align-items:center; gap:4px; white-space:nowrap;">
+                <input type="checkbox" id="deepSearchCheck" onchange="handleSearch()" style="width:auto;">
+                搜内容
+            </label>
+        </div>
+
+
+        <div class="layout-bar">
+            <span class="layout-label">👀 视图:</span>
+            <button class="layout-btn" title="默认网格" onclick="switchLayout('default')">🩶</button>
+            <button class="layout-btn" title="长列表" onclick="switchLayout('list')">🩵</button>
+            <button class="layout-btn" title="大图模式" onclick="switchLayout('large')">🤍</button>
+            <button class="layout-btn" title="迷你模式" onclick="switchLayout('mini')">🩷</button>
+        </div>
+
+        <div class="action-grid">
+            <div class="action-card primary" onclick="openAddModal()">
+                <div class="kitty-icon">🎀</div>
+                <div>添加</div>
+            </div>
+            
+            <div class="action-card" onclick="document.getElementById('batchImgInput').click()">
+                <div class="kitty-icon">📸</div>
+                <div>批量加</div>
+                <input type="file" id="batchImgInput" multiple style="display:none" onchange="handleBatchImageImport(this)">
+            </div>
+
+            <div class="action-card" onclick="toggleBatchDeleteMode()">
+                <div class="kitty-icon">🧹</div>
+                <div>批量删</div>
+            </div>
+
+            <div class="action-card" onclick="exportAllData()">
+                <div class="kitty-icon">💾</div>
+                <div>备份</div>
+            </div>
+
+            <div class="action-card" onclick="document.getElementById('importAllInput').click()">
+                <div class="kitty-icon">👜</div>
+                <div>导入</div>
+                <input type="file" id="importAllInput" accept=".json" onchange="importAllData(this)">
+            </div>
+        </div>
+
+        <div class="grid-container mode-default" id="gridContainer">
+            <div class="empty-state">正在初始化数据库... 💾</div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <button class="close-modal" onclick="closeAddModal()">×</button>
+            <h2 id="modalTitle">✨ 添加新收藏</h2>
+            <div class="form-group"><label>💖 名字</label><input type="text" id="itemName" placeholder="给这个盒子起个名字..."></div>
+            <div class="form-group"><label>🏷️ 标签 (输入后点+号或回车)</label><div style="display:flex; align-items:center; gap:10px;"><div class="tag-input-area" id="tagInputArea" style="flex-grow:1;" onclick="document.getElementById('tagInput').focus()"><input type="text" id="tagInput" onkeydown="handleTagInput(event)"></div><button class="small-btn primary-btn" style="height:40px; width:40px; border-radius:50%; display:flex; justify-content:center; align-items:center; flex-shrink:0;" onclick="manualAddTag()">＋</button></div><div id="suggestedTags" style="margin-top:5px; display:flex; gap:5px; flex-wrap:wrap;"></div></div>
+                       <div class="form-group">
+                <label>💭 印象最深的话 (一行一句，会飘在背景里哦)</label>
+                <textarea id="itemMemories" placeholder="例如：
+第一次见你的时候...
+那天晚上的月亮很圆...
+(按回车换行，可以写很多句)" style="width:100%; height:100px; padding:10px; border:2px solid var(--secondary-color); border-radius:12px; outline:none; font-family:inherit; resize:vertical; background:#fff;"></textarea>
+            </div>
+                     <div class="form-group">
+               <label>📦 包含的文件与链接</label><div class="resource-list" id="resourceList"><div style="text-align:center; color:#ccc; font-size:12px; padding:20px;">暂无内容，请点击下方按钮添加</div></div><div class="add-btn-row"><label class="upload-area small-btn" style="flex-grow:1; text-align:center;">📂 加文件 (图片/文档/其他)<input type="file" multiple onchange="handleUniversalSelect(this)"></label><button class="small-btn" onclick="openLinkInput()">🔗 加链接</button></div><div id="linkInputArea" style="display:none; margin-top:10px; background:#f9f9f9; padding:10px; border-radius:10px;"><input type="text" id="newLinkName" placeholder="链接名称 (如: 作者主页)" style="margin-bottom:5px;"><input type="text" id="newLinkUrl" placeholder="网址 (http://...)" style="margin-bottom:5px;"><div style="text-align:right;"><button class="small-btn" onclick="confirmAddLink()">确定</button><button class="small-btn" style="background:#eee; color:#666; border:none" onclick="document.getElementById('linkInputArea').style.display='none'">取消</button></div></div></div>
+            <div class="modal-buttons"><button onclick="closeAddModal()">取消</button><button class="primary-btn" onclick="saveItem()">💾 保存</button></div>
+        </div>
+    </div>
+
+                <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="position: relative; max-height: 85vh; padding: 0; display: flex; flex-direction: column; overflow: hidden;"> 
+            
+            <div class="memory-layer" id="memoryLayer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></div>
+
+            <div id="bigStamp" class="big-stamp-mark"></div>
+
+            <div class="modal-content-wrapper" style="overflow-y: auto; flex-grow: 1; position: relative; z-index: 2; padding: 25px;">
+                
+                <button class="close-modal" onclick="closeDetailModal()" style="position: absolute; top: 15px; right: 15px;">×</button>
+                <h2 id="detailName" style="text-align:center; margin-bottom:5px; margin-top: 0;"></h2>
+                <div id="detailTags" style="display:flex; justify-content:center; gap:5px; margin-bottom:15px;"></div>
+                
+                <div class="stamp-bar">
+                    <div class="stamp-btn" onclick="toggleStamp('🍬')" title="超甜">🍬</div>
+                    <div class="stamp-btn" onclick="toggleStamp('🍋')" title="吃醋/酸涩">🍋</div>
+                    <div class="stamp-btn" onclick="toggleStamp('🔪')" title="刀子/虐心">🔪</div>
+                    <div class="stamp-btn" onclick="toggleStamp('🚗')" title="飙车/刺激">🚗</div>
+                    <div class="stamp-btn" onclick="toggleStamp('💤')" title="日常/睡觉">💤</div>
+                </div>
+                <div id="galleryArea">
+                    <div class="gallery-container">
+                        <div class="gallery-type-label" id="galleryTypeLabel">类型</div>
+                        <img id="detailImg" class="gallery-img" src="">
+                        <div class="gallery-nav nav-prev" onclick="changeGalleryImage(-1)">❮</div>
+                        <div class="gallery-nav nav-next" onclick="changeGalleryImage(1)">❯</div>
+                        <button id="setCoverBtn" class="cover-btn" onclick="setAsCover()">设为封面</button>
+                        <button class="download-img-btn" onclick="downloadCurrentGalleryImg()" title="下载此图">⬇️</button>
+                        <div style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.5); color:white; padding:2px 8px; border-radius:10px; font-size:12px; pointer-events:none;">
+                            <span id="imgIndex">1</span> / <span id="imgTotal">1</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="noImgMsg" style="text-align:center; color:#ccc; padding:20px; display:none;">(此盒子没有图片)</div>
+                <div class="form-group"><label>📂 盒子内容</label><div id="detailListContainer" class="detail-list"></div></div>
+                
+                <div class="modal-buttons" style="justify-content: center; flex-wrap:wrap; margin-top: 20px;">
+                    <button class="edit-btn" onclick="openEditMode()">✏️ 编辑盒子内容</button>
+                    <button onclick="deleteCurrentItem()" style="border-color: #ffcccc; color: #ff6b6b;">🗑️ 删除盒子</button>
+                </div>
+            
+            </div> 
+        </div>
+    </div>
+               
+    <div class="modal-overlay" id="readerModal" style="z-index: 5000;">
+        <div class="modal reader-modal">
+                       <div class="reader-header">
+                <button class="close-reader" onclick="closeReader()">←</button>
+                
+                <div style="text-align:center">
+                    <div class="reader-title" id="readerTitle">回忆记录</div>
+                    <div class="reader-subtitle" id="readerCount" style="cursor:pointer" onclick="toggleBookmarkDrawer()">0 条记录 (点击查看书签)</div>
+                </div>
+                
+                <div style="display:flex; gap:5px;">
+                    <button class="close-reader" style="font-size:16px;" onclick="toggleCssDrawer()">🎨</button>
+                    <button class="close-reader" style="font-size:16px;" onclick="toggleBookmarkDrawer()">⭐</button> 
+                </div>
+            </div>
+
+<div class="css-drawer" id="cssDrawer">
+    <div class="bookmark-header">
+        <span>🎨 皮肤设计师</span>
+        <span style="font-size:12px;cursor:pointer" onclick="toggleCssDrawer()">关闭</span>
+    </div>
+    <div style="padding:15px; display:flex; flex-direction:column; height:100%;">
+        <select id="themeSelect" onchange="loadSelectedTheme()" style="margin-bottom:10px; padding:5px;">
+            <option value="">-- 选择已保存的主题 --</option>
+        </select>
+
+        <textarea id="cssInput" placeholder="在这里输入 CSS 代码... 例如: .chat-bubble { background: pink; }" style="flex-grow:1; width:100%; border:1px solid #ddd; border-radius:10px; padding:10px; font-family:monospace; margin-bottom:10px; resize:none;"></textarea>
+
+        <div style="display:flex; gap:5px;">
+            <input type="text" id="themeNameInput" placeholder="给主题起个名..." style="flex-grow:1; padding:5px; border:1px solid #ddd; border-radius:5px;">
+            <button onclick="saveCustomTheme()" style="background:var(--accent-color); color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">保存</button>
+            <button onclick="deleteCustomTheme()" style="background:#ffcccc; color:#ff6b6b; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">删</button>
+        </div>
+
+        <button onclick="previewCss()" style="margin-top:10px; background:#e0f7fa; color:#006064; border:none; padding:8px; border-radius:5px; cursor:pointer; width:100%;">⚡ 立即生效 (预览)</button>
+    </div>
+</div>
+
+            <div class="bookmark-drawer" id="bookmarkDrawer">
+                <div class="bookmark-header">
+                    <span>📑 我的书签</span>
+                    <span style="font-size:12px;color:#999;cursor:pointer" onclick="toggleBookmarkDrawer()">关闭</span>
+                </div>
+                <div class="bookmark-list" id="bookmarkList">
+                    </div>
+            </div>
+            
+            <div class="chat-container" id="chatContainer">
+            </div>
+
+            <div class="reader-footer" id="readerFooter">
+                <button class="page-btn" onclick="prevPage()">◀ 上一页</button>
+                <span class="page-info" id="pageInfo">1 / 1</span>
+                <button class="page-btn" onclick="nextPage()">下一页 ▶</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteBar" class="delete-bar">
+        <button class="delete-btn-cancel" onclick="toggleBatchDeleteMode()">取消</button>
+        <button class="delete-btn-confirm" onclick="confirmBatchDelete()">🗑️ 删除 (<span id="deleteCount">0</span>)</button>
+    </div>
+
+    <script>
+        // ================= 🔒 安全系统 (AuthSystem) =================
+        const auth = {
+            mode: 'login', type: null, step: 0, tempSecret: null, inputBuffer: '', failCount: 0,
+            
+            init: function() {
+                this.createSakura();
+                this.showView('view-landing');
+            },
+
+            proceedFromLanding: function() {
+                const savedType = localStorage.getItem('magic_auth_type');
+                const savedSecret = localStorage.getItem('magic_auth_secret');
+                if (!savedType || !savedSecret) { this.showView('view-welcome'); } 
+                else {
+                    this.mode = 'login';
+                    this.type = savedType;
+                    if (this.type === 'pin') this.showView('view-pin'); else this.showView('view-gesture');
+                    if (this.type === 'gesture') setTimeout(() => this.initGesture(), 100);
+                }
+            },
+
+            createSakura: function() {
+                const container = document.getElementById('sakuraContainer');
+                for(let i=0; i<15; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'sakura';
+                    el.style.left = Math.random() * 100 + '%';
+                    el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                    el.style.animationDelay = Math.random() * 5 + 's';
+                    container.appendChild(el);
+                }
+            },
+            showView: function(id) {
+                ['view-landing', 'view-welcome', 'view-pin', 'view-gesture', 'view-setup-question', 'view-recovery'].forEach(v => {
+                    const el = document.getElementById(v); if(el) el.style.display = 'none';
+                });
+                document.getElementById(id).style.display = 'block';
+                if(id === 'view-pin') this.updatePinDots();
+            },
+            toast: function(msg) {
+                const t = document.getElementById('toast');
+                t.textContent = msg; t.style.opacity = 1;
+                setTimeout(() => t.style.opacity = 0, 2000);
+            },
+            startSetup: function(type) {
+                this.mode = 'setup';
+                this.type = type; this.step = 1; this.inputBuffer = '';
+                if (type === 'pin') {
+                    document.getElementById('pinTitle').textContent = '设置密码';
+                    document.getElementById('pinSub').textContent = '请输入4位新密码'; this.showView('view-pin');
+                } else {
+                    document.getElementById('gestTitle').textContent = '绘制图案';
+                    document.getElementById('gestSub').textContent = '请绘制解锁图案'; this.showView('view-gesture'); setTimeout(() => this.initGesture(), 100);
+                }
+            },
+            inputPin: function(num) {
+                if (this.inputBuffer.length < 4) {
+                    this.inputBuffer += num;
+                    this.updatePinDots();
+                    if (this.inputBuffer.length === 4) setTimeout(() => this.submitPin(), 200);
+                }
+            },
+            clearPin: function() { this.inputBuffer = ''; this.updatePinDots(); },
+            updatePinDots: function() { const dots = document.getElementById('pinDots').children;
+                for(let i=0; i<4; i++) { if(i < this.inputBuffer.length) dots[i].classList.add('active'); else dots[i].classList.remove('active'); } },
+            submitPin: function() {
+                const val = this.inputBuffer;
+                this.inputBuffer = ''; this.updatePinDots();
+                if (this.mode === 'setup') {
+                    if (this.step === 1) { this.tempSecret = val;
+                        this.step = 2; document.getElementById('pinTitle').textContent = '再次确认'; document.getElementById('pinSub').textContent = '请再次输入以确认'; } 
+                    else { if (val === this.tempSecret) this.finishPasswordSetup(val);
+                    else { this.toast('两次输入不一致'); this.step = 1; document.getElementById('pinTitle').textContent = '设置密码'; } }
+                } else if (this.mode === 'login') { if (val === localStorage.getItem('magic_auth_secret')) this.unlockApp();
+                else this.handleFail(); }
+            },
+            
+            initGesture: function() {
+                const canvas = document.getElementById('gestureCanvas');
+                const ctx = canvas.getContext('2d'); 
+                const area = document.getElementById('gestureArea');
+                let isDrawing = false; let path = [];
+                canvas.width = 300;
+                canvas.height = 300; 
+
+                const getPoint = (x, y) => { 
+                    const rect = area.getBoundingClientRect();
+                    const rx = x - rect.left; const ry = y - rect.top;
+                    const col = Math.floor(rx / (300/3));
+                    const row = Math.floor(ry / (300/3));
+                    if(col>=0 && col<3 && row>=0 && row<3) return row*3 + col;
+                    return -1; 
+                };
+                const draw = (curX, curY) => {
+                    ctx.clearRect(0, 0, 300, 300);
+                    ctx.strokeStyle = '#ffb7c5'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                    if(path.length > 0) { 
+                        ctx.beginPath();
+                        const p0 = getCenter(path[0]); ctx.moveTo(p0.x, p0.y); 
+                        for(let i=1; i<path.length; i++) { const p = getCenter(path[i]); ctx.lineTo(p.x, p.y); } 
+                        if(curX !== null) ctx.lineTo(curX, curY);
+                        ctx.stroke(); 
+                    }
+                    document.querySelectorAll('.point-inner').forEach((el, i) => { if(path.includes(i)) el.classList.add('active'); else el.classList.remove('active'); });
+                };
+                const getCenter = (idx) => { const row = Math.floor(idx/3), col = idx%3;
+                    return { x: col*100 + 50, y: row*100 + 50 }; };
+                
+                const start = (e) => { e.preventDefault(); e.stopPropagation(); isDrawing = true; path = []; move(e); };
+                const move = (e) => { 
+                    if(!isDrawing) return;
+                    e.preventDefault(); e.stopPropagation();
+                    let cx, cy; if(e.touches) { cx = e.touches[0].clientX; cy = e.touches[0].clientY; } else { cx = e.clientX; cy = e.clientY; }
+                    const rect = area.getBoundingClientRect();
+                    const idx = getPoint(cx, cy); if(idx !== -1 && !path.includes(idx)) path.push(idx); 
+                    draw(cx - rect.left, cy - rect.top); 
+                };
+                const end = (e) => { 
+                    if(!isDrawing) return;
+                    e.preventDefault(); isDrawing = false; draw(null, null); 
+                    if(path.length < 3) { this.toast('点太少啦'); path = []; draw(null,null); return; } 
+                    const code = path.join('');
+                    if(this.mode === 'setup') { 
+                        if(this.step === 1) { this.tempSecret = code;
+                            this.step = 2; document.getElementById('gestTitle').textContent = '再次绘制'; setTimeout(()=>{ path=[]; draw(null,null); }, 500);
+                        } 
+                        else { if(code === this.tempSecret) this.finishPasswordSetup(code);
+                        else { this.toast('不一致'); this.step = 1; document.getElementById('gestTitle').textContent = '绘制图案'; setTimeout(()=>{ path=[]; draw(null,null); }, 500);
+                        } } 
+                    } else if(this.mode === 'login') { 
+                        if(code === localStorage.getItem('magic_auth_secret')) this.unlockApp();
+                        else { this.handleFail(); setTimeout(()=>{ path=[]; draw(null,null); }, 500); } 
+                    } 
+                };
+                const newCanvas = canvas.cloneNode(true); canvas.parentNode.replaceChild(newCanvas, canvas);
+                newCanvas.addEventListener('mousedown', start); newCanvas.addEventListener('touchstart', start, {passive: false});
+                window.addEventListener('mousemove', move); window.addEventListener('touchmove', move, {passive: false});
+                window.addEventListener('mouseup', end);
+                window.addEventListener('touchend', end);
+
+                this.resetGesture = () => { this.step = 1; this.tempSecret = null; document.getElementById('gestTitle').textContent = '绘制图案'; document.getElementById('gestResetBtn').style.display = 'none';
+                    path = []; draw(null,null); };
+            },
+
+            finishPasswordSetup: function(secret) { this.finalSecret = secret; this.finalType = this.type; this.showView('view-setup-question'); },
+            saveSecurityQuestion: function() { const q = document.getElementById('secQuestion').value.trim();
+                const a = document.getElementById('secAnswer').value.trim(); if(!q || !a) { this.toast('请填写完整'); return; } localStorage.setItem('magic_auth_type', this.finalType); localStorage.setItem('magic_auth_secret', this.finalSecret); localStorage.setItem('magic_auth_q', q); localStorage.setItem('magic_auth_a', a); this.toast('设置成功！');
+                this.unlockApp(); },
+            handleFail: function() { this.failCount++; this.toast('密码错误');
+                if(this.failCount >= 3) { if(this.type==='pin') document.getElementById('pinForgotBtn').style.display='block'; else document.getElementById('gestForgotBtn').style.display='block'; } },
+            showRecovery: function() { const q = localStorage.getItem('magic_auth_q');
+                if(!q) { this.toast('未设置问题'); return; } document.getElementById('recoveryQText').textContent = q; this.showView('view-recovery'); },
+            checkRecovery: function() { if(document.getElementById('recoveryAnswer').value.trim() === localStorage.getItem('magic_auth_a')) { localStorage.removeItem('magic_auth_type');
+                localStorage.removeItem('magic_auth_secret'); this.toast('验证成功，请重设'); setTimeout(() => location.reload(), 1000); } else this.toast('错误'); },
+            unlockApp: function() { document.getElementById('lockScreen').style.transition = 'opacity 0.5s';
+                document.getElementById('lockScreen').style.opacity = 0; setTimeout(() => { document.getElementById('lockScreen').style.display = 'none'; document.getElementById('appContainer').style.display = 'block'; if(!window.appInitialized) { initOriginalApp(); window.appInitialized = true; } }, 500);
+            }
+        };
+
+        // ================= 📱 应用核心逻辑 =================
+        let items = [];
+        let draftResources = []; 
+        let currentTags = [];
+        let isEditing = false;
+        let editingIndex = -1;
+        let viewingIndex = -1;
+        let galleryIndex = 0;
+        let currentLuckyIndex = -1;
+
+        const TYPES = ['默认', '人物卡', '世界书', 'QR码', '预设', '预设正则', '插件', '自定义'];
+        const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffe6eb'/%3E%3Ctext x='50' y='50' fill='%23ffb7c5' text-anchor='middle' dy='.3em'%3E无图%3C/text%3E%3C/svg%3E";
+        const DEFAULT_MUSIC = "https://files.catbox.moe/btptsb.mp3";
+        const DB_NAME = 'MyMagicDB';
+        const STORE_NAME = 'items';
+        let db;
+
+        window.onload = function() { auth.init(); };
+        function initOriginalApp() { initDB().then(() => { loadFromDB(); migrateFromLocalStorage(); initLayout(); }); initMusic(); initDraggable(); }
+        function initDB() { return new Promise((resolve, reject) => { const request = indexedDB.open(DB_NAME, 1); request.onerror = () => reject(); request.onupgradeneeded = (e) => { const db = e.target.result; if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true }); }; request.onsuccess = (e) => { db = e.target.result; resolve(); }; }); }
+        async function loadFromDB() { const tx = db.transaction(STORE_NAME, 'readonly');
+            const req = tx.objectStore(STORE_NAME).getAll(); req.onsuccess = () => { items = req.result.sort((a, b) => new Date(b.date) - new Date(a.date)); renderGrid(items);
+            renderNavPanel(); 
+updateTitleLevel(); 
+}; }
+        async function saveItemToDB(item) { return new Promise((resolve, reject) => { const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); const req = item.id ? store.put(item) : store.add(item); req.onsuccess = () => resolve(req.result); req.onerror = () => { alert('保存失败，文件太大？'); reject(); }; }); }
+        async function deleteItemFromDB(id) { const tx = db.transaction(STORE_NAME, 'readwrite'); tx.objectStore(STORE_NAME).delete(id);
+            return new Promise(resolve => tx.oncomplete = resolve); }
+        function migrateFromLocalStorage() { const old = localStorage.getItem('my_magic_collection_v3');
+            if(old) { try { const p = JSON.parse(old); if(p.length > 0 && confirm('发现旧数据，迁移吗？')) { const tx = db.transaction(STORE_NAME, 'readwrite');
+            p.forEach(i => { delete i.id; tx.objectStore(STORE_NAME).add(i); }); tx.oncomplete = () => { alert('迁移成功！'); localStorage.removeItem('my_magic_collection_v3'); loadFromDB(); };
+            } } catch(e){} } }
+
+        function renderGrid(dataList) {
+updateTitleLevel(); 
+            const container = document.getElementById('gridContainer');
+            container.innerHTML = '';
+            
+            if (dataList.length === 0) { 
+                container.innerHTML = '<div class="empty-state">空空的...快去添加吧！</div>';
+                return; 
+            }
+
+            dataList.forEach((item) => {
+                const realIndex = items.indexOf(item);
+                const card = document.createElement('div'); 
+                
+                card.className = 'card';
+            
+                if (isBatchDeleteMode) {
+                    card.classList.add('is-selecting');
+                    if (selectedDeleteIds.has(item.id)) {
+                        card.classList.add('selected');
+                    }
+        
+                    card.onclick = () => {
+                        if (selectedDeleteIds.has(item.id)) {
+                            selectedDeleteIds.delete(item.id);
+                        } else {
+                            selectedDeleteIds.add(item.id);
+                        }
+                        renderGrid(dataList); 
+                        updateDeleteBar();
+                    };
+                } else {
+                    card.onclick = () => openDetailModal(realIndex);
+                }
+
+                const images = item.resources.filter(r => r.type === 'image');
+                let coverSrc = PLACEHOLDER_IMG; 
+                if (images.length > 0) coverSrc = images[Math.min(item.coverIndex||0, images.length-1)].content;
+                
+                const imgWrapper = document.createElement('div'); 
+                imgWrapper.className = 'card-img-wrapper';
+                const img = document.createElement('img'); 
+                img.src = coverSrc; 
+                imgWrapper.appendChild(img);
+                
+                const content = document.createElement('div'); 
+                content.className = 'card-content';
+                const title = document.createElement('h3');
+                title.className = 'card-title'; 
+                title.textContent = item.name;
+                content.appendChild(title); 
+                
+                const tagsDiv = document.createElement('div'); 
+                tagsDiv.className = 'tags-container';
+                (item.tags||[]).forEach(t => { 
+                    const span = document.createElement('span'); 
+                    span.className = 'tag-pill'; 
+                    span.textContent = t; 
+                    tagsDiv.appendChild(span); 
+                }); 
+                content.appendChild(tagsDiv);
+                
+                card.appendChild(imgWrapper); 
+                card.appendChild(content); 
+                container.appendChild(card);
+            });
+        }
+
+        function switchLayout(mode) {
+            const c = document.getElementById('gridContainer');
+            c.className = 'grid-container'; 
+            c.classList.add('mode-' + mode);
+            
+            document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
+            if(mode==='default') document.querySelector('.layout-btn[title="默认网格"]').classList.add('active');
+            if(mode==='list') document.querySelector('.layout-btn[title="长列表"]').classList.add('active');
+            if(mode==='large') document.querySelector('.layout-btn[title="大图模式"]').classList.add('active');
+            if(mode==='mini') document.querySelector('.layout-btn[title="迷你模式"]').classList.add('active');
+
+            localStorage.setItem('my_magic_layout', mode);
+            auth.toast('视图切换成功 ✨');
+        }
+
+        function initLayout() {
+            const mode = localStorage.getItem('my_magic_layout') || 'default';
+            switchLayout(mode);
+        }
+
+        // --- 抽签逻辑 ---
+        function startLottery() {
+            if(items.length === 0) { auth.toast('盒子是空的怎么抽呀~'); return; }
+            document.getElementById('floatMenu').classList.remove('active');
+            const overlay = document.getElementById('lotteryOverlay');
+            const gift = document.getElementById('magicGift');
+            const result = document.getElementById('lotteryResult');
+            overlay.classList.add('active'); result.style.display = 'none'; gift.style.display = 'block'; gift.classList.add('shaking');
+            const luckyIndex = Math.floor(Math.random() * items.length);
+            currentLuckyIndex = luckyIndex;
+            const item = items[luckyIndex];
+            document.getElementById('lotteryName').textContent = item.name;
+            const images = item.resources.filter(r => r.type === 'image');
+            let coverSrc = PLACEHOLDER_IMG; 
+            if (images.length > 0) coverSrc = images[Math.min(item.coverIndex||0, images.length-1)].content;
+            document.getElementById('lotteryImg').src = coverSrc;
+            setTimeout(() => { gift.classList.remove('shaking'); gift.style.display = 'none'; result.style.display = 'flex'; }, 1500);
+        }
+        function closeLottery() { document.getElementById('lotteryOverlay').classList.remove('active'); }
+        function goToLotteryItem() { closeLottery(); if(currentLuckyIndex !== -1) setTimeout(() => openDetailModal(currentLuckyIndex), 300); }
+
+        // --- 🟢 增强版：全能批量导入 (支持 .jsonl 自动识别) ---
+        async function handleBatchImageImport(input) {
+            const files = Array.from(input.files);
+            if (files.length === 0) return;
+            
+            auth.toast(`正在搬运 ${files.length} 个文件，请稍等... 🚚`);
+            let count = 0;
+            for (let f of files) {
+                const name = f.name;
+                let resourceType = 'file'; 
+                let subType = '附件';
+                let content = null;
+                if (f.type.startsWith('image/')) {
+                    resourceType = 'image';
+                    subType = '默认';
+                    content = await readFile(f); 
+                } else if (f.name.endsWith('.json') || f.name.endsWith('.jsonl')) { 
+                    resourceType = 'json';
+                    subType = '数据';
+                    content = await readFileText(f);
+                } else {
+                    resourceType = 'file';
+                    subType = '附件';
+                    content = await readFile(f); 
+                }
+
+                const newItem = { 
+                    name: name, 
+                    tags: ['批量导入'], 
+                    resources: [{ 
+                        type: resourceType, 
+                        subType: subType, 
+                        name: name, 
+                        content: content 
+                    }], 
+                    coverIndex: 0, 
+                    date: new Date().toISOString() 
+                };
+                try { 
+                    await saveItemToDB(newItem);
+                    count++; 
+                } catch(e) { 
+                    console.error("文件太大或保存失败:", e);
+                    auth.toast(`❌ ${name} 太大了，存不下！`);
+                }
+            }
+            loadFromDB();
+            auth.toast(`搞定！成功存入了 ${count} 个宝贝！✨`);
+            input.value = ''; 
+        }
+
+        // ================= 🧹 批量删除逻辑 =================
+
+        let isBatchDeleteMode = false;
+        let selectedDeleteIds = new Set(); 
+
+        function toggleBatchDeleteMode() {
+            isBatchDeleteMode = !isBatchDeleteMode;
+            selectedDeleteIds.clear(); 
+            updateDeleteBar();
+            handleSearch(); 
+            
+            if(isBatchDeleteMode) {
+                auth.toast('进入删除模式：请点选要删除的盒子 🗑️');
+            }
+        }
+
+        function updateDeleteBar() {
+            const bar = document.getElementById('deleteBar');
+            const countSpan = document.getElementById('deleteCount');
+            
+            if (isBatchDeleteMode) {
+                bar.classList.add('active');
+                countSpan.textContent = selectedDeleteIds.size;
+            } else {
+                bar.classList.remove('active');
+            }
+        }
+
+        async function confirmBatchDelete() {
+            if (selectedDeleteIds.size === 0) {
+                auth.toast('还没选任何东西呢~');
+                return;
+            }
+            if (!confirm(`确定要删除选中的 ${selectedDeleteIds.size} 个盒子吗？无法恢复哦！`)) return;
+            for (let id of selectedDeleteIds) {
+                await deleteItemFromDB(id);
+            }
+
+            toggleBatchDeleteMode(); 
+            loadFromDB(); 
+            auth.toast('清理完毕！变得清爽多啦 ✨');
+        }
+
+        // --- CRUD & UI Helpers ---
+        function resetAddModal() { isEditing = false;
+            editingIndex = -1; document.getElementById('modalTitle').textContent = '✨ 添加新收藏'; document.getElementById('itemName').value = ''; 
+    document.getElementById('itemMemories').value = ''; // 🟢 新增：清空回忆录
+document.getElementById('tagInput').value = ''; document.getElementById('linkInputArea').style.display = 'none'; draftResources = [];
+            currentTags = []; renderTagsInput(); renderResourceList(); renderSuggestTags(); }
+        function openAddModal() { resetAddModal(); document.getElementById('addModal').classList.add('active'); }
+        function openEditMode() { if (viewingIndex === -1) return; isEditing = true;
+            editingIndex = viewingIndex; const item = items[editingIndex]; document.getElementById('modalTitle').textContent = '✏️ 编辑盒子内容'; document.getElementById('itemName').value = item.name; 
+    // 👇 🟢 新增：回显回忆录，把数组变回多行文本
+    document.getElementById('itemMemories').value = (item.memories || []).join('\n');
+currentTags = [...(item.tags || [])];
+            draftResources = JSON.parse(JSON.stringify(item.resources)); renderTagsInput(); renderResourceList(); renderSuggestTags(); document.getElementById('detailModal').classList.remove('active'); document.getElementById('addModal').classList.add('active'); }
+        
+        function renderResourceList() {
+            const list = document.getElementById('resourceList');
+            list.innerHTML = '';
+            if(draftResources.length === 0) { list.innerHTML = '<div style="text-align:center; color:#ccc; font-size:12px; padding:20px;">暂无内容</div>'; return; }
+            draftResources.forEach((res, idx) => {
+                const item = document.createElement('div'); item.className = 'resource-item';
+                let p = '';
+                if (res.type === 'image') p = `<img src="${res.content}" style="width:100%;height:100%;object-fit:cover">`;
+                else if (res.type === 'json') p = '📄';
+                else if (res.type === 'link') p = '🔗';
+                else p = '📎';
+
+                const isCustom = !TYPES.includes(res.subType) || res.subType === '自定义';
+                const selectValue = isCustom ? '自定义' : res.subType;
+                const customInputValue = (isCustom && res.subType !== '自定义') ? res.subType : '';
+                const customDisplay = isCustom ? 'inline-block' : 'none';
+
+                let controlsHtml = '';
+                if (res.type !== 'link') {
+                    let options = '';
+                    TYPES.forEach(t => { options += `<option value="${t}" ${selectValue === t ? 'selected' : ''}>${t}</option>`; });
+                    controlsHtml = `<div class="resource-controls"><select class="resource-type-select" onchange="handleTypeChange(${idx}, this.value)">${options}</select><input type="text" class="custom-type-input" style="display:${customDisplay}" placeholder="输入类型" value="${customInputValue}" onchange="updateCustomType(${idx}, this.value)"></div>`;
+                } else {
+                    controlsHtml = `<span style="font-size:11px;color:#aaa">链接</span>`;
+                }
+                item.innerHTML = `<div class="resource-preview">${p}</div><div class="resource-info"><input type="text" class="resource-name-input" value="${res.name}" onchange="updateResourceName(${idx}, this.value)" placeholder="请输入文件名称">${controlsHtml}</div><button class="btn-remove" onclick="removeDraftResource(${idx})">×</button>`;
+                list.appendChild(item);
+            });
+        }
+
+        function updateResourceName(idx, val) { draftResources[idx].name = val; }
+        function handleTypeChange(idx, val) { if (val === '自定义') { draftResources[idx].subType = '自定义';
+            } else { draftResources[idx].subType = val; } renderResourceList(); }
+        function updateCustomType(idx, val) { draftResources[idx].subType = val; }
+        function removeDraftResource(idx) { draftResources.splice(idx, 1); renderResourceList(); }
+        
+        async function handleUniversalSelect(input) {
+            const files = Array.from(input.files);
+            for(let f of files) {
+                if (f.type.startsWith('image/')) {
+                    const b = await readFile(f);
+                    draftResources.push({ type: 'image', subType: '默认', name: f.name, content: b });
+                } else if (f.type === 'application/json' || f.name.endsWith('.json') || f.name.endsWith('.jsonl')) { 
+                    const t = await readFileText(f);
+                    draftResources.push({ type: 'json', subType: '默认', name: f.name, content: t });
+                } else {
+                    const b = await readFile(f);
+                    draftResources.push({ type: 'file', subType: '附件', name: f.name, content: b });
+                }
+            }
+            renderResourceList();
+            input.value = '';
+        }
+
+        function openLinkInput() { document.getElementById('linkInputArea').style.display = 'block'; }
+        function confirmAddLink() { const n = document.getElementById('newLinkName').value.trim(), u = document.getElementById('newLinkUrl').value.trim();
+            if(n && u) { draftResources.push({ type: 'link', subType: 'link', name: n, content: u }); renderResourceList(); document.getElementById('newLinkName').value = '';
+            document.getElementById('newLinkUrl').value = ''; document.getElementById('linkInputArea').style.display = 'none'; } else alert('请输入名称和网址'); }
+        async function saveItem() { const n = document.getElementById('itemName').value.trim();
+    // 👇 🟢 新增：获取多行文本，按换行符分割成数组
+    const memRaw = document.getElementById('itemMemories').value;
+    const memList = memRaw.split('\n').filter(line => line.trim() !== '');
+    // 👆 🟢 新增结束
+if (!n) { alert('名字不能为空'); return; } if (draftResources.length === 0) { alert('盒子不能为空'); return;
+            } const d = { name: n, tags: [...currentTags], memories: memList, resources: draftResources, coverIndex: 0, date: new Date().toISOString() };
+            if (isEditing) { d.id = items[editingIndex].id; d.coverIndex = items[editingIndex].coverIndex; } await saveItemToDB(d); loadFromDB(); handleSearch(); closeAddModal();
+        }
+        
+        function openDetailModal(index) { 
+            viewingIndex = index;
+            const item = items[index]; document.getElementById('detailName').textContent = item.name; const tagsBox = document.getElementById('detailTags'); tagsBox.innerHTML = '';
+            (item.tags||[]).forEach(t => { const s = document.createElement('span'); s.className='tag-pill'; s.textContent=t; tagsBox.appendChild(s); }); const images = item.resources.filter(r => r.type === 'image');
+            if(images.length === 0) { document.getElementById('galleryArea').style.display = 'none'; document.getElementById('noImgMsg').style.display = 'block'; } else { document.getElementById('galleryArea').style.display = 'block'; document.getElementById('noImgMsg').style.display = 'none';
+            galleryIndex = Math.min(item.coverIndex||0, images.length-1); updateGalleryUI(images); } 
+            
+            const listContainer = document.getElementById('detailListContainer');
+            listContainer.innerHTML = ''; 
+            
+            item.resources.forEach((res, i) => { 
+                const row = document.createElement('div'); row.className = 'detail-item'; 
+                let icon = '📄', btn = '', lbl = res.subType; 
+                
+                const downloadBtn = `<span class="action-link" onclick="downloadResource(${i})">下载</span>`;
+
+                if (res.type === 'image') { 
+                    icon = '🖼️'; btn = downloadBtn; 
+                } 
+                else if (res.type === 'json') { 
+                    icon = '📜'; 
+                    btn = `<span class="action-link" style="background:#e0f7fa;color:#006064;margin-right:5px;" onclick="openReader(${i})">📖 阅读</span>` + downloadBtn; 
+                } 
+                else if (res.type === 'link') { 
+                    icon = '🔗'; lbl = '链接'; btn = `<a class="action-link" href="${res.content}" target="_blank">打开</a>`; 
+                } 
+                else { 
+                    icon = '📎'; lbl = '附件';
+                    btn = downloadBtn; 
+                } 
+                
+                row.innerHTML = `<div style="display:flex;align-items:center;min-width:0;"><span class="detail-item-type">${lbl}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${icon} ${res.name}</span></div><div style="flex-shrink:0;margin-left:10px;">${btn}</div>`;
+                listContainer.appendChild(row); 
+            });
+            // 👇 🟢 新增：渲染印章状态
+            renderStampStatus(items[index].stamp);
+            
+    // 👇 🟢 在函数最后加这句，开始播放动画
+    startMemoryAnimation(items[index].memories || []);
+document.getElementById('detailModal').classList.add('active'); 
+        }
+
+        function updateGalleryUI(images) { const imgEl = document.getElementById('detailImg');
+            const curImg = images[galleryIndex]; imgEl.src = curImg.content; document.getElementById('galleryTypeLabel').textContent = curImg.subType; document.getElementById('imgIndex').textContent = galleryIndex + 1; document.getElementById('imgTotal').textContent = images.length;
+            const cb = document.getElementById('setCoverBtn'); if(galleryIndex === (items[viewingIndex].coverIndex || 0)) { cb.textContent = '当前封面'; cb.classList.add('is-cover'); } else { cb.textContent = '设为封面';
+            cb.classList.remove('is-cover'); } }
+        function changeGalleryImage(d) { const images = items[viewingIndex].resources.filter(r => r.type === 'image');
+            if(images.length === 0) return; galleryIndex += d; if(galleryIndex >= images.length) galleryIndex = 0;
+            if(galleryIndex < 0) galleryIndex = images.length - 1; updateGalleryUI(images); }
+        async function setAsCover() { if(viewingIndex === -1) return;
+            const item = items[viewingIndex]; item.coverIndex = galleryIndex; await saveItemToDB(item); const images = item.resources.filter(r => r.type === 'image'); updateGalleryUI(images); loadFromDB();
+        }
+        function downloadCurrentGalleryImg() { const images = items[viewingIndex].resources.filter(r => r.type === 'image');
+            if(images.length === 0) return; const cur = images[galleryIndex]; downloadFile(cur.name, cur.content);
+        }
+        function downloadResource(resIndex) { const res = items[viewingIndex].resources[resIndex]; if(res.type === 'link') return;
+            downloadFile(res.name, res.content); }
+        function downloadFile(name, content) { const a = document.createElement('a');
+            if (content.startsWith('data:')) a.href = content; else { const blob = new Blob([content], {type: 'application/json'}); a.href = URL.createObjectURL(blob);
+            } a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a); if (!content.startsWith('data:')) URL.revokeObjectURL(a.href);
+        }
+        function readFile(file) { return new Promise(resolve => { const r = new FileReader(); r.onload = e => resolve(e.target.result); r.readAsDataURL(file); });
+        }
+        function readFileText(file) { return new Promise(resolve => { const r = new FileReader(); r.onload = e => resolve(e.target.result); r.readAsText(file); });
+        }
+        
+        function handleTagInput(e) { 
+            if(e.key==='Enter'){ e.preventDefault();
+            manualAddTag(); } 
+            if(e.key==='Backspace' && !e.target.value) { currentTags.pop(); renderTagsInput(); } 
+        }
+        function manualAddTag() {
+            const el = document.getElementById('tagInput');
+            const v = el.value.trim();
+            if(v && !currentTags.includes(v)) { currentTags.push(v); el.value=''; renderTagsInput(); }
+            el.focus();
+        }
+
+        function renderTagsInput() { const area=document.getElementById('tagInputArea'); const inp=document.getElementById('tagInput'); Array.from(area.children).forEach(c=>c!==inp && area.removeChild(c));
+            currentTags.forEach((t,i)=>{ const d=document.createElement('div'); d.className='tag-chip'; d.innerHTML=`${t} <span onclick="currentTags.splice(${i},1);renderTagsInput()" style="cursor:pointer">×</span>`; area.insertBefore(d,inp); });
+        }
+        function renderSuggestTags() { const all=new Set(); items.forEach(i=>(i.tags||[]).forEach(t=>all.add(t))); const box=document.getElementById('suggestedTags'); box.innerHTML='';
+            all.forEach(t=>{ const d=document.createElement('div'); d.className='tag-chip'; d.style.background='#f0f0f0'; d.style.color='#666'; d.style.cursor='pointer'; d.textContent=t; d.onclick=()=>{if(!currentTags.includes(t)){currentTags.push(t);renderTagsInput();}}; box.appendChild(d); });
+        }
+                function handleSearch() {
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            const isDeep = document.getElementById('deepSearchCheck').checked; // 是否勾选了“搜内容”
+
+            if (!q) {
+                renderGrid(items); // 没字就显示全部
+                return;
+            }
+
+            const f = items.filter(item => {
+                // 1. 基础搜索：搜名字和标签
+                const matchBasic = item.name.toLowerCase().includes(q) || (item.tags || []).some(t => t.toLowerCase().includes(q));
+                
+                if (matchBasic) return true;
+
+                // 2. 深层搜索：如果勾选了，就去翻 resources 里的内容
+                if (isDeep && item.resources) {
+                    return item.resources.some(res => {
+                        // 只搜 JSON (聊天记录) 或 文本文件
+                        if (res.type === 'json' || res.type === 'file') {
+                            // 直接在字符串里找，简单粗暴且高效
+                            return res.content && res.content.toLowerCase().includes(q);
+                        }
+                        return false;
+                    });
+                }
+                
+                return false;
+            });
+
+            renderGrid(f);
+            
+            // 🟢 如果是深层搜索，给个提示反馈
+            if(isDeep && q) {
+                // 简单的防抖提示，避免每次打字都弹
+                // 这里我们直接利用 Grid 的空状态来提示
+                if(f.length === 0) {
+                    document.querySelector('.empty-state').innerHTML = `🤔 在回忆里找了一圈，没找到 "${q}"...`;
+                }
+            }
+        }
+
+        function closeAddModal() { document.getElementById('addModal').classList.remove('active'); }
+                function closeAddModal() { 
+            document.getElementById('addModal').classList.remove('active'); 
+        }
+        function closeDetailModal() { 
+            document.getElementById('detailModal').classList.remove('active'); 
+            viewingIndex = -1; 
+            
+            // 👇 🟢 必须放在这个花括号里面！ 🟢 👇
+            stopMemoryAnimation();
+        }
+        async function deleteCurrentItem() { 
+            if(confirm('确定删除吗？')) { 
+                const id = items[viewingIndex].id; 
+                await deleteItemFromDB(id);
+                loadFromDB(); 
+                closeDetailModal(); 
+            } 
+        }
+        function exportAllData() { const tx = db.transaction(STORE_NAME, 'readonly');
+            const req = tx.objectStore(STORE_NAME).getAll(); req.onsuccess = () => { const blob = new Blob([JSON.stringify(req.result)], {type:'application/json'}); const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob); a.download = `备份_${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            } }
+        function importAllData(el) { const file = el.files[0]; if(!file) return;
+            const r = new FileReader(); r.onload = e => { try { const imported = JSON.parse(e.target.result);
+            if(Array.isArray(imported)) { const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); imported.forEach(item => { delete item.id; store.add(item); });
+            tx.oncomplete = () => { loadFromDB(); alert('导入成功！'); }; } } catch{ alert('文件格式错误'); } }; r.readAsText(file);
+        }
+        function initMusic() { const link = localStorage.getItem('my_bgm_link') || DEFAULT_MUSIC;
+            const audio = document.getElementById('bgMusic'); audio.src = link; audio.volume = 0.5; document.getElementById('musicLink').value = link;
+        }
+        function toggleMusic() { const a=document.getElementById('bgMusic'); const b=document.getElementById('playBtn');
+            if(a.paused){a.play();b.textContent='⏸';}else{a.pause();b.textContent='▶';} }
+        function changeVolume(s) { document.getElementById('bgMusic').volume=s.value;
+        }
+        function updateMusicSrc(v) { if(v){document.getElementById('bgMusic').src=v; localStorage.setItem('my_bgm_link',v);
+            document.getElementById('playBtn').textContent='▶';} }
+        function renderNavPanel() { const c = document.getElementById('navPanel'); const t = c.querySelector('.nav-title');
+            c.innerHTML=''; c.appendChild(t); const map={}; const no=[]; items.forEach((it,i)=>{ if(!it.tags||it.tags.length==0)no.push(i); else it.tags.forEach(tag=>{ if(!map[tag])map[tag]=[]; map[tag].push(i); }); }); if(no.length) createNavGroup(c,'📂 未分类',no); Object.keys(map).sort().forEach(k=>createNavGroup(c,`🏷️ ${k}`,map[k]));
+        }
+        function createNavGroup(c,t,idx) { const g=document.createElement('div'); g.style.marginBottom='5px'; const h=document.createElement('div'); h.innerHTML=`${t} ▾`; h.style.cssText='padding:5px;font-size:12px;font-weight:bold;cursor:pointer;color:#555;'; h.onclick=()=>{l.style.display=l.style.display==='none'?'block':'none'};
+            const l=document.createElement('div'); l.style.cssText='display:none;padding-left:10px;'; idx.forEach(i=>{ const it=document.createElement('div'); it.textContent=items[i].name; it.style.cssText='font-size:11px;padding:3px;cursor:pointer;color:#888;'; it.onclick=()=>{openDetailModal(i);document.getElementById('floatMenu').classList.remove('active')}; l.appendChild(it); }); g.appendChild(h); g.appendChild(l); c.appendChild(g);
+        }
+
+        function initDraggable() {
+            const w=document.getElementById('floatWidget'), b=document.getElementById('floatBtn'), m=document.getElementById('floatMenu');
+            let isDragging=false, startX, startY, initialLeft, initialTop;
+            b.addEventListener('mousedown', s); b.addEventListener('touchstart', s, {passive:false});
+            function s(e) { if(e.target.closest('.float-menu'))return; isDragging=false; const c=e.type.includes('mouse')?e:e.touches[0]; startX=c.clientX; startY=c.clientY;
+            const r=w.getBoundingClientRect(); initialLeft=r.left; initialTop=r.top; w.style.left=initialLeft+'px'; w.style.top=initialTop+'px'; w.style.bottom='auto'; w.style.right='auto'; if(e.type.includes('mouse')) { document.addEventListener('mousemove', mv); document.addEventListener('mouseup', ed); } else { document.addEventListener('touchmove', mv, {passive:false});
+            document.addEventListener('touchend', ed); } }
+            function mv(e) { const c=e.type.includes('mouse')?e:e.touches[0];
+            const dx=c.clientX-startX, dy=c.clientY-startY; if(Math.abs(dx)>5||Math.abs(dy)>5){ isDragging=true; if(m.classList.contains('active'))m.classList.remove('active'); } if(isDragging){ e.preventDefault(); w.style.left=(initialLeft+dx)+'px'; w.style.top=(initialTop+dy)+'px';
+            } }
+            function ed() { document.removeEventListener('mousemove',mv); document.removeEventListener('mouseup',ed); document.removeEventListener('touchmove',mv); document.removeEventListener('touchend',ed);
+            }
+            b.addEventListener('click', (e)=>{ if(isDragging){e.preventDefault();e.stopPropagation();}else{m.classList.toggle('active');} });
+            document.addEventListener('click', (e)=>{ if(m.classList.contains('active')&&!w.contains(e.target)){m.classList.remove('active');} });
+        }
+
+        // ================= 📖 时光放映室逻辑 (Reader System - 编辑 & 书签增强版) =================
+
+        let readerState = {
+            data: [],
+            bookmarks: {}, // 格式: { floorIndex: "备注内容" }
+            currentPage: 1,
+            pageSize: 10,
+            totalMessages: 0,
+            totalPages: 0,
+            resourceIndex: -1 // 记录当前正在读哪个文件，方便保存
+        };
+
+        function closeReader() {
+            document.getElementById('readerModal').classList.remove('active');
+            document.getElementById('bookmarkDrawer').classList.remove('active');
+        }
+
+        async function openReader(resIndex) {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+            const res = item.resources[resIndex];
+            
+            readerState.resourceIndex = resIndex;
+
+            let jsonContent;
+            try {
+                // 1. 解析内容
+                if (res.content.startsWith('data:')) {
+                    const base64 = res.content.split(',')[1];
+                    const decoded = atob(base64);
+                    // 解决中文乱码问题
+                    const bytes = new Uint8Array(decoded.length);
+                    for (let i = 0; i < decoded.length; i++) bytes[i] = decoded.charCodeAt(i);
+                    jsonContent = new TextDecoder('utf-8').decode(bytes);
+                } else {
+                    jsonContent = res.content;
+                }
+
+                let chatData = [];
+                try {
+                    chatData = JSON.parse(jsonContent);
+                } catch (e) {
+                    // 尝试 JSONL
+                    const lines = jsonContent.split('\n').filter(line => line.trim() !== '');
+                    chatData = lines.map(line => JSON.parse(line));
+                }
+
+               // 标准化消息 (保持不变)
+                let messages = [];
+                if (Array.isArray(chatData)) {
+                    messages = chatData;
+                } else if (chatData.messages && Array.isArray(chatData.messages)) {
+                    messages = chatData.messages;
+                }
+
+                if (messages.length === 0) {
+                    auth.toast('没有找到聊天记录 📜');
+                    return;
+                }
+
+                // 加载书签 (保持不变)
+                if (!res.bookmarks) {
+                    res.bookmarks = {};
+                }
+                readerState.bookmarks = res.bookmarks;
+
+                // 初始化分页
+                readerState.data = messages;
+                readerState.totalMessages = messages.length;
+                readerState.pageSize = 10;
+                readerState.totalPages = Math.ceil(messages.length / readerState.pageSize);
+                readerState.currentPage = 1;
+
+                document.getElementById('readerTitle').textContent = res.name.replace(/\.jsonl?$/i, '');
+                
+                renderCurrentPage();
+                
+                // 🟢 改动：打开阅读器时，强制滚动到顶部
+                document.getElementById('chatContainer').scrollTop = 0; 
+                
+                document.getElementById('readerModal').classList.add('active');
+
+            } catch (e) {
+                console.error(e);
+                auth.toast('打不开...格式好像不对 😵');
+            }
+        }
+
+              function renderCurrentPage() {
+            const container = document.getElementById('chatContainer');
+            container.innerHTML = ''; 
+
+            const startIdx = (readerState.currentPage - 1) * readerState.pageSize;
+            const endIdx = Math.min(startIdx + readerState.pageSize, readerState.totalMessages);
+            const currentMessages = readerState.data.slice(startIdx, endIdx);
+
+            document.getElementById('readerCount').textContent = `总计 ${readerState.totalMessages} 楼`;
+            document.getElementById('pageInfo').textContent = `${readerState.currentPage} / ${readerState.totalPages}`;
+
+            currentMessages.forEach((msg, i) => {
+                // ... (中间的 forEach 循环生成气泡的代码完全保持不变) ...
+                // ... 直接复制原来的即可 ...
+                const globalIndex = startIdx + i;
+                const text = msg.mes || msg.content || msg.text || msg.message || '...';
+                const name = msg.name || '???';
+                
+                let isRight = false;
+                if (msg.hasOwnProperty('is_user')) isRight = msg.is_user;
+                else if (msg.hasOwnProperty('is_main')) isRight = msg.is_main;
+                else if (name === 'User' || name === '我' || name === 'Me') isRight = true;
+
+                const sideClass = isRight ? 'right' : 'left';
+                const row = document.createElement('div');
+                row.className = `chat-row ${sideClass}`;
+                row.id = `floor-${globalIndex}`; 
+
+                const floor = document.createElement('span');
+                floor.className = 'floor-tag';
+                
+                const isBookmarked = readerState.bookmarks.hasOwnProperty(globalIndex);
+                const starClass = isBookmarked ? 'active' : '';
+                
+                floor.innerHTML = `
+                    #${globalIndex + 1} 
+                    <span class="bookmark-icon ${starClass}" 
+                          onclick="handleBookmarkClick(${globalIndex}, this)" 
+                          title="${isBookmarked ? '点击修改/删除备注' : '点击添加书签'}">
+                          ★
+                    </span>`;
+
+                const bubbleWrapper = document.createElement('div');
+                const nameTag = document.createElement('div');
+                nameTag.className = 'chat-name';
+                nameTag.textContent = name;
+
+                const bubble = document.createElement('div');
+                bubble.className = 'chat-bubble';
+                bubble.innerHTML = text.replace(/\n/g, '<br>');
+                
+                bubble.title = "双击编辑内容";
+                bubble.ondblclick = (e) => {
+                    e.stopPropagation();
+                    enableEditMode(bubble, globalIndex, text);
+                };
+
+                bubbleWrapper.appendChild(nameTag);
+                bubbleWrapper.appendChild(bubble);
+                
+                row.appendChild(floor);
+                row.appendChild(bubbleWrapper);
+                container.appendChild(row);
+            });
+
+            // 🟢 改动：删除了 container.scrollTop = 0; 这一行
+            // 这样刷新页面时，滚动条会停留在原地
+        }
+
+        // --- 🟢 新增功能：双击编辑逻辑 ---
+        function enableEditMode(bubbleEl, globalIndex, oldText) {
+            // 避免重复进入编辑模式
+            if (bubbleEl.querySelector('.bubble-textarea')) return;
+
+            // 创建编辑界面
+            const wrapper = document.createElement('div');
+            wrapper.className = 'bubble-edit-wrapper';
+
+            const textarea = document.createElement('textarea');
+            textarea.className = 'bubble-textarea';
+            textarea.value = oldText; // 直接放入原文本，不含 <br>
+            
+            const btnRow = document.createElement('div');
+            btnRow.className = 'edit-btn-row';
+            
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = 'edit-confirm-btn';
+            confirmBtn.textContent = '💾 保存';
+            confirmBtn.onclick = () => saveBubbleEdit(globalIndex, textarea.value);
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'edit-cancel-btn';
+            cancelBtn.textContent = '取消';
+            cancelBtn.onclick = () => renderCurrentPage(); // 重新渲染恢复原状
+
+            btnRow.appendChild(cancelBtn);
+            btnRow.appendChild(confirmBtn);
+            wrapper.appendChild(textarea);
+            wrapper.appendChild(btnRow);
+
+            // 清空气泡并放入编辑框
+            bubbleEl.innerHTML = '';
+            bubbleEl.appendChild(wrapper);
+            textarea.focus();
+        }
+
+              async function saveBubbleEdit(globalIndex, newText) {
+            // 🟢 改动：保存当前的滚动位置
+            const container = document.getElementById('chatContainer');
+            const currentScroll = container.scrollTop;
+
+            // 1. 更新内存数据
+            const msg = readerState.data[globalIndex];
+            if(msg.mes !== undefined) msg.mes = newText;
+            if(msg.content !== undefined) msg.content = newText;
+            if(msg.text !== undefined) msg.text = newText;
+            if(msg.message !== undefined) msg.message = newText;
+
+            // 2. 持久化保存到数据库
+            await saveReaderDataToDB();
+
+            // 3. 重新渲染
+            renderCurrentPage();
+
+            // 🟢 改动：恢复之前的滚动位置，确保视图不乱跳
+            container.scrollTop = currentScroll;
+
+            auth.toast('修改已保存 ✨');
+        }
+
+        // --- 🟢 新增功能：书签系统 ---
+        async function handleBookmarkClick(globalIndex, iconEl) {
+            const isBookmarked = readerState.bookmarks.hasOwnProperty(globalIndex);
+            
+            if (isBookmarked) {
+                // 已有书签：询问是修改还是删除
+                const oldNote = readerState.bookmarks[globalIndex];
+                const newNote = prompt("✏️ 修改备注 (清空内容则删除书签):", oldNote);
+                
+                if (newNote === null) return; // 取消
+                
+                if (newNote.trim() === "") {
+                    delete readerState.bookmarks[globalIndex];
+                    auth.toast('书签已删除 🗑️');
+                } else {
+                    readerState.bookmarks[globalIndex] = newNote;
+                    auth.toast('备注已更新 📝');
+                }
+            } else {
+                // 新书签
+                const note = prompt("✨ 请输入书签备注:", "这里很有趣...");
+                if (note === null) return;
+                
+                readerState.bookmarks[globalIndex] = note || "无备注";
+                auth.toast('书签添加成功 ⭐');
+            }
+
+            // 保存并刷新UI
+            await saveReaderDataToDB();
+            renderCurrentPage();
+            // 如果书签列表是打开的，也刷新一下列表
+            if(document.getElementById('bookmarkDrawer').classList.contains('active')){
+                renderBookmarkList();
+            }
+        }
+
+        function toggleBookmarkDrawer() {
+            const drawer = document.getElementById('bookmarkDrawer');
+            drawer.classList.toggle('active');
+            if (drawer.classList.contains('active')) {
+                renderBookmarkList();
+            }
+        }
+
+        function renderBookmarkList() {
+            const listEl = document.getElementById('bookmarkList');
+            listEl.innerHTML = '';
+
+            const indices = Object.keys(readerState.bookmarks).map(Number).sort((a,b) => a-b);
+
+            if (indices.length === 0) {
+                listEl.innerHTML = '<div class="bm-empty">还没有加过书签哦~<br>点击楼层号旁边的 ★ 试试</div>';
+                return;
+            }
+
+            indices.forEach(idx => {
+                const note = readerState.bookmarks[idx];
+                const item = document.createElement('div');
+                item.className = 'bookmark-item';
+                item.onclick = () => jumpToFloor(idx);
+                
+                item.innerHTML = `
+                    <div class="bm-floor">#${idx + 1} 楼</div>
+                    <div class="bm-note">${note}</div>
+                `;
+                listEl.appendChild(item);
+            });
+        }
+
+        function jumpToFloor(globalIndex) {
+            // 1. 计算目标页码
+            const targetPage = Math.floor(globalIndex / readerState.pageSize) + 1;
+            
+            // 2. 跳转页面
+            readerState.currentPage = targetPage;
+            renderCurrentPage();
+
+            // 3. 关闭抽屉
+            document.getElementById('bookmarkDrawer').classList.remove('active');
+
+            // 4. 滚动到指定楼层并高亮
+            setTimeout(() => {
+                const row = document.getElementById(`floor-${globalIndex}`);
+                if (row) {
+                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    row.classList.add('highlight-row');
+                    setTimeout(() => row.classList.remove('highlight-row'), 2000);
+                }
+            }, 100); // 稍微延迟等待渲染
+        }
+
+        // --- 💾 核心保存逻辑 ---
+        async function saveReaderDataToDB() {
+            if (viewingIndex === -1 || readerState.resourceIndex === -1) return;
+
+            const item = items[viewingIndex];
+            const res = item.resources[readerState.resourceIndex];
+
+            // 1. 保存内容 (将对象数组转回 JSON 字符串)
+            res.content = JSON.stringify(readerState.data);
+
+            // 2. 保存书签
+            res.bookmarks = readerState.bookmarks;
+
+            // 3. 写入数据库
+            await saveItemToDB(item);
+        }
+
+               function prevPage() {
+            if (readerState.currentPage > 1) {
+                readerState.currentPage--;
+                renderCurrentPage();
+                // 🟢 改动：翻页时回到顶部
+                document.getElementById('chatContainer').scrollTop = 0;
+            } else {
+                auth.toast('已经是第一页啦');
+            }
+        }
+
+        function nextPage() {
+            if (readerState.currentPage < readerState.totalPages) {
+                readerState.currentPage++;
+                renderCurrentPage();
+                // 🟢 改动：翻页时回到顶部
+                document.getElementById('chatContainer').scrollTop = 0;
+            } else {
+                auth.toast('已经是最后一页啦');
+            }
+        }
+
+        // ================= 🎨 CSS 主题系统 =================
+        
+        let savedThemes = JSON.parse(localStorage.getItem('my_reader_themes') || '[]');
+
+        // 1. 打开/关闭面板
+        function toggleCssDrawer() {
+            const drawer = document.getElementById('cssDrawer');
+            drawer.classList.toggle('active');
+            if(drawer.classList.contains('active')) {
+                renderThemeSelect();
+            }
+        }
+
+        // 2. 预览/应用 CSS
+        function previewCss() {
+            const css = document.getElementById('cssInput').value;
+            // 把 CSS 注入到第一步加的 style 标签里
+            document.getElementById('custom-reader-style').textContent = css;
+            auth.toast('皮肤已应用 ✨');
+        }
+
+        // 3. 保存主题
+        function saveCustomTheme() {
+            const name = document.getElementById('themeNameInput').value.trim();
+            const css = document.getElementById('cssInput').value;
+            
+            if(!name) { auth.toast('起个名字吧！'); return; }
+            if(!css) { auth.toast('还没写代码呢！'); return; }
+
+            // 检查重名，如果有重名就覆盖
+            const existingIdx = savedThemes.findIndex(t => t.name === name);
+            if(existingIdx >= 0) {
+                if(!confirm(`主题 "${name}" 已存在，要覆盖吗？`)) return;
+                savedThemes[existingIdx].css = css;
+            } else {
+                savedThemes.push({ name: name, css: css });
+            }
+
+            localStorage.setItem('my_reader_themes', JSON.stringify(savedThemes));
+            renderThemeSelect();
+            // 自动选中刚保存的
+            document.getElementById('themeSelect').value = name;
+            auth.toast('主题保存成功 💾');
+        }
+
+        // 4. 加载选中的主题
+        function loadSelectedTheme() {
+            const name = document.getElementById('themeSelect').value;
+            if(!name) return;
+            
+            const theme = savedThemes.find(t => t.name === name);
+            if(theme) {
+                document.getElementById('cssInput').value = theme.css;
+                document.getElementById('themeNameInput').value = theme.name;
+                previewCss(); // 自动应用
+            }
+        }
+
+        // 5. 删除主题
+        function deleteCustomTheme() {
+            const name = document.getElementById('themeSelect').value;
+            if(!name) { auth.toast('请先选择一个要删除的主题'); return; }
+            
+            if(confirm(`确定删除主题 "${name}" 吗？`)) {
+                savedThemes = savedThemes.filter(t => t.name !== name);
+                localStorage.setItem('my_reader_themes', JSON.stringify(savedThemes));
+                
+                document.getElementById('cssInput').value = '';
+                document.getElementById('themeNameInput').value = '';
+                document.getElementById('custom-reader-style').textContent = ''; // 清空效果
+                
+                renderThemeSelect();
+                auth.toast('已删除 🗑️');
+            }
+        }
+
+        // 6. 渲染下拉列表
+        function renderThemeSelect() {
+            const sel = document.getElementById('themeSelect');
+            // 保留第一项提示
+            sel.innerHTML = '<option value="">-- 选择已保存的主题 --</option>';
+            savedThemes.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.name;
+                opt.textContent = t.name;
+                sel.appendChild(opt);
+            });
+        }
+        
+        // 🟢 初始化：如果之前有最后一次使用的主题，可以在这里自动加载（可选）
+        // window.addEventListener('load', () => { ... })
+
+        // ================= 💭 飘字动画逻辑 =================
+        let memoryInterval = null;
+
+        function startMemoryAnimation(list) {
+            const container = document.getElementById('memoryLayer');
+            container.innerHTML = ''; // 先清空
+            
+            // 如果没有话，或者列表为空，就不放了
+            if (!list || list.length === 0) return;
+
+            // 立即生成几个，避免打开时空荡荡
+            for(let i=0; i<3; i++) spawnMemory(list, container);
+
+            // 每隔 1.5秒 生成一个新的
+            memoryInterval = setInterval(() => {
+                spawnMemory(list, container);
+            }, 1500);
+        }
+
+        function stopMemoryAnimation() {
+            if (memoryInterval) {
+                clearInterval(memoryInterval);
+                memoryInterval = null;
+            }
+            document.getElementById('memoryLayer').innerHTML = '';
+        }
+
+        function spawnMemory(list, container) {
+            const text = list[Math.floor(Math.random() * list.length)]; // 随机挑一句
+            const el = document.createElement('div');
+            el.className = 'memory-text';
+            el.textContent = text;
+            
+            // 随机位置和大小，让效果更自然
+            const randomLeft = Math.random() * 80 + 10; // 10% 到 90% 之间
+            const randomDuration = Math.random() * 5 + 8; // 8到13秒飘完
+            const randomSize = Math.random() * 8 + 16; // 16px 到 24px 大小
+            
+            el.style.left = randomLeft + '%';
+            el.style.animationDuration = randomDuration + 's';
+            el.style.fontSize = randomSize + 'px';
+            
+            container.appendChild(el);
+
+            // 动画结束后删除元素，防止内存泄漏
+            setTimeout(() => {
+                if(el.parentNode) el.parentNode.removeChild(el);
+            }, randomDuration * 1000);
+        }
+
+ // ================= 🍺 酒馆传送门逻辑 (极速版) =================
+        
+        // 🚀 启动逻辑 (无延迟，浏览器不会拦截)
+        function jumpToTavern() {
+            let url = localStorage.getItem('my_tavern_simple_url');
+            
+            // 第一次用，还没存过链接
+            if (!url) {
+                // 如果没链接，直接调用修改函数
+                changeTavernLink(true); 
+            } else {
+                // 有链接，直接飞
+                window.open(url, '_blank');
+            }
+        }
+
+        // ✏️ 修改逻辑
+        function changeTavernLink(isFirstTime = false) {
+            const oldUrl = localStorage.getItem('my_tavern_simple_url') || 'http://127.0.0.1:8000';
+            const msg = isFirstTime ? "🍺 第一次启动，请输入酒馆链接：" : "🔧 修改酒馆坐标：";
+            
+            let newUrl = prompt(msg + "\n(例如 http://127.0.0.1:8000 )", oldUrl);
+            
+            if (newUrl) {
+                // 贴心地帮用户加上 http (防止用户只写 IP)
+                if (!newUrl.startsWith('http')) {
+                    newUrl = 'http://' + newUrl;
+                }
+                // 去掉末尾的斜杠 / (防止拼接出错)
+                if (newUrl.endsWith('/')) {
+                    newUrl = newUrl.slice(0, -1);
+                }
+                
+                localStorage.setItem('my_tavern_simple_url', newUrl);
+                auth.toast('酒馆坐标已锁定 📍');
+                
+                // 如果是第一次设置，设置完直接跳
+                if(isFirstTime) {
+                    window.open(newUrl, '_blank');
+                }
+            }
+        }
+
+        // ================= 💮 印章系统逻辑 =================
+
+        // 切换印章（点击小图标时触发）
+        async function toggleStamp(char) {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+
+            // 如果当前已经是这个印章，再次点击就是取消
+            if (item.stamp === char) {
+                item.stamp = null; // 取消
+                auth.toast('印章已撤销 💨');
+            } else {
+                item.stamp = char; // 盖章
+                auth.toast('盖章成功！啪！💮');
+            }
+
+            // 保存数据
+            await saveItemToDB(item);
+            
+            // 刷新界面
+            renderStampStatus(item.stamp);
+            loadFromDB(); // 刷新列表数据
+        }
+
+        // 渲染印章（控制大印章和小图标的显示）
+        function renderStampStatus(currentStamp) {
+            const bigStamp = document.getElementById('bigStamp');
+            const btns = document.querySelectorAll('.stamp-btn');
+
+            // 1. 重置所有小图标
+            btns.forEach(btn => {
+                btn.classList.remove('active');
+                // 如果是当前印章，点亮它
+                if (btn.innerText === currentStamp) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 2. 处理大印章动画
+            if (currentStamp) {
+                bigStamp.innerText = currentStamp;
+                // 先移除，强制重绘，再添加，为了每次都有“啪”的动画效果
+                bigStamp.classList.remove('stamped');
+                void bigStamp.offsetWidth; // 强制重绘魔法
+                bigStamp.classList.add('stamped');
+            } else {
+                bigStamp.classList.remove('stamped');
+            }
+        }
+
+        // ================= 🙈 防窥模式逻辑 =================
+        
+        function togglePrivacyMode() {
+            const body = document.body;
+            const btn = document.getElementById('privacyBtn');
+            
+            // 切换 class
+            body.classList.toggle('privacy-active');
+            
+            // 判断当前状态，改变图标和提示
+            if (body.classList.contains('privacy-active')) {
+                btn.textContent = '🙈'; // 变成捂眼睛的猴子
+                btn.style.backgroundColor = '#ffe6eb'; // 按钮变粉提示生效中
+                auth.toast('防窥模式已开启 🔒');
+            } else {
+                btn.textContent = '👁️'; // 变成睁开的眼睛
+                btn.style.backgroundColor = 'rgba(255, 255, 255, 0.6)'; // 恢复原样
+                auth.toast('已恢复清晰 ✨');
+            }
+        }
+
+        // ================= ✨ 指尖魔法逻辑 =================
+        window.addEventListener('click', function(e) {
+            // 随机特效池
+            const particles = ['🌸', '✨', '💗', '⭐', '🐾', '🎵'];
+            const p = document.createElement('div');
+            p.className = 'magic-particle';
+            p.innerText = particles[Math.floor(Math.random() * particles.length)];
+            
+            // 设置位置
+            p.style.left = e.clientX + 'px';
+            p.style.top = e.clientY + 'px';
+            
+            // 稍微随机一点角度和大小
+            const randomRot = Math.random() * 40 - 20; // -20度到20度
+            p.style.transform = `translate(-50%, -50%) rotate(${randomRot}deg)`;
+            
+            document.body.appendChild(p);
+            
+            // 动画结束后清理
+            setTimeout(() => p.remove(), 1000);
+        });
+
+// ================= 🏆 修复版：浏览器标题等级系统 (Lv.1 - Lv.Max) =================
+
+function updateTitleLevel() {
+    // 确保 items 数组已被加载 (这是你的数据来源)
+    if (typeof items === 'undefined' || !Array.isArray(items)) {
+        // 如果数据还没准备好，就保持原标题或显示初始化状态
+        document.title = "✨ 正在加载百宝箱... ⏳"; 
+        return;
+    }
+    
+    const total = items.length; // 获取当前卡片总数
+
+    // 🌟 33级 魔法收藏家等级表
+    const levels = [
+        { count: 0,   title: "空空如也", icon: "🍃" },
+        { count: 1,   title: "初次相遇", icon: "🌱" },
+        { count: 5,   title: "小小收藏", icon: "🍀" },
+        { count: 10,  title: "拾光路人", icon: "🚶" },
+        { count: 15,  title: "记忆碎片", icon: "🧩" },
+        { count: 20,  title: "见习法师", icon: "🪄" },
+        { count: 25,  title: "百宝学徒", icon: "🎒" },
+        { count: 30,  title: "初级仓鼠", icon: "🐹" },
+        { count: 40,  title: "囤积新秀", icon: "🧺" },
+        { count: 50,  title: "进阶收藏", icon: "📂" },
+        { count: 60,  title: "记忆猎手", icon: "🏹" },
+        { count: 70,  title: "闪光时刻", icon: "✨" },
+        { count: 80,  title: "星之微光", icon: "🌟" },
+        { count: 90,  title: "月之辉映", icon: "🌙" },
+        { count: 100, title: "百宝大师", icon: "🎓" },
+        { count: 120, title: "时光旅行者", icon: "⏳" },
+        { count: 140, title: "梦境编织者", icon: "🧶" },
+        { count: 160, title: "银河漫游", icon: "🚀" },
+        { count: 180, title: "星云观测", icon: "🔭" },
+        { count: 200, title: "资深囤囤鼠", icon: "🐿️" },
+        { count: 250, title: "宝藏守护者", icon: "🛡️" },
+        { count: 300, title: "时空领主", icon: "🗝️" },
+        { count: 350, title: "维度观察者", icon: "🧿" },
+        { count: 400, title: "传说收藏家", icon: "👑" },
+        { count: 450, title: "半神之境", icon: "🔱" },
+        { count: 500, title: "森罗万象", icon: "🌌" },
+        { count: 600, title: "全知全能", icon: "👁️" },
+        { count: 700, title: "不可名状", icon: "🐙" },
+        { count: 800, title: "宇宙尽头", icon: "🪐" },
+        { count: 900, title: "虚空之主", icon: "🌑" },
+        { count: 1000, title: "创世神", icon: "⚛️" },
+        { count: 2000, title: "赛博佛祖", icon: "🪷" },
+        { count: 9999, title: "数据奇点", icon: "🕳️" }
+    ];
+
+    let currentLevel = levels[0];
+    for (let i = levels.length - 1; i >= 0; i--) {
+        if (total >= levels[i].count) {
+            currentLevel = levels[i];
+            break;
+        }
+    }
+
+    // ✨ 动态修改浏览器标题
+    document.title = `[${currentLevel.icon} ${currentLevel.title}] 我的百宝箱 (${total})`;
+}
+
+    </script>
+</body>
+</html>
