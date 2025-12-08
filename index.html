@@ -276,17 +276,44 @@
         }
         .layout-btn.active { background: #fff; box-shadow: 0 4px 10px rgba(255, 183, 197, 0.3); opacity: 1; transform: scale(1.1); }
 
-        /* 🟢 操作按钮网格 */
-        .action-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 98%; margin: 0 auto 20px auto; }
-        .action-card {
-            background: #fff; border: 2px solid #ffb7c5; border-radius: 20px;
-            padding: 10px 2px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s; color: #ff8fa3; font-weight: bold; font-size: 12px;
-            box-shadow: 0 4px 10px rgba(255, 183, 197, 0.2); height: 70px;
+               /* 🟢 操作按钮网格 (修改版：6个一行) */
+        .action-grid { 
+            display: grid; 
+            grid-template-columns: repeat(6, 1fr); /* 👈 关键：改成 6 列 */
+            gap: 4px; /* 👈 间距改小一点，防止挤 */
+            max-width: 100%; 
+            margin: 0 auto 20px auto; 
+            padding: 0 5px; /* 两边留一点点缝隙 */
+            box-sizing: border-box;
         }
+
+        .action-card {
+            background: #fff; 
+            border: 2px solid #ffb7c5; 
+            border-radius: 15px; /* 圆角稍微改小一点点适应窄卡片 */
+            padding: 5px 0; /* 减少内边距 */
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            cursor: pointer; 
+            transition: all 0.2s; 
+            color: #ff8fa3; 
+            font-weight: bold; 
+            font-size: 11px; /* 👈 字体稍微改小，防止换行 */
+            box-shadow: 0 4px 10px rgba(255, 183, 197, 0.2); 
+            height: 65px; /* 高度稍微调矮一点，显得精致 */
+        }
+        
         .action-card:active { transform: scale(0.95); }
         .action-card.primary { background: #fff; border: 2px solid #ff8fa3; color: #ff8fa3; box-shadow: 0 4px 12px rgba(255, 143, 163, 0.3); }
-        .kitty-icon { font-size: 24px; margin-bottom: 2px; filter: drop-shadow(0 2px 2px rgba(255,183,197,0.3)); }
+        
+        /* 图标也稍微调小一点 */
+        .kitty-icon { 
+            font-size: 20px; 
+            margin-bottom: 2px; 
+            filter: drop-shadow(0 2px 2px rgba(255,183,197,0.3)); 
+        }
 
         /* 批量删除相关样式 */
         .card.is-selecting { animation: shake 0.3s ease; }
@@ -1658,6 +1685,11 @@
                 <div>批量删</div>
             </div>
 
+            <div class="action-card" onclick="openTheaterModal()">
+                <div class="kitty-icon">🎬</div>
+                <div>小剧场</div>
+            </div>
+
             <div class="action-card" onclick="exportAllData()">
                 <div class="kitty-icon">💾</div>
                 <div>备份</div>
@@ -1680,7 +1712,9 @@
             <button class="close-modal" onclick="closeAddModal()">×</button>
             <h2 id="modalTitle">✨ 添加新收藏</h2>
             <div class="form-group"><label>💖 名字</label><input type="text" id="itemName" placeholder="给这个盒子起个名字..."></div>
-            <div class="form-group"><label>🏷️ 标签 (输入后点+号或回车)</label><div style="display:flex; align-items:center; gap:10px;"><div class="tag-input-area" id="tagInputArea" style="flex-grow:1;" onclick="document.getElementById('tagInput').focus()"><input type="text" id="tagInput" onkeydown="handleTagInput(event)"></div><button class="small-btn primary-btn" style="height:40px; width:40px; border-radius:50%; display:flex; justify-content:center; align-items:center; flex-shrink:0;" onclick="manualAddTag()">＋</button></div><div id="suggestedTags" style="margin-top:5px; display:flex; gap:5px; flex-wrap:wrap;"></div></div>
+            <div class="form-group"><label>🏷️ 标签 (输入后点+号或回车)</label><div style="display:flex; align-items:center; gap:10px;"><div class="tag-input-area" id="tagInputArea" style="flex-grow:1;" onclick="document.getElementById('tagInput').focus()"><input type="text" id="tagInput" onkeydown="handleTagInput(event)"></div><button class="small-btn primary-btn" style="height:40px; width:40px; border-radius:50%; display:flex; justify-content:center; align-items:center; flex-shrink:0;" onclick="manualAddTag()">＋</button>
+<button class="small-btn" onclick="autoGenerateTags()" style="background:#e0f7fa; color:#006064; border:none; margin-left:5px; padding:5px 10px; border-radius:15px; font-size:12px;">🧠 智能分析</button>
+</div><div id="suggestedTags" style="margin-top:5px; display:flex; gap:5px; flex-wrap:wrap;"></div></div>
                        <div class="form-group">
                 <label>💭 印象最深的话 (一行一句，会飘在背景里哦)</label>
                 <textarea id="itemMemories" placeholder="例如：
@@ -1771,6 +1805,7 @@
                     <button onclick="deleteCurrentItem()" style="border-color: #ffcccc; color: #ff6b6b;">🗑️ 删除</button>
                     <button onclick="openOathModal()" style="border-color: #ffd700; color: #f39c12; background: #fffdf0;">💍 誓约</button>
 <button onclick="openScratchModal()" style="border-color: #fab1a0; color: #e17055; background: #fff5f0;">🤫 秘密</button>
+<button onclick="generateBriefing()" style="border-color: #a29bfe; color: #6c5ce7; background: #f3f0ff;">📜 呈奏折</button>
 <button onclick="openNoteModal()" style="border-color: #ffeaa7; color: #d35400; background: #fffbe6;">📌 便签</button>
 
                 </div>
@@ -2149,6 +2184,30 @@ gap:5px;">
             </div>
 
             <button class="primary-btn" onclick="saveAISettings()" style="width:100%;">💾 保存设定</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="theaterModal" style="z-index: 9500;">
+        <div class="modal" style="width: 320px;">
+            <button class="close-modal" onclick="document.getElementById('theaterModal').classList.remove('active')">×</button>
+            <h2 style="text-align:center; color:var(--accent-color);">🎬 跨时空剧场</h2>
+            
+            <div style="font-size:12px; color:#aaa; text-align:center; margin-bottom:15px;">
+                选两个角色，让 AI 导演一场戏...
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center;">
+                <select id="theaterCharA" style="flex:1; padding:5px; border-radius:10px;"></select>
+                <span style="font-weight:bold; color:#ffb7c5;">VS</span>
+                <select id="theaterCharB" style="flex:1; padding:5px; border-radius:10px;"></select>
+            </div>
+
+            <div class="form-group" style="margin-top:15px;">
+                <label>🎭 剧本情境 (可选)</label>
+                <input type="text" id="theaterTopic" placeholder="例如：争风吃醋、荒岛求生、互相吹捧...">
+            </div>
+
+            <button class="primary-btn" onclick="startTheater()" style="width:100%; margin-top:10px;">🎥 Action! (开始演出)</button>
         </div>
     </div>
 
@@ -5018,6 +5077,242 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
             
             document.getElementById('aiSettingsModal').classList.remove('active');
             auth.toast('设置保存成功 ✨');
+        }
+
+        // ================= 📜 呈递奏折 (AI 简报) =================
+        async function generateBriefing() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+
+            // 1. 检查 API Key
+            if (!aiConfig || !aiConfig.apiKey) {
+                auth.toast('🚫 皇上，没填 API Key，奴才没法写奏折呀！');
+                return;
+            }
+
+            // 2. 提取最近的聊天记录 (取最后 30 条，太多了 AI 读不完)
+            let chatContext = "";
+            let count = 0;
+            
+            // 遍历寻找 JSON/JSONL 内容 (复用之前的逻辑)
+            item.resources.forEach(res => {
+                if (!res.content) return;
+                let rawText = res.content.startsWith('data:') ? decodeURIComponent(escape(window.atob(res.content.split(',')[1]))) : res.content;
+                
+                try {
+                    let json = JSON.parse(rawText);
+                    // 兼容各种格式
+                    let msgs = Array.isArray(json) ? json : (json.messages || json.history || []);
+                    // 只要最后 30 条
+                    msgs.slice(-30).forEach(m => {
+                        const sender = (m.is_user || m.name === 'User' || m.name === 'Me') ? '皇上(我)' : item.name;
+                        const text = m.mes || m.content || "";
+                        if(text) chatContext += `${sender}: ${text}\n`;
+                    });
+                    count += msgs.length;
+                } catch(e) {
+                    // 尝试纯文本按行读取
+                    const lines = rawText.split('\n').slice(-30);
+                    lines.forEach(l => { if(l.trim()) chatContext += l + "\n"; });
+                    count += lines.length;
+                }
+            });
+
+            if (!chatContext || count === 0) {
+                auth.toast('📭 此人暂无聊天记录，无事启奏~');
+                return;
+            }
+
+            // 3. 打开 AI 聊天窗口 (假装我们在和小德子说话)
+            document.getElementById('floatMenu').classList.add('active'); // 打开悬浮窗
+            switchMenuPage(2); // 切换到 AI 页
+            
+            // 发送提示
+            const loadingId = 'briefing-' + Date.now();
+            const chatBox = document.getElementById('aiChatBox');
+            chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-msg-row ai"><div class="ai-bubble">📜 奴才正在翻阅【${item.name}】的档案，请稍候...</div></div>`);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 4. 构建 Prompt (太监风)
+            const systemPrompt = `
+            你现在是大内总管'小德子'。
+            请根据用户提供的【聊天记录片段】，为皇上（用户）写一份【简短奏折】（100字以内）。
+            内容包括：
+            1. 对方此时的心情/状态。
+            2. 上次聊到了什么关键话题。
+            3. 奴才的一点建议（如下一步该送礼还是该冷落）。
+            语气必须极其卑微、谄媚，称呼用户为“万岁爷”或“皇上”。
+            格式：启禀万岁……
+            `;
+
+            try {
+                const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${aiConfig.apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: aiConfig.model || 'gpt-3.5-turbo',
+                        messages: [
+                            { role: "system", content: systemPrompt },
+                            { role: "user", content: `【${item.name} 的聊天记录】:\n${chatContext}` }
+                        ],
+                        temperature: 0.7
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById(loadingId).remove(); // 移除加载提示
+
+                if (data.error) {
+                    appendAIMessage('ai', `❌ 奏折写废了：${data.error.message}`);
+                } else {
+                    const reply = data.choices[0].message.content;
+                    // 显示奏折
+                    appendAIMessage('ai', `<b>📜 关于【${item.name}】的奏折：</b><br><br>${reply}`);
+                }
+
+            } catch (e) {
+                document.getElementById(loadingId).remove();
+                appendAIMessage('ai', `❌ 网络崩了，奴才该死！`);
+            }
+        }
+
+        // ================= 🏷️ AI 智能打标 =================
+        async function autoGenerateTags() {
+            const name = document.getElementById('itemName').value;
+            // 获取回忆录作为简介参考
+            const desc = document.getElementById('itemMemories').value;
+            
+            if (!aiConfig.apiKey) { auth.toast('请先设置 API Key 🔑'); return; }
+            if (!name) { auth.toast('请先填个名字吧~'); return; }
+
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = '🧠 分析中...';
+            btn.disabled = true;
+
+            const prompt = `
+            我正在整理一个角色收藏库。
+            角色名：${name}
+            描述/回忆：${desc}
+            
+            请根据以上信息，推测并生成 4-6 个短小精悍的标签（Tags）。
+            标签可以是：性格（如傲娇、高冷）、属性（如年下、青梅竹马）、题材（如校园、古风）、结局（如HE、BE）。
+            
+            【重要要求】：
+            1. 只返回标签，用英文逗号分隔。
+            2. 不要任何废话。
+            3. 只要标签。
+            例如：傲娇,校园,甜文,HE
+            `;
+
+            try {
+                const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+                    body: JSON.stringify({
+                        model: aiConfig.model || 'gpt-3.5-turbo',
+                        messages: [{ role: "user", content: prompt }]
+                    })
+                });
+                const data = await response.json();
+                
+                if (data.choices && data.choices.length > 0) {
+                    const content = data.choices[0].message.content;
+                    // 清洗数据：替换中文逗号，去掉空格
+                    const newTags = content.replace(/，/g, ',').split(',').map(t => t.trim()).filter(t => t);
+                    
+                    // 合并到当前标签
+                    newTags.forEach(t => {
+                        if(!currentTags.includes(t)) currentTags.push(t);
+                    });
+                    
+                    renderTagsInput(); // 刷新界面
+                    auth.toast(`已自动贴上 ${newTags.length} 个标签 ✨`);
+                }
+            } catch (e) {
+                console.error(e);
+                auth.toast('分析失败，请检查网络 ❌');
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // ================= 🎭 小剧场逻辑 =================
+        function openTheaterModal() {
+            // 填充下拉框
+            const selA = document.getElementById('theaterCharA');
+            const selB = document.getElementById('theaterCharB');
+            selA.innerHTML = ''; selB.innerHTML = '';
+            
+            items.forEach((item, idx) => {
+                const opt = new Option(item.name, idx);
+                selA.add(opt.cloneNode(true));
+                selB.add(opt.cloneNode(true));
+            });
+            
+            // 默认选前两个
+            if(items.length > 1) selB.selectedIndex = 1;
+
+            document.getElementById('theaterModal').classList.add('active');
+        }
+
+        async function startTheater() {
+            const idxA = document.getElementById('theaterCharA').value;
+            const idxB = document.getElementById('theaterCharB').value;
+            const topic = document.getElementById('theaterTopic').value || "初次见面，互相试探";
+
+            if (idxA === idxB) { auth.toast('请选两个不同的人！'); return; }
+            if (!aiConfig.apiKey) { auth.toast('没 API Key 演不了戏呀！'); return; }
+
+            const charA = items[idxA];
+            const charB = items[idxB];
+
+            // 关闭设置窗，打开 AI 聊天窗
+            document.getElementById('theaterModal').classList.remove('active');
+            document.getElementById('floatMenu').classList.add('active');
+            switchMenuPage(2);
+
+            const chatBox = document.getElementById('aiChatBox');
+            const loadingId = 'theater-' + Date.now();
+            chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-msg-row ai"><div class="ai-bubble">🎬 正在搭建舞台...<br>演员：${charA.name} & ${charB.name}<br>剧目：${topic}</div></div>`);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const prompt = `
+            【指令】：请写一个小剧场（对话脚本）。
+            【角色A】：${charA.name}，标签：${(charA.tags||[]).join(',')}
+            【角色B】：${charB.name}，标签：${(charB.tags||[]).join(',')}
+            【情境】：${topic}
+            
+            请发挥想象力，模拟两人相遇或互动的场景。
+            格式要求：剧本形式，包含动作描写。
+            例如：
+            A：(冷笑) 居然是你。
+            B：(漫不经心) 怎么，不欢迎？
+            `;
+
+            try {
+                const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+                    body: JSON.stringify({
+                        model: aiConfig.model || 'gpt-3.5-turbo',
+                        messages: [{ role: "user", content: prompt }]
+                    })
+                });
+                const data = await response.json();
+                document.getElementById(loadingId).remove();
+
+                if (data.choices) {
+                    appendAIMessage('ai', `<b>🎥 【跨时空小剧场】</b><br>主演：${charA.name} x ${charB.name}<br><hr>${data.choices[0].message.content.replace(/\n/g, '<br>')}`);
+                }
+            } catch (e) {
+                document.getElementById(loadingId).remove();
+                auth.toast('演出事故 (网络错误) 💥');
+            }
         }
 
     </script>
