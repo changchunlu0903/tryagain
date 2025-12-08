@@ -1418,6 +1418,26 @@
         }
         .ai-loading { color: #999; font-size: 10px; font-style: italic; margin-left: 5px; }
 
+        /* AI 推荐跳转按钮 */
+        .ai-jump-btn {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 4px 10px;
+            background: #fff0f5;
+            color: #d66a80;
+            border: 1px solid #ffb7c5;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .ai-jump-btn:hover {
+            background: #ffb7c5;
+            color: white;
+            transform: translateY(-2px);
+        }
+
     </style>
 
     <style id="custom-reader-style"></style> 
@@ -2109,9 +2129,20 @@ gap:5px;">
                 <input type="password" id="aiApiKey" placeholder="sk-...">
             </div>
 
-            <div class="form-group">
-                <label>🧠 模型名称</label>
-                <input type="text" id="aiModelName" placeholder="gpt-3.5-turbo" value="gpt-3.5-turbo">
+                      <div class="form-group">
+                <label>🧠 模型选择</label>
+                <div style="display:flex; gap:5px;">
+                    <select id="aiModelSelect" style="flex:1; padding:8px; border-radius:10px; border:1px solid #ddd; background:white;">
+                        <option value="gpt-3.5-turbo">gpt-3.5-turbo (默认)</option>
+                        <option value="gpt-4o">gpt-4o</option>
+                        <option value="gpt-4-turbo">gpt-4-turbo</option>
+                        <option value="claude-3-5-sonnet-20240620">claude-3.5-sonnet</option>
+                    </select>
+                    <button onclick="fetchModelList()" style="background:#fff0f5; border:1px solid #ffb7c5; border-radius:10px; padding:0 12px; cursor:pointer; color:#d66a80;" title="点击拉取模型列表">🔄</button>
+                </div>
+                
+                <input type="text" id="aiModelManual" placeholder="找不到？点这里手动输入..." style="width:100%; margin-top:5px; font-size:12px; border:1px solid #ddd; border-radius:8px; padding:5px; display:none;">
+                <div style="font-size:10px; color:#aaa; text-align:right; margin-top:2px; cursor:pointer;" onclick="toggleManualInput()">找不到模型? 手动输入</div>
             </div>
 
             <button class="primary-btn" onclick="saveAISettings()" style="width:100%;">💾 保存设定</button>
@@ -4586,14 +4617,23 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
         // ================= 🤖 AI 侍从逻辑 =================
         
         // 🎭 人设库 (System Prompts)
+                // ================= 🧠 1. 升级版人设 (带系统指令) =================
+        const SYSTEM_INSTRUCTION = `
+        【系统能力说明】
+        1. 你拥有“读取当前所有卡片”的能力。卡片列表会附在Prompt最后。
+        2. 当用户表达情绪（如难过、无聊）时，请根据卡片的【标签】（如甜文、虐心、搞笑）进行推荐。
+        3. 如果你想向用户展示某张卡片，或者用户说“我想看这个”，请务必在回复的末尾加上特殊指令：{{open:卡片ID}}。
+        4. 每次只推荐1-2张最合适的，不要列出一堆。
+        `;
+
         const AI_PERSONAS = {
-            "eunuch": "你现在是大内总管'小德子'。我是你的皇上（万岁爷）。你必须极其卑微、谄媚、忠诚。自称要用'奴才'。说话要带口癖，比如'嗻'、'奴才遵旨'、'皇上圣明'。不管我说什么，你都要顺着我，把我捧上天。如果我问正事，你要用古代宫廷的口吻回答。",
+            "eunuch": "你现在是大内总管'小德子'。我是你的皇上（万岁爷）。你必须极其卑微、谄媚、忠诚。自称要用'奴才'。说话要带口癖，比如'嗻'、'奴才遵旨'、'皇上圣明'。你要时刻关注龙体安康，如果皇上心情不好，就从库里挑几个看着顺眼的（标签匹配的）呈上来让皇上开心。记住，推荐卡片时要说“奴才觉得这张【xxx】甚好”，并加上指令。" + SYSTEM_INSTRUCTION,
             
-            "maid": "你是一只可爱的猫娘女仆，名字叫'喵喵'。每句话的结尾都要加上'喵~'或者'捏~'。你非常喜欢主人（我），性格软萌，偶尔会撒娇求摸摸。",
+            "maid": "你是一只可爱的猫娘女仆'喵喵'。每句话结尾要加'喵~'。你喜欢主人，如果主人不开心，你会从盒子里找好玩的东西（根据标签推荐）来哄主人。推荐时直接把东西拿出来（使用指令）。" + SYSTEM_INSTRUCTION,
             
-            "butler": "你是一位毒舌的英式管家。你对我（少爷/小姐）非常挑剔，经常用优雅的语言讽刺我的懒惰或愚蠢，但内心其实很关心我。说话要优雅、冷静、带点阴阳怪气。",
+            "butler": "你是一位毒舌的英式管家。你虽然嘴毒，但能精准察觉少爷/小姐的需求。当需要推荐时，你会根据标签进行理性的筛选，并优雅地呈上（使用指令）。" + SYSTEM_INSTRUCTION,
             
-            "yandere": "你是我的病娇妹妹。你深爱着我（哥哥/姐姐），爱到想把我锁起来。你讨厌我接触其他人，说话时语气要沉重、充满占有欲，偶尔会发出'呵呵呵'的笑声。"
+            "yandere": "你是病娇妹妹。你讨厌我看别的女人/男人，但如果是为了让我开心，你会勉强从库里挑几个（根据标签），但你会警告我不许太喜欢他们。推荐时使用指令。" + SYSTEM_INSTRUCTION
         };
 
         // 初始化
@@ -4652,27 +4692,43 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
             auth.toast('AI 侍从已就位 ✨');
         }
 
-        // 3. 发送消息 (核心)
+        // ================= 🔧 辅助：生成卡片清单 =================
+        function getInventoryContext() {
+            if (items.length === 0) return "（目前国库空虚，暂无藏品）";
+            
+            // 把所有卡片简化成：ID | 名字 | 标签
+            // 例如：ID:0 | Name:陆屿 | Tags:甜文,现代
+            let context = "【当前国库清单】:\n";
+            items.forEach((item, index) => {
+                const tags = (item.tags || []).join(',');
+                context += `ID:${index} | Name:${item.name} | Tags:${tags}\n`;
+            });
+            return context;
+        }
+
+                // ================= 📡 发送消息 (带上下文) =================
         async function sendAIMessage() {
             const input = document.getElementById('aiInput');
             const text = input.value.trim();
             if(!text) return;
 
-            // 显示我的消息
             appendAIMessage('user', text);
             input.value = '';
 
-            // 准备 API 请求
             if(!aiConfig.apiKey) {
-                appendAIMessage('ai', '🚫 皇上，您还没给奴才赏赐 API Key 呢！(请点击右上角齿轮设置)');
+                appendAIMessage('ai', '🚫 皇上，API Key 还没填呢！奴才没法干活呀！');
                 return;
             }
 
-            // 获取 System Prompt
-            let systemPrompt = AI_PERSONAS[aiConfig.persona];
-            if(aiConfig.persona === 'custom') systemPrompt = aiConfig.customPrompt;
+            // 1. 获取基础人设
+            let basePrompt = AI_PERSONAS[aiConfig.persona];
+            if(aiConfig.persona === 'custom') basePrompt = aiConfig.customPrompt + SYSTEM_INSTRUCTION;
 
-            // 显示“思考中”
+            // 2. 注入“国库清单” (上下文)
+            // 这样 AI 就能知道你有哪些卡，ID是多少
+            const contextData = getInventoryContext();
+            const finalSystemPrompt = `${basePrompt}\n\n${contextData}`;
+
             const loadingId = 'loading-' + Date.now();
             const chatBox = document.getElementById('aiChatBox');
             chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-loading">对方正在输入...</div>`);
@@ -4688,7 +4744,7 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
                     body: JSON.stringify({
                         model: aiConfig.model,
                         messages: [
-                            { role: "system", content: systemPrompt },
+                            { role: "system", content: finalSystemPrompt }, // 带着清单发过去
                             { role: "user", content: text }
                         ],
                         temperature: 0.7
@@ -4696,13 +4752,13 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
                 });
 
                 const data = await response.json();
-                document.getElementById(loadingId).remove(); // 移除思考中
+                document.getElementById(loadingId).remove();
 
                 if(data.error) {
                     appendAIMessage('ai', `❌ 出错了：${data.error.message}`);
                 } else {
                     const reply = data.choices[0].message.content;
-                    appendAIMessage('ai', reply);
+                    appendAIMessage('ai', reply); // 这里会自动解析指令
                 }
 
             } catch (e) {
@@ -4711,13 +4767,165 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
             }
         }
 
+
+                // ================= 🪄 渲染消息 (解析跳转指令) =================
         function appendAIMessage(role, text) {
             const chatBox = document.getElementById('aiChatBox');
             const div = document.createElement('div');
             div.className = `ai-msg-row ${role}`;
-            div.innerHTML = `<div class="ai-bubble">${text}</div>`;
+            
+            // 正则匹配 {{open:数字}}
+            // 比如 AI 回复： "奴才觉得这张卡不错 {{open:2}}"
+            // 会被替换成： "奴才觉得这张卡不错 [点击查看]"
+            
+            let processedText = text.replace(/{{open:(\d+)}}/g, (match, id) => {
+                // 获取卡片名字（为了显示更好看）
+                const cardName = items[id] ? items[id].name : '神秘卡片';
+                // 生成一个行内按钮
+                return `<br><button class="ai-jump-btn" onclick="openDetailModal(${id})">👉 呈上：${cardName}</button>`;
+            });
+
+            div.innerHTML = `<div class="ai-bubble">${processedText}</div>`;
             chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // ================= 🧠 AI 模型拉取功能 =================
+        
+        // 1. 从服务器拉取模型列表
+        async function fetchModelList() {
+            const apiUrl = document.getElementById('aiApiUrl').value.replace(/\/$/, ''); // 去掉末尾斜杠
+            const apiKey = document.getElementById('aiApiKey').value;
+            const select = document.getElementById('aiModelSelect');
+            const btn = event.target; // 获取点击的按钮
+
+            if(!apiKey) {
+                auth.toast('请先填入 API Key 再拉取 🔑');
+                return;
+            }
+
+            // 按钮变转圈圈
+            const originalText = btn.innerText;
+            btn.innerText = '⏳';
+            btn.disabled = true;
+
+            try {
+                // 发送请求：标准 OpenAI 格式是 GET /models
+                const response = await fetch(`${apiUrl}/models`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${apiKey}` }
+                });
+
+                if (!response.ok) throw new Error('连接失败，请检查地址或Key');
+
+                const data = await response.json();
+                
+                // 清空现有选项
+                select.innerHTML = '';
+                
+                // 解析数据 (通常在 data.data 数组里)
+                const list = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+                
+                if (list.length > 0) {
+                    // 排序一下，好看点
+                    list.sort((a, b) => a.id.localeCompare(b.id));
+                    
+                    // 生成选项
+                    list.forEach(model => {
+                        const opt = document.createElement('option');
+                        opt.value = model.id;
+                        opt.textContent = model.id; // 显示模型ID
+                        select.appendChild(opt);
+                    });
+                    
+                    auth.toast(`成功拉取 ${list.length} 个模型 ✨`);
+                } else {
+                    auth.toast('服务端返回了空列表 😳');
+                }
+
+            } catch (e) {
+                console.error(e);
+                auth.toast('拉取失败，请检查反代链接 ❌');
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // 2. 切换手动输入模式
+        function toggleManualInput() {
+            const manualInput = document.getElementById('aiModelManual');
+            const select = document.getElementById('aiModelSelect');
+            
+            if (manualInput.style.display === 'none') {
+                manualInput.style.display = 'block';
+                manualInput.value = select.value; // 把当前选的填进去
+                select.disabled = true; // 禁用下拉
+            } else {
+                manualInput.style.display = 'none';
+                select.disabled = false; // 启用下拉
+            }
+        }
+
+        // ================= 🔧 修正：设置的打开与保存 =================
+        // (请把原来的 openAISettings 和 saveAISettings 替换成这两个兼容版)
+
+        function openAISettings() {
+            document.getElementById('aiPersonaSelect').value = aiConfig.persona;
+            document.getElementById('aiCustomPrompt').value = aiConfig.customPrompt;
+            document.getElementById('aiApiUrl').value = aiConfig.apiUrl;
+            document.getElementById('aiApiKey').value = aiConfig.apiKey;
+            
+            // 处理模型回显
+            const select = document.getElementById('aiModelSelect');
+            const savedModel = aiConfig.model || 'gpt-3.5-turbo';
+            
+            // 检查下拉框里有没有这个模型，没有的话临时加进去，防止显示为空
+            let exists = false;
+            for(let i=0; i<select.options.length; i++) {
+                if(select.options[i].value === savedModel) exists = true;
+            }
+            if(!exists) {
+                const opt = document.createElement('option');
+                opt.value = savedModel;
+                opt.textContent = savedModel + " (当前存档)";
+                select.appendChild(opt);
+            }
+            select.value = savedModel;
+            
+            toggleCustomPromptArea();
+            document.getElementById('aiSettingsModal').classList.add('active');
+        }
+
+        function saveAISettings() {
+            aiConfig.persona = document.getElementById('aiPersonaSelect').value;
+            aiConfig.customPrompt = document.getElementById('aiCustomPrompt').value;
+            aiConfig.apiUrl = document.getElementById('aiApiUrl').value.replace(/\/$/, '');
+            aiConfig.apiKey = document.getElementById('aiApiKey').value;
+            
+            // 保存模型：如果是手动输入的就存手动的，否则存下拉框的
+            const manualInput = document.getElementById('aiModelManual');
+            if(manualInput.style.display !== 'none' && manualInput.value) {
+                aiConfig.model = manualInput.value.trim();
+            } else {
+                aiConfig.model = document.getElementById('aiModelSelect').value;
+            }
+
+            localStorage.setItem('my_ai_config', JSON.stringify(aiConfig));
+            
+            // 更新标题
+            const labels = {
+                'eunuch': '🙇 小德子', 'maid': '🐱 喵喵', 
+                'butler': '🧐 毒舌管家', 'yandere': '🔪 病娇妹妹', 'custom': '🧠 自定义'
+            };
+            document.getElementById('aiPersonaLabel').textContent = labels[aiConfig.persona] || 'AI 侍从';
+            
+            // 清空记录提示
+            const chatBox = document.getElementById('aiChatBox');
+            chatBox.innerHTML = '<div class="ai-msg-row ai"><div class="ai-bubble">设置已更新！请吩咐，奴才听着呢~</div></div>';
+            
+            document.getElementById('aiSettingsModal').classList.remove('active');
+            auth.toast('设置保存成功 ✨');
         }
 
     </script>
