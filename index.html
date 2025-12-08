@@ -1465,6 +1465,50 @@
             transform: translateY(-2px);
         }
 
+        /* ==================== 💌 信纸样式 ==================== */
+        .letter-paper {
+            background: #fffbf0; /* 米黄纸 */
+            width: 300px;
+            min-height: 400px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            background-image: linear-gradient(#e0e0e0 1px, transparent 1px);
+            background-size: 100% 25px; /* 信纸横线 */
+            line-height: 25px;
+            font-family: 'MyCustomFont', cursive, sans-serif; /* 手写字体 */
+            color: #555;
+            transform: rotate(-1deg);
+        }
+        
+        .letter-content {
+            margin-top: 20px;
+            font-size: 15px;
+            white-space: pre-wrap; /* 保留换行 */
+        }
+
+        .letter-signature {
+            margin-top: 30px;
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .letter-stamp {
+            position: absolute;
+            top: 20px; right: 20px;
+            width: 60px; height: 60px;
+            border: 3px double #d63031;
+            border-radius: 50%;
+            color: #d63031;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+            transform: rotate(20deg);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
     </style>
 
     <style id="custom-reader-style"></style> 
@@ -1673,7 +1717,11 @@
                 <div class="kitty-icon">🎀</div>
                 <div>添加</div>
             </div>
-            
+                        <div class="action-card" onclick="checkMailbox()">
+                <div class="kitty-icon">📮</div>
+                <div>信箱</div>
+            </div>
+
             <div class="action-card" onclick="document.getElementById('batchImgInput').click()">
                 <div class="kitty-icon">📸</div>
                 <div>批量加</div>
@@ -1807,6 +1855,8 @@
 <button onclick="openScratchModal()" style="border-color: #fab1a0; color: #e17055; background: #fff5f0;">🤫 秘密</button>
 <button onclick="generateBriefing()" style="border-color: #a29bfe; color: #6c5ce7; background: #f3f0ff;">📜 呈奏折</button>
 <button onclick="openNoteModal()" style="border-color: #ffeaa7; color: #d35400; background: #fffbe6;">📌 便签</button>
+<button onclick="giveGift()" style="border-color: #ff9ff3; color: #f368e0; background: #fff0f5;">🎁 投喂</button>
+<button onclick="generateOOTD()" style="border-color: #54a0ff; color: #2e86de; background: #f0f8ff;">👗 换装</button>
 
                 </div>
             
@@ -2208,6 +2258,19 @@ gap:5px;">
             </div>
 
             <button class="primary-btn" onclick="startTheater()" style="width:100%; margin-top:10px;">🎥 Action! (开始演出)</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="letterModal" style="z-index: 9600;">
+        <div class="modal" style="background: transparent; box-shadow: none; padding: 0; display: flex; justify-content: center; align-items: center;">
+            <div class="letter-paper">
+                <button class="close-modal" onclick="document.getElementById('letterModal').classList.remove('active')" style="color:#555;">×</button>
+                <div class="letter-stamp">邮戳</div>
+                <div class="letter-content" id="letterText">
+                    正在拆信...
+                </div>
+                <div class="letter-signature" id="letterSign">???</div>
+            </div>
         </div>
     </div>
 
@@ -5312,6 +5375,178 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
             } catch (e) {
                 document.getElementById(loadingId).remove();
                 auth.toast('演出事故 (网络错误) 💥');
+            }
+        }
+
+        // ================= 🎁 互动：投喂时刻 =================
+        async function giveGift() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+            
+            if (!aiConfig.apiKey) { auth.toast('🔑 皇上，库房钥匙(API Key)没带呀！'); return; }
+
+            // 1. 询问送什么
+            const gift = prompt(`🎁 你想送给【${item.name}】什么礼物？\n(例如：草莓蛋糕、红玫瑰、一把枪...)`);
+            if (!gift) return;
+
+            auth.toast(`🎁 正在把 ${gift} 送给 ${item.name}...`);
+
+            // 2. 打开 AI 聊天窗口
+            document.getElementById('floatMenu').classList.add('active');
+            switchMenuPage(2);
+            
+            // 3. 构建 Prompt
+            const prompt = `
+            【角色扮演指令】
+            你是：${item.name}。
+            标签/性格：${(item.tags||[]).join(',')}。
+            
+            现状：用户（你的重要之人）刚刚送了你一份礼物：【${gift}】。
+            
+            请根据你的性格，做出生动的反应。
+            要求：
+            1. 包含动作描写和心理活动（放在括号里）。
+            2. 如果礼物符合你的喜好，要开心/害羞；如果不符合（比如给高冷送奶嘴），可以生气或吐槽。
+            3. 直接用角色的口吻说话，不要有任何前缀。
+            `;
+
+            // 4. 发送给 AI (复用 sendCustomPrompt 函数)
+            sendCustomPromptToAI(prompt, `🎁 朕送了你【${gift}】，喜欢吗？`);
+        }
+
+        // ================= 👗 互动：今日穿搭 (OOTD) =================
+        async function generateOOTD() {
+            if (viewingIndex === -1) return;
+            const item = items[viewingIndex];
+            
+            if (!aiConfig.apiKey) { auth.toast('🔑 没 API Key 没法变身呀！'); return; }
+
+            // 1. 询问场景
+            const scene = prompt(`👗 想看【${item.name}】穿什么风格/去哪里？\n(例如：泳池派对、哈利波特校服、赛博朋克战斗装...)`, "浪漫的烛光晚餐");
+            if (!scene) return;
+
+            auth.toast(`👗 小德子正在为 ${item.name} 挑选衣服...`);
+
+            // 2. 打开 AI 聊天窗口
+            document.getElementById('floatMenu').classList.add('active');
+            switchMenuPage(2);
+
+            // 3. 构建 Prompt
+            const prompt = `
+            【外貌描写指令】
+            角色：${item.name}。
+            场景/风格：${scene}。
+            
+            请发挥想象力，详细描写该角色在这个场景下的穿搭 (OOTD)。
+            内容包括：发型、服装细节、配饰、以及此时的神态。
+            
+            格式要求：
+            请用一段极具画面感的文字描述，让人看了能脑补出画面。
+            最后用一句话评价这套穿搭。
+            `;
+
+            sendCustomPromptToAI(prompt, `👗 朕想看你穿【${scene}】的样子...`);
+        }
+
+        // 🔧 通用辅助函数：发送自定义 Prompt 到聊天框
+        async function sendCustomPromptToAI(systemPrompt, userTextDisplay) {
+            const chatBox = document.getElementById('aiChatBox');
+            
+            // 显示用户的操作
+            appendAIMessage('user', userTextDisplay);
+            
+            // 显示加载
+            const loadingId = 'loading-' + Date.now();
+            chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-loading">⏳ 正在生成中...</div>`);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+                    body: JSON.stringify({
+                        model: aiConfig.model || 'gpt-3.5-turbo',
+                        messages: [
+                            { role: "system", content: systemPrompt },
+                            { role: "user", content: "开始表演吧。" } // 触发语
+                        ],
+                        temperature: 0.8 // 稍微高一点，更有创意
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById(loadingId).remove();
+
+                if (data.choices) {
+                    const reply = data.choices[0].message.content;
+                    appendAIMessage('ai', reply);
+                }
+            } catch (e) {
+                document.getElementById(loadingId).remove();
+                appendAIMessage('ai', `❌ 演砸了：${e.message}`);
+            }
+        }
+
+        // ================= 💌 飞鸽传书逻辑 =================
+        async function checkMailbox() {
+            if (items.length === 0) { auth.toast('📭 还没有认识的人，信箱是空的...'); return; }
+            if (!aiConfig.apiKey) { auth.toast('🔑 没 API Key 邮差不送信！'); return; }
+
+            // 1. 随机选一个角色
+            const luckyIdx = Math.floor(Math.random() * items.length);
+            const item = items[luckyIdx];
+
+            // 2. 显示信纸（加载状态）
+            document.getElementById('letterModal').classList.add('active');
+            document.getElementById('letterText').innerHTML = '<div style="text-align:center; margin-top:50px;">🕊️ 正在拆开信封...<br><span style="font-size:12px;color:#999;">(AI 正在撰写中)</span></div>';
+            document.getElementById('letterSign').textContent = '';
+
+            // 3. 构建 Prompt
+            const prompt = `
+            【角色扮演指令】
+            你是：${item.name}。
+            标签：${(item.tags||[]).join(',')}。
+            
+            请给你的【重要之人】（用户）写一封短信（150字以内）。
+            内容可以是：
+            - 对最近相处的感想。
+            - 一句羞于启齿的告白。
+            - 或者是日常的碎碎念、吐槽。
+            - 如果是病娇，内容要稍微有点可怕；如果是傲娇，要口是心非。
+            
+            格式要求：
+            不要写开头称呼，直接写正文。
+            语气要极其符合人设。
+            `;
+
+            try {
+                const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+                    body: JSON.stringify({
+                        model: aiConfig.model || 'gpt-3.5-turbo',
+                        messages: [{ role: "user", content: prompt }]
+                    })
+                });
+
+                const data = await response.json();
+                if (data.choices) {
+                    const content = data.choices[0].message.content;
+                    
+                    // 逐字显示特效 (打字机效果)
+                    const textEl = document.getElementById('letterText');
+                    textEl.textContent = '';
+                    let i = 0;
+                    const timer = setInterval(() => {
+                        textEl.textContent += content.charAt(i);
+                        i++;
+                        if (i >= content.length) clearInterval(timer);
+                    }, 30); // 打字速度
+
+                    document.getElementById('letterSign').textContent = `—— ${item.name}`;
+                }
+            } catch (e) {
+                document.getElementById('letterText').textContent = '❌ 信件在途中丢失了... (网络错误)';
             }
         }
 
