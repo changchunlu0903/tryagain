@@ -3160,97 +3160,209 @@ var aiConfig = JSON.parse(localStorage.getItem('my_ai_config')) || {
     model: 'gpt-3.5-turbo'
 };
 
-// ================= 🚑 紧急修复补丁 (没有这几行，点盒子会进不去) =================
-let currentHeir = JSON.parse(localStorage.getItem('royal_heir_data')) || null;
+// ================= 🚑 皇嗣系统 (防白屏安全版) =================
 
-// ================= 🚑 皇嗣数据核心 (请直接覆盖原来的补丁) =================
-// 1. 读取存档
-let currentHeir = JSON.parse(localStorage.getItem('royal_heir_data')) || null;
+// 1. 读取存档 (使用 var 防止报错)
+var currentHeir = JSON.parse(localStorage.getItem('royal_heir_data')) || null;
 
-// 2. 基础素材库 (待机图 & 默认背景)
-const HEIR_ASSETS = {
+// ================= 🖼️ 全新图片配置 (已按您的要求更新) =================
+
+// 1. 基础背景池：平时没事干时，根据季节随机展示
+var HEIR_ASSETS = {
     boy: {
         bg: { 
-            '春': ["https://files.catbox.moe/xbtct5.jpg"],
-            '夏': ["https://files.catbox.moe/xbtct5.jpg"],
-            '秋': ["https://files.catbox.moe/xbtct5.jpg"], 
-            '冬': ["https://files.catbox.moe/acbius.jpeg"]
+            // 🌸 春天：钓鱼、玩耍、赏花、书房读书
+            '春': [
+                "https://files.catbox.moe/87xa1i.png", // 钓鱼
+                "https://files.catbox.moe/7lhq83.png", // 玩耍
+                "https://files.catbox.moe/3wx26e.png", // 赏花
+                "https://files.catbox.moe/3lwe0w.png"  // 读书
+            ],
+            // 🍃 夏天：(你给的夏季图较少，混入通用的室内图，防止空白)
+            '夏': [
+                "https://files.catbox.moe/3lwe0w.png", // 读书
+                "https://files.catbox.moe/11wud2.png", // 练字
+                "https://files.catbox.moe/75je6d.png", // 训练
+                "https://files.catbox.moe/xyp7uw.png"  // 食堂
+            ],
+            // 🍁 秋天：钓鱼、玩耍、逗鸟
+            '秋': [
+                "https://files.catbox.moe/87xa1i.png", // 钓鱼
+                "https://files.catbox.moe/7lhq83.png", // 玩耍
+                "https://files.catbox.moe/f539et.png", // 逗鸟
+                "https://files.catbox.moe/3lwe0w.png"  // 读书
+            ], 
+            // ❄️ 冬天：赏梅、寝宫、打雪仗
+            '冬': [
+                "https://files.catbox.moe/idu2gw.jpg", // 赏梅
+                "https://files.catbox.moe/fkfstg.jpg", // 寝宫
+                "https://files.catbox.moe/937inc.png"  // 打雪仗
+            ]
         },
+        // 🕺 人物立绘 (沿用旧的，防止没有小人)
         idle: [ "https://files.catbox.moe/fv8f8p.gif", "https://files.catbox.moe/vdvz1m.gif" ],
         shy: "https://files.catbox.moe/fv8f8p.gif", 
         yawn: "https://files.catbox.moe/vdvz1m.gif"
     },
     girl: {
         bg: {
-            '春': ["https://files.catbox.moe/3ofd6b.png"],
-            '夏': ["https://files.catbox.moe/3ofd6b.png"],
-            '秋': ["https://files.catbox.moe/3ofd6b.png"],
-            '冬': ["https://files.catbox.moe/acbius.jpeg"] 
+            // 🌸 春天：风筝、后宫玩耍、毽子、秋千
+            '春': [
+                "https://files.catbox.moe/zqx3jl.png", // 风筝
+                "https://files.catbox.moe/j1mo4r.png", // 花园
+                "https://files.catbox.moe/vmn42f.png", // 毽子
+                "https://files.catbox.moe/84wild.png"  // 秋千
+            ],
+            // 🍃 夏天：池塘、西瓜、府里休息
+            '夏': [
+                "https://files.catbox.moe/tw4s8u.jpg", // 池塘
+                "https://files.catbox.moe/qzmagd.png", // 吃瓜
+                "https://files.catbox.moe/gsn7fd.png"  // 休息
+            ],
+            // 🍁 秋天：风筝、毽子
+            '秋': [
+                "https://files.catbox.moe/zqx3jl.png", // 风筝
+                "https://files.catbox.moe/vmn42f.png"  // 毽子
+            ],
+            // ❄️ 冬天：冬日池塘、过年、府外玩耍
+            '冬': [
+                "https://files.catbox.moe/hjnmf4.jpg", // 冬日池塘
+                "https://files.catbox.moe/divoox.png", // 过年
+                "https://files.catbox.moe/vsqo8k.jpg"  // 府外玩耍
+            ] 
         },
+        // 💃 人物立绘
         idle: [ "https://files.catbox.moe/8q61ys.gif", "https://files.catbox.moe/4hxxkv.gif" ],
         shy: "https://files.catbox.moe/cokcdl.gif",
         yawn: "https://files.catbox.moe/mezusb.gif"
     }
 };
 
-// 3. 🧠 智能场景库
-const HEIR_SCENES = {
+// 2. 智能场景库：触发特定关键词时，强制切换到这张图
+var HEIR_SCENES = {
     boy: [
-        { seasons: ['冬'], keywords: ['赏梅', '梅花', '长椅'], url: ['https://files.catbox.moe/idu2gw.jpg'] },
+        // 冬季专属
+        { seasons: ['冬'], keywords: ['梅', '赏梅', '长椅'], url: ['https://files.catbox.moe/idu2gw.jpg'] },
         { seasons: ['冬'], keywords: ['寝宫', '睡觉', '休息', '起床'], url: ['https://files.catbox.moe/fkfstg.jpg'] },
+        { seasons: ['冬'], keywords: ['雪', '雪仗', '打雪'], url: ['https://files.catbox.moe/937inc.png'] },
+        
+        // 春秋专属
+        { seasons: ['春','秋'], keywords: ['钓鱼', '池塘', '垂钓'], url: ['https://files.catbox.moe/87xa1i.png'] },
+        { seasons: ['春','秋'], keywords: ['玩耍', '游戏', '跑'], url: ['https://files.catbox.moe/7lhq83.png'] },
+        { seasons: ['秋'], keywords: ['鸟', '逗鸟', '长亭'], url: ['https://files.catbox.moe/f539et.png'] },
+        { seasons: ['春'], keywords: ['花', '赏花', '花丛'], url: ['https://files.catbox.moe/3wx26e.png'] },
+
+        // 全季节通用
         { seasons: ['春','夏','秋','冬'], keywords: ['画画', '丹青', '涂鸦'], url: ['https://files.catbox.moe/6iwmot.png'] },
         { seasons: ['春','夏','秋','冬'], keywords: ['读书', '看书', '阅读'], url: ['https://files.catbox.moe/3lwe0w.png'] },
-        { seasons: ['春','秋'], keywords: ['钓鱼', '池塘', '垂钓'], url: ['https://files.catbox.moe/87xa1i.png'] },
         { seasons: ['春','夏','秋','冬'], keywords: ['学习', '练字', '书法', '上课'], url: ['https://files.catbox.moe/11wud2.png'] },
-        { seasons: ['春','秋'], keywords: ['玩耍', '游戏', '跑'], url: ['https://files.catbox.moe/7lhq83.png'] },
         { seasons: ['春','夏','秋','冬'], keywords: ['比赛', '比试', '臣子'], url: ['https://files.catbox.moe/3kderq.png'] },
-        { seasons: ['秋'], keywords: ['逗鸟', '长亭'], url: ['https://files.catbox.moe/f539et.png'] },
-        { seasons: ['冬'], keywords: ['雪仗', '玩雪', '打雪'], url: ['https://files.catbox.moe/937inc.png'] },
         { seasons: ['春','夏','秋','冬'], keywords: ['训诫', '责骂', '受罚'], url: ['https://files.catbox.moe/v1hnmu.png'] },
         { seasons: ['春','夏','秋','冬'], keywords: ['食堂', '吃饭', '展示'], url: ['https://files.catbox.moe/xyp7uw.png'] },
-        { seasons: ['春'], keywords: ['赏花', '花丛'], url: ['https://files.catbox.moe/3wx26e.png'] },
         { seasons: ['春','夏','秋','冬'], keywords: ['训练', '习武', '士兵'], url: ['https://files.catbox.moe/75je6d.png'] }
     ],
     girl: [
+        // 春秋专属
         { seasons: ['春','秋'], keywords: ['风筝'], url: ['https://files.catbox.moe/zqx3jl.png'] },
+        { seasons: ['春','秋'], keywords: ['毽子', '踢毽'], url: ['https://files.catbox.moe/vmn42f.png'] },
+        { seasons: ['春'], keywords: ['玩耍', '后宫', '花园'], url: ['https://files.catbox.moe/j1mo4r.png'] },
+        { seasons: ['春'], keywords: ['秋千', '荡秋千'], url: ['https://files.catbox.moe/84wild.png'] },
+
+        // 夏季专属
         { seasons: ['夏'], keywords: ['玩水', '池塘', '戏水'], url: ['https://files.catbox.moe/tw4s8u.jpg'] },
         { seasons: ['夏'], keywords: ['西瓜', '吃瓜', '解暑'], url: ['https://files.catbox.moe/qzmagd.png'] },
+        { seasons: ['夏'], keywords: ['休息', '睡觉', '纳凉'], url: ['https://files.catbox.moe/gsn7fd.png'] },
+
+        // 冬季专属
         { seasons: ['冬'], keywords: ['玩耍', '池塘', '冬日'], url: ['https://files.catbox.moe/hjnmf4.jpg'] },
-        { seasons: ['春'], keywords: ['玩耍', '后宫', '花园'], url: ['https://files.catbox.moe/j1mo4r.png'] },
         { seasons: ['冬'], keywords: ['过年', '春节', '灯笼'], url: ['https://files.catbox.moe/divoox.png'] },
-        { seasons: ['春','秋'], keywords: ['毽子', '踢毽'], url: ['https://files.catbox.moe/vmn42f.png'] }
+        { seasons: ['冬'], keywords: ['府外', '出宫', '逛街'], url: ['https://files.catbox.moe/vsqo8k.jpg'] }
     ]
 };
 
-// 4. 🧠 智能匹配逻辑
+// 4. 辅助函数：保存数据
+function saveHeirData() {
+    localStorage.setItem('royal_heir_data', JSON.stringify(currentHeir));
+}
+
+// 5. 辅助函数：更新动图 (没有这个函数也会报错)
+function updateAvatarDisplay(forceState) {
+    const img = document.getElementById('heirDynamicGif');
+    if (!img || !currentHeir) return;
+
+    const isBoy = currentHeir.gender === '男';
+    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
+
+    let targetUrl = "";
+    // 强制状态
+    if (forceState === 'shy') targetUrl = assets.shy;
+    else if (forceState === 'yawn') targetUrl = assets.yawn;
+    // 自动状态 (疲劳高)
+    else if ((currentHeir.stress || 0) > 80) targetUrl = assets.yawn;
+    // 默认随机
+    else {
+        targetUrl = assets.idle[Math.floor(Math.random() * assets.idle.length)];
+    }
+    img.src = targetUrl;
+}
+
+// 6. 辅助函数：毕业 (防止报错)
+function graduateHeir() {
+    if(!confirm('确定要让皇嗣出宫建府吗？(数据将归档)')) return;
+    auth.toast('🎓 皇嗣已赐府成家！(功能待完善)');
+    // 暂时先只关闭窗口，后续可以加归档逻辑
+    closeEastPalace();
+}
+
+// 7. 智能匹配逻辑 (增强版：强制随机切换)
 function smartUpdateHeirScene(actionText) {
     if (!currentHeir) return;
     const isBoy = currentHeir.gender === '男';
     const sceneList = isBoy ? HEIR_SCENES.boy : HEIR_SCENES.girl;
     const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
     
-    // 默认拿当前季节的图 (作为保底)
+    // 1. 先从默认季节池子里【随机】捞一张图 (作为保底)
+    // 关键修复：原来这里只取第0张，现在改为随机取
     let pool = assets.bg[currentSeason] || assets.bg['春'];
-    let finalUrl = Array.isArray(pool) ? pool[Math.floor(Math.random() * pool.length)] : pool;
+    if (!Array.isArray(pool)) pool = [pool]; //以此防错
+    
+    let finalUrl = pool[Math.floor(Math.random() * pool.length)];
 
-    // 尝试匹配关键词
+    // 2. 尝试匹配关键词 (如果有特殊剧情，覆盖保底图)
     if (actionText) {
         for (let scene of sceneList) {
+            // 季节符合，且关键词匹配
             if (scene.seasons.includes(currentSeason)) {
                 if (scene.keywords.some(key => actionText.includes(key))) {
+                    // 也是随机取一张，增加新鲜感
                     finalUrl = Array.isArray(scene.url) 
                         ? scene.url[Math.floor(Math.random() * scene.url.length)] 
                         : scene.url;
-                    break;
+                    // console.log("✨ 触发特殊场景:", scene.keywords[0]);
+                    break; // 匹配到一个就停止
                 }
             }
         }
     }
+
+    // 3. 执行换图
     const bgEl = document.getElementById('heirSceneBg');
-    if (bgEl) bgEl.style.backgroundImage = `url('${finalUrl}')`;
+    if (bgEl) {
+        // 只有当图片真的变了，才执行切换，避免闪烁
+        const currentBgUrl = bgEl.style.backgroundImage;
+        if (!currentBgUrl.includes(finalUrl)) {
+            bgEl.style.transition = 'opacity 0.3s';
+            bgEl.style.opacity = 0.6; // 先淡出一点
+            setTimeout(() => {
+                bgEl.style.backgroundImage = `url('${finalUrl}')`;
+                bgEl.style.opacity = 1; // 再淡入
+            }, 300);
+        }
+    }
 }
 
-// 5. 🎨 东宫渲染 (界面)
+
+// 8. 东宫渲染
 function openEastPalace() {
     if (!currentHeir) return;
     document.getElementById('eastPalaceModal').classList.add('active');
@@ -3259,12 +3371,10 @@ function openEastPalace() {
     const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
     if (typeof currentSeason === 'undefined') currentSeason = '春';
 
-    // 默认背景
     let defaultBg = "https://files.catbox.moe/3ofd6b.png";
     if (assets && assets.bg) {
         let pool = assets.bg[currentSeason] || assets.bg['春'];
-        if (Array.isArray(pool)) defaultBg = pool[0];
-        else defaultBg = pool;
+        if (Array.isArray(pool)) defaultBg = pool[0]; else defaultBg = pool;
     }
 
     const sTheme = {
@@ -3277,40 +3387,22 @@ function openEastPalace() {
     const modalContent = document.querySelector('#eastPalaceModal .modal');
     modalContent.innerHTML = `
         <button class="close-modal" onclick="closeEastPalace()" style="position:absolute; right:10px; top:10px; z-index:200; color:#fff; font-size:28px; background:none; border:none;">×</button>
-        
         <div id="heirSceneBg" class="heir-bg-stage" style="background-image:url('${defaultBg}');">
-            <button class="season-toggle-btn" onclick="toggleHeirSeason()">
-                ${sTheme.icon} 切换季节
-            </button>
-            <div style="position:absolute; bottom:10px; left:10px; background:${sTheme.color}; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">
-                ${currentSeason}季
-            </div>
+            <button class="season-toggle-btn" onclick="toggleHeirSeason()">${sTheme.icon} 切换季节</button>
+            <div style="position:absolute; bottom:10px; left:10px; background:${sTheme.color}; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">${currentSeason}季</div>
         </div>
-
         <div class="heir-middle-section" style="flex:1; display:flex; position:relative; padding:10px; background:linear-gradient(to bottom, #fff0f5 0%, #fff 100%); overflow:visible;">
             <div class="heir-info-left" style="flex:1; padding-right:110px;">
-                <div style="color:#d4af37; font-size:16px; font-weight:bold; margin-bottom:5px;">
-                    ${currentHeir.title} · ${currentHeir.name} 
-                    <span style="font-size:12px; color:#888;">(${currentHeir.age}岁)</span>
-                </div>
-                
+                <div style="color:#d4af37; font-size:16px; font-weight:bold; margin-bottom:5px;">${currentHeir.title} · ${currentHeir.name} <span style="font-size:12px; color:#888;">(${currentHeir.age}岁)</span></div>
                 <div class="stat-row"><div class="stat-name">智慧</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.wisdom}%; background:#81ecec"></div></div>${currentHeir.stats.wisdom}</div>
                 <div class="stat-row"><div class="stat-name">体魄</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.fitness}%; background:#ff7675"></div></div>${currentHeir.stats.fitness}</div>
                 <div class="stat-row"><div class="stat-name">魅力</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.charm}%; background:#a29bfe"></div></div>${currentHeir.stats.charm}</div>
                 <div class="stat-row"><div class="stat-name">疲劳</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stress || 0}%; background:#636e72"></div></div>${currentHeir.stress || 0}</div>
-            
                 <div style="font-size:10px; color:#999; margin-top:5px;">父君: ${currentHeir.fatherName}</div>
             </div>
-
-            <div class="heir-avatar-box">
-                <img id="heirDynamicGif" class="heir-gif" src="" onclick="touchHeir2D()">
-            </div>
+            <div class="heir-avatar-box"><img id="heirDynamicGif" class="heir-gif" src="" onclick="touchHeir2D()"></div>
         </div>
-
-        <div class="heir-bio-scroll" id="heirBioText">
-            ${currentHeir.bioLog.slice().reverse().join('<br>')}
-        </div>
-
+        <div class="heir-bio-scroll" id="heirBioText">${currentHeir.bioLog.slice().reverse().join('<br>')}</div>
         <div class="heir-btn-grid" id="normalActions">
             <button class="heir-action-btn" onclick="interactHeir('study')">📖 上课</button>
             <button class="heir-action-btn" onclick="interactHeir('play')">🪁 出去玩</button>
@@ -3318,14 +3410,12 @@ function openEastPalace() {
             <button class="heir-action-btn" onclick="openTravelMap()" style="grid-column: span 3; background:#fff7e6; color:#d46b08; border-color:#ffbb96;">🌏 带他/她去游历</button>
             <button class="heir-action-btn next-year-btn" onclick="advanceYear()">🎍 辞旧迎新 (进入下一年)</button>
         </div>
-        
         <div class="heir-btn-grid" id="graduateActions" style="display:none">
             <button class="heir-action-btn next-year-btn" style="background:#d4af37" onclick="graduateHeir()">🎓 赐府成家 (存档)</button>
         </div>
     `;
 
     updateAvatarDisplay();
-    // 渲染后立即匹配最后一条记录的场景
     const lastLog = currentHeir.bioLog[currentHeir.bioLog.length - 1] || "";
     smartUpdateHeirScene(lastLog);
 
@@ -3335,23 +3425,22 @@ function openEastPalace() {
     }
 }
 
-// 6. 🌸 换季
+// 9. 换季
 function toggleHeirSeason() {
     const seasons = ['春', '夏', '秋', '冬'];
     let idx = seasons.indexOf(currentSeason);
     idx = (idx + 1) % 4;
     currentSeason = seasons[idx];
-    
     auth.toast(`🍂 时令已变，入【${currentSeason}】了`);
     openEastPalace(); 
 }
 
-// 7. 关闭东宫 (防止忘记定义)
+// 10. 关闭东宫
 function closeEastPalace() {
     document.getElementById('eastPalaceModal').classList.remove('active');
 }
 
-// 8. 🎮 互动逻辑
+// 11. 互动逻辑
 async function interactHeir(actionType) {
     auth.toast('⏳ 正在与皇嗣互动...');
     var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
