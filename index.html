@@ -277,44 +277,41 @@
         .layout-btn.active { background: #fff; box-shadow: 0 4px 10px rgba(255, 183, 197, 0.3); opacity: 1; transform: scale(1.1); }
 
                /* 🟢 操作按钮网格 (修改版：6个一行) */
-        .action-grid { 
-            display: grid; 
-            grid-template-columns: repeat(6, 1fr); /* 👈 关键：改成 6 列 */
-            gap: 4px; /* 👈 间距改小一点，防止挤 */
-            max-width: 100%; 
-            margin: 0 auto 20px auto; 
-            padding: 0 5px; /* 两边留一点点缝隙 */
-            box-sizing: border-box;
-        }
+    /* 强制设置为 5 列，让 5 个按钮正好排满一行 */
+    .action-grid { 
+        display: grid; 
+        grid-template-columns: repeat(5, 1fr) !important; 
+        gap: 6px; /* 间距稍微调小一点，防止换行 */
+        max-width: 100%; 
+        margin: 0 auto 20px auto; 
+        padding: 0 5px; 
+        box-sizing: border-box;
+    }
 
-        .action-card {
-            background: #fff; 
-            border: 2px solid #ffb7c5; 
-            border-radius: 15px; /* 圆角稍微改小一点点适应窄卡片 */
-            padding: 5px 0; /* 减少内边距 */
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            cursor: pointer; 
-            transition: all 0.2s; 
-            color: #ff8fa3; 
-            font-weight: bold; 
-            font-size: 11px; /* 👈 字体稍微改小，防止换行 */
-            box-shadow: 0 4px 10px rgba(255, 183, 197, 0.2); 
-            height: 65px; /* 高度稍微调矮一点，显得精致 */
-        }
-        
-        .action-card:active { transform: scale(0.95); }
-        .action-card.primary { background: #fff; border: 2px solid #ff8fa3; color: #ff8fa3; box-shadow: 0 4px 12px rgba(255, 143, 163, 0.3); }
-        
-        /* 图标也稍微调小一点 */
-        .kitty-icon { 
-            font-size: 20px; 
-            margin-bottom: 2px; 
-            filter: drop-shadow(0 2px 2px rgba(255,183,197,0.3)); 
-        }
-
+    .action-card {
+        height: 65px; /* 高度统一 */
+        font-size: 11px; /* 字体小巧 */
+        padding: 5px 0;
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center;
+        background: #fff; 
+        border: 2px solid #ffb7c5; 
+        border-radius: 12px;
+        color: #ff8fa3; 
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(255, 183, 197, 0.2); 
+    }
+    
+    .action-card:active { transform: scale(0.95); }
+    .action-card.primary { border: 2px solid #ff8fa3; color: #ff8fa3; }
+    
+    /* 图标大小微调 */
+    .kitty-icon { 
+        font-size: 20px; 
+        margin-bottom: 3px; 
+    }
         /* 批量删除相关样式 */
         .card.is-selecting { animation: shake 0.3s ease; }
         .card.selected { border-color: #ff6b6b !important; background-color: #fff0f0; position: relative; }
@@ -1379,49 +1376,83 @@
             border: none; width: 20px; height: 20px; cursor: pointer; background: none;
         }
 
-        /* ==================== 📌 详情页上的实体贴纸 ==================== */
-        
-        .real-sticky-note {
-            position: absolute;
-            top: 80px;  /* 贴在右上角，避开关闭按钮 */
-            right: 20px;
-            width: 140px; /* 小巧一点 */
-            min-height: 100px;
-            padding: 15px;
-            
-            /* 纸张质感 */
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.15);
-            border-bottom-right-radius: 20px 5px; /* 微微卷角效果 */
-            
-            font-family: 'MyCustomFont', cursive, sans-serif;
-            line-height: 1.4;
-            word-wrap: break-word; /* 防止长单词撑破 */
-            overflow: hidden;
-            
-            cursor: pointer;
-            z-index: 50; /* 保证浮在最上面 */
-            transition: transform 0.2s;
-            
-            /* 默认微微歪一点 */
-            transform: rotate(3deg);
-        }
+       /* ================= 📌 便签墙样式 (防遮挡版) ================= */
+#stickyNoteDisplay {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end; /* 靠右排 */
+    gap: 10px;
+    padding: 10px;
+    position: absolute;
+    top: 50px;           /* 避开顶部的关闭按钮 */
+    right: 10px;
+    width: 85%;          /* 宽度限制 */
+    min-height: 50px;    /* 给个最小高度 */
+    pointer-events: none; /* 容器透传鼠标 */
+    z-index: 100;        /* ✅ 层级拉高，保证在最上层！ */
+}
 
-        /* 悬停时，好像要被揭下来 */
-        .real-sticky-note:hover {
-            transform: scale(1.05) rotate(0deg);
-            box-shadow: 5px 10px 20px rgba(0,0,0,0.2);
-        }
+/* ================= 📌 手账风便签样式 (替换旧的) ================= */
 
-        /* 📌 钉子/胶带装饰 */
-        .real-sticky-note::before {
-            content: '';
-            position: absolute;
-            top: -10px; left: 50%; transform: translateX(-50%);
-            width: 40px; height: 20px;
-            background: rgba(255,255,255,0.3); /* 半透明胶带 */
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            transform: rotate(-2deg);
-        }
+.real-sticky-note {
+    position: relative;
+    width: 110px;
+    min-height: 90px;
+    padding: 15px 10px 10px 10px; /* 上面留点空给胶带 */
+    
+    /* 核心改动：不再是死板的方块，右下角大圆角模拟卷起 */
+    border-radius: 2px 2px 20px 2px; 
+    
+    /* 纸张质感阴影：两层阴影，一层是纸的，一层是卷角的 */
+    box-shadow: 
+        1px 1px 3px rgba(0,0,0,0.1), /* 基础阴影 */
+        5px 5px 10px rgba(0,0,0,0.1); /* 浮起阴影 */
+    
+    font-family: 'MyCustomFont', cursive, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #444;
+    word-wrap: break-word;
+    
+    cursor: pointer;
+    transition: transform 0.2s;
+    pointer-events: auto;
+    
+    /* 默认带一点旋转，JS会覆盖这个变量 */
+    transform: rotate(var(--rot, 0deg));
+    
+    /* 给个米黄色的底，防止颜色加载慢时太白 */
+    background-color: #fff9c4;
+}
+
+/* 悬停特效：仿佛要被揭下来 */
+.real-sticky-note:hover {
+    transform: scale(1.1) rotate(0deg) !important;
+    z-index: 200;
+    box-shadow: 5px 15px 25px rgba(0,0,0,0.15); /* 悬停时阴影变长 */
+}
+
+/* 🍬 半透明和纸胶带装饰 */
+.real-sticky-note::before {
+    content: ''; 
+    position: absolute; 
+    top: -12px;           /* 贴在最上面，露出一半 */
+    left: 50%; 
+    transform: translateX(-50%) rotate(-2deg); /* 胶带也稍微歪一点 */
+    
+    width: 40px; 
+    height: 18px;
+    
+    /* 半透明磨砂胶带感 */
+    background: rgba(255, 255, 255, 0.4); 
+    border-left: 2px dotted rgba(255,255,255,0.6); /* 胶带撕口 */
+    border-right: 2px dotted rgba(255,255,255,0.6);
+    
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    backdrop-filter: blur(2px); /* 磨砂效果 */
+}
+
+
 
         /* ==================== 🤖 AI 聊天样式 ==================== */
         .ai-msg-row {
@@ -1582,11 +1613,452 @@
     cursor: pointer;
 }
 
+/* ==================== 📰 八卦周刊样式 ==================== */
+.gossip-headline {
+    font-family: 'Times New Roman', serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 20px 0 10px 0;
+    line-height: 1.3;
+    text-align: left;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+.gossip-body {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    text-align: justify;
+    font-family: serif;
+    margin-bottom: 15px;
+}
+.gossip-tag {
+    background: #333;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 10px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.gossip-img-placeholder {
+    width: 100%; height: 120px;
+    background: #e0e0e0;
+    margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #999; font-size: 12px; font-style: italic;
+    border: 1px solid #ccc;
+}
+
+/* ==================== 🍱 深夜食堂样式 ==================== */
+/* 主要是深色模式微调，已内联在 HTML 中，此处无需额外复杂样式 */
+
+/* ==================== 🕯️ 灵魂拷问室样式 ==================== */
+.soul-pulse {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    animation: pulse-white 2s infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes pulse-white {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { transform: scale(1.2); box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+/* 打字机光标效果 */
+.typing-cursor::after {
+    content: '|';
+    animation: blink 1s infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ================= 🎛️ 详情页控制台样式 (新) ================= */
+
+/* 1. 按钮容器：改为 Grid 网格布局 */
+.control-panel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 强制分为 3 列 */
+    gap: 8px; /* 按钮之间的间距 */
+    margin-top: 15px;
+    padding: 0 5px;
+}
+
+/* 2. 统一按钮样式 */
+.control-panel-grid button {
+    width: 100%;
+    margin: 0 !important; /* 去掉原来的外边距 */
+    padding: 8px 0;
+    font-size: 12px; /* 字体改小一点点，防止换行 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 40px; /* 统一高度 */
+    white-space: nowrap; /* 强制不换行 */
+}
+
+/* 3. 底部危险区 (专门放删除按钮) */
+.danger-zone {
+    margin-top: 10px;
+    padding: 0 5px;
+}
+.danger-zone button {
+    width: 100%;
+    padding: 10px;
+    font-weight: bold;
+}
+
+/* ================= 💖 恩宠 & 🌠 钦天监 样式 ================= */
+
+/* 1. 位份徽章 (显示在名字旁边) */
+.rank-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 8px;
+    vertical-align: middle;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+/* 不同等级不同颜色 */
+.rank-0 { background: #b0bec5; border: 1px solid #90a4ae; } /* 侍奴 */
+.rank-1 { background: #81d4fa; border: 1px solid #4fc3f7; } /* 答应 */
+.rank-2 { background: #a5d6a7; border: 1px solid #81c784; } /* 贵人 */
+.rank-3 { background: #ffcc80; border: 1px solid #ffb74d; } /* 嫔 */
+.rank-4 { background: #f48fb1; border: 1px solid #f06292; } /* 妃 */
+.rank-5 { background: linear-gradient(135deg, #ffd700, #ff8f00); border: 1px solid #ffa000; text-shadow: 0 1px 0 rgba(0,0,0,0.2); } /* 皇贵君 */
+
+/* 2. 恩宠进度条 (放在名字下面) */
+.favor-progress-container {
+    width: 100%;
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    margin-top: 5px;
+    overflow: hidden;
+    position: relative;
+}
+.favor-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+    width: 0%;
+    transition: width 0.5s;
+}
+
+/* 3. 钦天监弹窗 (星空背景) */
+#horoscopeModal .modal {
+    background: linear-gradient(to bottom, #1a1a2e, #16213e);
+    color: #fff;
+    border: 2px solid #ffd700;
+}
+.horoscope-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* ================= 👶 高级皇嗣养成系统样式 ================= */
+
+/* 东宫主界面弹窗 */
+#eastPalaceModal .modal {
+    width: 380px;
+    background: linear-gradient(to bottom, #fffbf0, #fff);
+    border: 3px solid #d4af37;
+    border-radius: 15px;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* 顶部：画像区域 */
+.heir-portrait-stage {
+    height: 200px;
+    background: #ffe4e1; /* 默认粉底 */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    border-bottom: 2px solid #d4af37;
+}
+/* 不同年龄段的背景图 (这里用颜色代替，你可以换成图片链接) */
+.stage-baby { background: linear-gradient(to top, #fddb92 0%, #d1fdff 100%); }
+.stage-child { background: linear-gradient(to top, #a8edea 0%, #fed6e3 100%); }
+.stage-teen { background: linear-gradient(to top, #d299c2 0%, #fef9d7 100%); }
+.stage-adult { background: linear-gradient(to top, #ebc0fd 0%, #d9ded8 100%); }
+
+/* 孩子画像 (用 emoji 或图片占位) */
+.heir-avatar {
+    font-size: 100px;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+    transition: all 0.5s;
+}
+
+/* 中部：信息面板 */
+.heir-info-panel {
+    padding: 15px;
+}
+.heir-name-title {
+    text-align: center;
+    color: #d4af37;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+/* 属性进度条格 */
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px; color: #666; }
+.stat-bar-bg { background: #eee; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 2px; }
+.stat-bar-fill { height: 100%; background: #ffd700; width: 20%; transition: width 0.5s; }
+/* 不同属性不同色 */
+.fill-wisdom { background: #81ecec; }
+.fill-fitness { background: #ff7675; }
+.fill-charm { background: #a29bfe; }
+
+/* 底部：生平记录与操作 */
+.heir-bio-box {
+    background: rgba(255,255,255,0.8);
+    border: 1px dashed #d4af37;
+    padding: 10px;
+    height: 80px;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 10px 15px;
+    border-radius: 5px;
+}
+.heir-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    padding: 10px 15px 15px;
+    background: #fffbf0;
+    border-top: 1px solid #eee;
+}
+.heir-btn {
+    padding: 8px; border: 1px solid #d4af37; background: #fff; color: #d4af37; border-radius: 5px; font-size: 12px; cursor: pointer;
+}
+.heir-btn:hover { background: #fff7d1; }
+.heir-btn.graduate { background: #d4af37; color: white; font-weight: bold; }
+
+/* 创建时的输入框 */
+#creationSettingInput {
+    width: 100%; padding: 10px; border: 2px solid #d4af37; border-radius: 8px; min-height: 60px; font-family: inherit; margin: 10px 0;
+}
+
+/* ================= 👶 皇嗣系统：2D动态立绘版 ================= */
+
+/* 1. 东宫弹窗容器 */
+#eastPalaceModal .modal {
+    width: 380px;
+    background: #fff;
+    border: 3px solid #ffb7c5;
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+}
+
+/* 2. 顶部大背景 (放您给的风景照) */
+.heir-bg-stage {
+    width: 100%;
+    height: 180px; /* 风景图高度 */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border-bottom: 2px solid #ffd1dc;
+}
+
+/* 3. 中间区域：左边信息，右边立绘 */
+.heir-middle-section {
+    display: flex;
+    position: relative;
+    padding: 10px;
+    background: linear-gradient(to bottom, #fff0f5 0%, #fff 100%);
+}
+
+.heir-info-left {
+    flex: 1; /* 左边占满剩余空间 */
+    padding-right: 100px; /* ⚠️ 关键：右边留出空位给立绘！ */
+}
+
+/* 🔥 4. 右侧立绘小框 (您要的小条) */
+.heir-avatar-box {
+    position: absolute;
+    right: 10px;
+    top: -60px; /* 让它稍微突出去一点到背景图上，更有层次感 */
+    width: 120px;
+    height: 160px;
+    z-index: 10;
+    display: flex;
+    align-items: flex-end; /* 让人物站在底部 */
+    justify-content: center;
+    /* 调试用：如果您想看到框框，可以加 border，这里我先隐藏边框 */
+    /* border: 1px dashed red; */ 
+}
+
+/* 动图本体 */
+.heir-gif {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); /* 加点阴影更立体 */
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.heir-gif:hover { transform: scale(1.05); }
+
+/* 5. 属性条样式优化 */
+.stat-row { display: flex; align-items: center; margin-bottom: 4px; font-size: 12px; color: #666; }
+.stat-name { width: 30px; font-weight: bold; }
+.stat-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; margin: 0 5px; }
+.stat-val { height: 100%; border-radius: 3px; transition: width 0.5s; }
+
+/* 6. 底部操作区 */
+.heir-bio-scroll {
+    height: 80px; overflow-y: auto;
+    background: rgba(255,255,255,0.6);
+    border: 1px dashed #ffb7c5;
+    margin: 5px 10px; padding: 5px;
+    font-size: 11px; color: #555; border-radius: 5px;
+}
+.heir-btn-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 10px;
+}
+.heir-action-btn {
+    padding: 8px; border: 1px solid #ffb7c5; background: #fff; color: #e67e93; 
+    border-radius: 5px; cursor: pointer; font-size: 12px;
+}
+.heir-action-btn:hover { background: #fff0f5; }
+
+/* 跨年大按钮 */
+.next-year-btn {
+    grid-column: span 3;
+    background: #ff9a9e; color: white; border: none; font-weight: bold;
+    margin-top: 5px;
+}
+
+/* ================= 🌏 皇舆全览：上下布局版 ================= */
+
+#travelModal .modal {
+    width: 90%; height: 90%; max-width: 600px; /* 竖屏适配 */
+    background: #fff; padding: 0;
+    border: 3px solid #d4af37;
+    border-radius: 12px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+
+/* 顶部标题栏 */
+.travel-header {
+    height: 45px; background: #222; color: #d4af37;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 15px; font-weight: bold; font-size: 14px;
+    border-bottom: 2px solid #d4af37;
+    flex-shrink: 0;
+}
+
+/* 主体容器：垂直排列 */
+.travel-body {
+    flex: 1; display: flex; flex-direction: column; /* 关键：改为纵向 */
+    overflow: hidden;
+}
+
+/* 上半部分：地图展示区 */
+.travel-map-view {
+    height: 35%; /* 地图占 35% 高度 */
+    position: relative; background: #000;
+    border-bottom: 2px solid #d4af37;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.travel-bg {
+    width: 100%; height: 100%; 
+    object-fit: cover; /* 填满区域 */
+    opacity: 0.9; transition: opacity 0.3s;
+}
+
+/* 下半部分：地点列表区 */
+.travel-sidebar {
+    flex: 1; /* 占满剩余高度 */
+    background: #fffbf0;
+    overflow-y: auto; /* 允许滚动 */
+    padding: 10px;
+    
+    /* 🔥 核心：网格布局，一行3个 */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 8px;
+    align-content: start; /* 内容靠上 */
+}
+
+/* 地点按钮 */
+.location-btn {
+    padding: 8px 5px; 
+    background: #fff; border: 1px solid #e0d0b0;
+    border-radius: 6px; cursor: pointer;
+    font-size: 12px; color: #5d4037;
+    text-align: center; /* 文字居中 */
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    min-height: 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.location-btn:hover {
+    background: #ffe0b2; border-color: #d4af37; transform: translateY(-2px);
+}
+.location-btn.special { /* 切换点 */
+    background: #fff0f5; color: #c0392b; border-color: #ffb7c5; font-weight: bold;
+}
+
+/* 事件结果弹窗 (居中显示) */
+.travel-event-box {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 85%; max-width: 350px;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 20px; border-radius: 12px;
+    border: 2px solid #d4af37;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.6);
+    display: none; text-align: center;
+    z-index: 100;
+}
+
+/* ================= 🌸 东宫修复补丁 (强制显示背景) ================= */
+.heir-bg-stage {
+    display: block !important;
+    width: 100% !important;
+    height: 200px !important;      /* 给足高度 */
+    min-height: 200px !important;
+    flex-shrink: 0 !important;     /* 禁止被挤压 */
+    background-size: cover !important;
+    background-position: center !important;
+    background-color: #e0e0e0;     /* 没图时的底色 */
+    position: relative !important;
+    z-index: 5 !important;
+    border-bottom: 3px solid #ffd1dc;
+}
+
+/* 换季按钮 */
+.season-toggle-btn {
+    position: absolute !important; top: 15px; right: 50px; z-index: 100;
+    background: rgba(255,255,255,0.9); border: 2px solid #d4af37; color: #d4af37;
+    padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* 隐藏旧的小球相关样式 (防止干扰) */
+.heir-ball-wrapper, .heir-ball { display: none !important; }
+
     </style>
 
     <style id="custom-reader-style"></style> 
-</head>
-
 </head>
 <body>
 
@@ -1699,66 +2171,108 @@
             👁️
         </div>
 
-        <h1>🌸 我的百宝箱  🌸</h1>
+       <h1 onclick="triggerCopyrightEgg()">🌸 我的百宝箱 🌸</h1>
 
         <div class="float-widget" id="floatWidget">
-                                  <div class="float-menu" id="floatMenu">
-                
-                <div id="menuPage1" class="menu-page" style="flex:1; overflow-y:auto; min-height:0;">
-                    <div class="music-panel">
-                        <div style="font-size:12px; color:#aaa; margin-bottom:5px;">🎧 背景音乐</div>
-                        <div class="music-controls">
-                            <button class="play-btn" onclick="toggleMusic()" id="playBtn">▶</button>
-                            <input type="range" min="0" max="1" step="0.1" value="0.5" onchange="changeVolume(this)" style="width:60px; accent-color:var(--accent-color)">
-                        </div>
-                        <input type="text" style="width:100%;font-size:10px;padding:4px;border:1px solid #ddd;border-radius:5px;" id="musicLink" placeholder="输入mp3链接..." onchange="updateMusicSrc(this.value)">
-                        <audio id="bgMusic" loop></audio>
-                    </div>
+                                <div class="float-menu" id="floatMenu">
+    
+   <div id="menuPage1" class="menu-page" style="flex:1; overflow-y:auto;">
+    <div class="music-panel">
+        <div style="font-size:12px; color:#aaa; margin-bottom:5px;">🎧 背景音乐</div>
+        <div class="music-controls">
+            <button class="play-btn" onclick="toggleMusic()" id="playBtn">▶</button>
+            <input type="range" min="0" max="1" step="0.1" value="0.5" onchange="changeVolume(this)" style="width:60px; accent-color:var(--accent-color)">
+        </div>
+        <input type="text" style="width:100%;font-size:10px;padding:4px;border:1px solid #ddd;border-radius:5px;" id="musicLink" placeholder="输入mp3链接..." onchange="updateMusicSrc(this.value)">
+        <audio id="bgMusic" loop></audio>
+    </div>
 
-                    <div class="lottery-panel" style="display:flex; gap:5px;">
-                        <button class="lottery-btn" onclick="startLottery()" style="flex:1">🔮 选个老婆</button>
-                        <button class="lottery-btn" onclick="openGachaModal()" style="flex:1; background:linear-gradient(135deg, #e0f7fa 0%, #81ecec 100%); color:#00cec9;">🎲 灵感扭蛋</button>
-                    </div>
-                    <div class="lottery-panel" style="display:flex; gap:5px; margin-top:5px;">
-                        <button class="lottery-btn" onclick="startDreamMode()" style="flex:1; background:linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); color:white; border:none;">🫧 漂浮梦境</button>
-                        <button class="lottery-btn" onclick="openEchoModal()" style="flex:1; background:linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); color:white; border:none;">📖 灵魂回响</button>
-                    </div>
+    <div class="tavern-portal-panel" style="margin-top:10px; position:relative; width:100%;">
+        <button id="tavernJumpBtn" style="width:100%; box-sizing: border-box; background:linear-gradient(135deg, #fff7e6 0%, #ffe7ba 100%); border:2px solid #fff; color:#fa8c16; padding:8px 15px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(255, 169, 64, 0.2);" onclick="jumpToTavern()">
+            🍺 启动酒馆
+        </button>
+        <button style="position:absolute; right:2px; top:2px; height:calc(100% - 4px); width:35px; background:transparent; border:none; color:#fa8c16; cursor:pointer; opacity:0.6;" onclick="changeTavernLink()" title="修改酒馆链接">⚙️</button>
+    </div>
 
-                    <div class="tavern-portal-panel" style="margin-top:15px; position:relative; width:100%;">
-                        <button id="tavernJumpBtn" style="width:100%; box-sizing: border-box; background:linear-gradient(135deg, #fff7e6 0%, #ffe7ba 100%); border:2px solid #fff; color:#fa8c16; padding:8px 15px; border-radius:20px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(255, 169, 64, 0.2);" onclick="jumpToTavern()">
-                            🍺 启动酒馆
-                        </button>
-                        <button style="position:absolute; right:2px; top:2px; height:calc(100% - 4px); width:35px; background:transparent; border:none; color:#fa8c16; cursor:pointer; opacity:0.6;" onclick="changeTavernLink()">⚙️</button>
-                    </div>
-                </div>
+    <div class="lottery-panel" style="display:flex; gap:5px; margin-top:10px;">
+         <button class="lottery-btn" onclick="startLottery()" style="flex:1">🔮 命运抉择</button>
+         <button class="lottery-btn" onclick="startDreamMode()" style="flex:1; background:linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); color:white;">🫧 漂浮梦境</button>
+    </div>
 
-                <div id="menuPage2" class="menu-page" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:5px; border-bottom:1px dashed #eee; flex-shrink: 0;">
-                        <div style="font-size:12px; font-weight:bold; color:var(--accent-color);">💬 <span id="aiPersonaLabel">小德子 (太监)</span></div>
-                        <button onclick="openAISettings()" style="background:none; border:none; font-size:16px; cursor:pointer;">⚙️</button>
-                    </div>
-                    
-                    <div id="aiChatBox" style="flex:1; overflow-y:auto; padding:10px 0; font-size:12px;">
-                        <div class="ai-msg-row ai"><div class="ai-bubble">皇上吉祥！奴才在这儿候着呢，您有什么吩咐？🙇</div></div>
-                    </div>
+    <div class="lottery-panel" style="display:flex; gap:5px; margin-top:5px;">
+        <button class="lottery-btn" onclick="openGachaModal()" style="flex:1; background:linear-gradient(135deg, #e0f7fa 0%, #81ecec 100%); color:#00cec9;">🎲 灵感扭蛋</button>
+        <button class="lottery-btn" onclick="openEchoModal()" style="flex:1; background:linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); color:white; border:none;">📖 灵魂回响</button>
+    </div>
+</div>
 
-                    <div style="display:flex; gap:5px; margin-top:5px; flex-shrink: 0;">
-                        <input type="text" id="aiInput" placeholder="传唤..." onkeydown="if(event.key==='Enter') sendAIMessage()" style="flex:1; border:1px solid #ddd; border-radius:15px; padding:5px 10px; font-size:12px;">
-                        <button onclick="sendAIMessage()" style="background:var(--accent-color); color:white; border:none; border-radius:15px; padding:5px 10px; font-size:12px;">传</button>
-                    </div>
-                </div>
 
-                <div id="menuPage3" class="menu-page" style="display:none; flex:1; overflow-y:auto;">
-                     <div style="text-align:center; color:#aaa; font-size:12px; margin-bottom:10px; position:sticky; top:0; background:rgba(255,255,255,0.9); padding:5px;">🏷️ 快速跳转目录</div>
-                     <div class="nav-panel" id="navPanel" style="border:none; padding:0;"></div>
-                </div>
 
-                <div class="menu-tab-bar" style="flex-shrink: 0;">
-                    <button class="menu-tab active" onclick="switchMenuPage(1)">✨ 功能</button>
-                    <button class="menu-tab" onclick="switchMenuPage(2)">🤖 侍从</button> 
-                    <button class="menu-tab" onclick="switchMenuPage(3)">📑 目录</button>
-                </div>
-            </div>
+    <div id="menuPage2" class="menu-page" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:5px; border-bottom:1px dashed #eee; flex-shrink: 0;">
+        <div style="font-size:12px; font-weight:bold; color:var(--accent-color);">💬 <span id="aiPersonaLabel">小德子</span></div>
+        <button onclick="openAISettings()" style="background:none; border:none; font-size:16px;">⚙️</button>
+    </div>
+    
+    <div id="aiChatBox" style="flex:1; overflow-y:auto; padding:10px 0; font-size:12px;">
+        <div class="ai-msg-row ai">
+            <div class="ai-bubble">皇上吉祥！奴才在这儿候着呢，您有什么吩咐？🙇</div>
+        </div>
+    </div>
+
+    <div style="display:flex; gap:5px; margin-top:5px; flex-shrink: 0;">
+        <input type="text" id="aiInput" placeholder="传唤..." onkeydown="if(event.key==='Enter') sendAIMessage()" style="flex:1; border:1px solid #ddd; border-radius:15px; padding:5px 10px; font-size:12px;">
+        <button onclick="sendAIMessage()" style="background:var(--accent-color); color:white; border:none; border-radius:15px; padding:5px 10px; font-size:12px;">传</button>
+    </div>
+</div>
+
+    
+    <div id="menuPage4" class="menu-page" style="display:none; flex:1; overflow-y:auto;">
+        <style>
+            .fun-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 5px; }
+            .fun-btn { 
+                background: white; border: 1px solid #ffe6eb; border-radius: 12px; padding: 10px 5px; 
+                text-align: center; font-size: 12px; color: #666; cursor: pointer;
+                display: flex; flex-direction: column; align-items: center; gap: 5px;
+                transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            }
+            .fun-btn:hover { transform: translateY(-2px); border-color: var(--accent-color); color: var(--accent-color); }
+            .fun-icon { font-size: 20px; }
+        </style>
+        
+        <div style="text-align:center; font-size:12px; color:#aaa; margin-bottom:10px;">🎡 皇家游乐场</div>
+        
+        <div class="fun-grid">
+            <div class="fun-btn" onclick="openMomentsModal()"><span class="fun-icon">📱</span>朋友圈</div>
+            <div class="fun-btn" onclick="checkMailbox()"><span class="fun-icon">📮</span>收信箱</div>
+            <div class="fun-btn" onclick="openTheaterModal()"><span class="fun-icon">🎬</span>小剧场</div>
+            <div class="fun-btn" onclick="generateGossipWeekly()"><span class="fun-icon">📰</span>八卦周刊</div>
+            <div class="fun-btn" onclick="openBarModal()"><span class="fun-icon">🍱</span>深夜食堂</div>
+            <div class="fun-btn" onclick="openSoulModal()"><span class="fun-icon">🕯️</span>灵魂拷问</div>
+            
+            <div class="fun-btn" onclick="openThroneModal()" style="background:#fffbe6; border-color:#ffeaa7;"><span class="fun-icon">⚖️</span>批折子</div>
+            <div class="fun-btn" onclick="openFlipCardModal()" style="background:#fff0f5; border-color:#ffb7c5;"><span class="fun-icon">🏮</span>翻牌子</div>
+            <div class="fun-btn" onclick="openEavesdropModal()" style="background:#f0f9ff; border-color:#a2d2ff;"><span class="fun-icon">👂</span>听墙角</div>
+            <div class="fun-btn" onclick="openJealousyModal()" style="background:#fff0f0; border-color:#ffcccc;"><span class="fun-icon">💢</span>修罗场</div>
+
+<div class="fun-btn" onclick="openHoroscope()" style="background:#1a1a2e; border-color:#ffd700; color:#ffd700;">
+    <span class="fun-icon">🌠</span>钦天监
+</div>
+
+        </div>
+    </div>
+
+    <div id="menuPage3" class="menu-page" style="display:none; flex:1; overflow-y:auto;">
+         <div class="nav-panel" id="navPanel" style="border:none; padding:0;"></div>
+    </div>
+
+    <div class="menu-tab-bar" style="flex-shrink: 0; display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:5px;">
+        <button class="menu-tab active" onclick="switchMenuPage(1)">✨ 功能</button>
+        <button class="menu-tab" onclick="switchMenuPage(2)">🤖 侍从</button> 
+        <button class="menu-tab" onclick="switchMenuPage(4)">🎡 游乐</button>
+        <button class="menu-tab" onclick="switchMenuPage(3)">📑 目录</button>
+    </div>
+</div>
+
 
             <div class="float-btn" id="floatBtn"></div>
         </div>
@@ -1785,52 +2299,44 @@
             <button class="layout-btn" title="纪念品陈列室" onclick="switchLayout('shelf')">🎒</button>
         </div>
 
-        <div class="action-grid">
-            <div class="action-card primary" onclick="openAddModal()">
-                <div class="kitty-icon">🎀</div>
-                <div>添加</div>
-            </div>
-                        <div class="action-card" onclick="checkMailbox()">
-                <div class="kitty-icon">📮</div>
-                <div>信箱</div>
-            </div>
+<div class="action-grid">
+    <div class="action-card primary" onclick="openAddModal()">
+        <div class="kitty-icon">🎀</div>
+        <div>添加</div>
+    </div>
+    
+    <div class="action-card" onclick="document.getElementById('batchImgInput').click()">
+        <div class="kitty-icon">📸</div>
+        <div>批量加</div>
+        <input type="file" id="batchImgInput" multiple style="display:none" onchange="handleBatchImageImport(this)">
+    </div>
 
-            <div class="action-card" onclick="document.getElementById('batchImgInput').click()">
-                <div class="kitty-icon">📸</div>
-                <div>批量加</div>
-                <input type="file" id="batchImgInput" multiple style="display:none" onchange="handleBatchImageImport(this)">
-            </div>
+    <div class="action-card" onclick="toggleBatchDeleteMode()">
+        <div class="kitty-icon">🧹</div>
+        <div>批量删</div>
+    </div>
 
-            <div class="action-card" onclick="toggleBatchDeleteMode()">
-                <div class="kitty-icon">🧹</div>
-                <div>批量删</div>
-            </div>
+    <div class="action-card" onclick="exportAllData()">
+        <div class="kitty-icon">💾</div>
+        <div>备份</div>
+    </div>
 
-            <div class="action-card" onclick="openTheaterModal()">
-                <div class="kitty-icon">🎬</div>
-                <div>小剧场</div>
-            </div>
-
-<div class="action-card" onclick="openMomentsModal()">
-    <div class="kitty-icon">📱</div>
-    <div>朋友圈</div>
+    <div class="action-card" onclick="document.getElementById('importAllInput').click()">
+        <div class="kitty-icon">👜</div>
+        <div>导入</div>
+        <input type="file" id="importAllInput" accept=".json" onchange="importAllData(this)">
+    </div>
 </div>
-
-            <div class="action-card" onclick="exportAllData()">
-                <div class="kitty-icon">💾</div>
-                <div>备份</div>
-            </div>
-
-            <div class="action-card" onclick="document.getElementById('importAllInput').click()">
-                <div class="kitty-icon">👜</div>
-                <div>导入</div>
-                <input type="file" id="importAllInput" accept=".json" onchange="importAllData(this)">
-            </div>
-        </div>
 
         <div class="grid-container mode-default" id="gridContainer">
             <div class="empty-state">正在初始化数据库... 💾</div>
         </div>
+
+<div style="text-align: center; margin-top: 50px; padding-bottom: 20px; font-size: 10px; color: #e0e0e0; font-family: sans-serif; letter-spacing: 1px; user-select: none;">
+    © 2025 CHANGCHUNLU. All Rights Reserved. <br> 
+    Designed with ❤️ for My Royal Collection.
+</div>
+
     </div>
 
     <div class="modal-overlay" id="addModal">
@@ -1926,17 +2432,32 @@
                     </div>
                 </div>
 
-                <div class="modal-buttons" style="justify-content: center; flex-wrap:wrap; margin-top: 20px;">
-                    <button class="edit-btn" onclick="openEditMode()">✏️ 编辑</button>
-                    <button onclick="deleteCurrentItem()" style="border-color: #ffcccc; color: #ff6b6b;">🗑️ 删除</button>
-                    <button onclick="openOathModal()" style="border-color: #ffd700; color: #f39c12; background: #fffdf0;">💍 誓约</button>
-<button onclick="openScratchModal()" style="border-color: #fab1a0; color: #e17055; background: #fff5f0;">🤫 秘密</button>
-<button onclick="generateBriefing()" style="border-color: #a29bfe; color: #6c5ce7; background: #f3f0ff;">📜 呈奏折</button>
-<button onclick="openNoteModal()" style="border-color: #ffeaa7; color: #d35400; background: #fffbe6;">📌 便签</button>
-<button onclick="giveGift()" style="border-color: #ff9ff3; color: #f368e0; background: #fff0f5;">🎁 投喂</button>
-<button onclick="generateOOTD()" style="border-color: #54a0ff; color: #2e86de; background: #f0f8ff;">👗 换装</button>
+                <div class="control-panel-grid">
+    <button class="edit-btn" onclick="openEditMode()">✏️ 编辑</button>
+    <button onclick="openOathModal()" style="border-color: #ffd700; color: #f39c12; background: #fffdf0;">💍 誓约</button>
 
-                </div>
+    <button onclick="openScratchModal()" style="border-color: #fab1a0; color: #e17055; background: #fff5f0;">🤫 秘密</button>
+
+    <button onclick="generateBriefing()" style="border-color: #a29bfe; color: #6c5ce7; background: #f3f0ff;">📜 呈奏折</button>
+<button onclick="manualGrantFavor()" style="border-color: #ff9ff3; color: #ff6b6b; background: #fff0f5;">💰 赏赐晋升</button>
+    <button onclick="giveGift()" style="border-color: #ff9ff3; color: #f368e0; background: #fff0f5;">🎁 投喂</button>
+    <button onclick="generateOOTD()" style="border-color: #54a0ff; color: #2e86de; background: #f0f8ff;">👗 换装</button>
+
+    <button onclick="autoFillProfile()" style="border-color: #81ecec; color: #00cec9; background: #e0f7fa;">🧠 补全档案</button>
+    <button onclick="analyzeStoryTimeline()" style="border-color: #ffeaa7; color: #d35400; background: #fffbe6;">🎞️ 剧情回顾</button>
+<button onclick="convertChatToNovel()" style="border-color: #a29bfe; color: #6c5ce7; background: #f3f0ff;">📖 转小说</button>
+    <button onclick="openNoteModal(-1)" style="border-color: #badc58; color: #6ab04c; background: #f6e58d;">📌 +贴便签</button>
+</div>
+
+<div style="padding: 0 5px; margin-top: 8px;">
+    <button id="heirActionButton" onclick="handleHeirAction()" style="width:100%; border: 2px dashed #ff9a9e; color: #ff6b6b; background: #fff0f5; font-weight: bold; padding: 10px;">
+        👶 祈福求子
+    </button>
+</div>
+
+<div class="danger-zone">
+    <button onclick="deleteCurrentItem()" style="border: 1px solid #ffcccc; color: #ff6b6b; background: #fff0f0;">🗑️ 删除此角色</button>
+</div>
             
             </div> 
         </div>
@@ -2373,12 +2894,514 @@ gap:5px;">
     </div>
 </div>
 
+<div class="modal-overlay" id="gossipModal" style="z-index: 9700;">
+    <div class="modal" style="width: 360px; height: 80vh; background: #f4f1ea; padding: 0; display: flex; flex-direction: column; border: 1px solid #dcdcdc;">
+        <div style="padding: 20px; text-align: center; border-bottom: 2px double #333; margin: 10px;">
+            <div style="font-family: 'Times New Roman', serif; font-size: 28px; font-weight: bold; color: #333; letter-spacing: 2px;">百宝箱周刊</div>
+            <div style="font-size: 10px; color: #666; margin-top: 5px; text-transform: uppercase;">The Treasure Weekly · 独家爆料 · 绝无虚言</div>
+        </div>
+        
+        <div id="gossipPaper" style="flex: 1; overflow-y: auto; padding: 0 20px 20px 20px;">
+            <div style="text-align:center; padding-top:50px; color:#888;">
+                正在潜入后台偷听数据...<br>编辑部正在疯狂赶稿中...✍️
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 15px;">
+            <button class="close-modal" onclick="document.getElementById('gossipModal').classList.remove('active')" style="position: static; width: 100%; border: 1px solid #333; color: #333; background: transparent; border-radius: 0;">阅毕，退下</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="barModal" style="z-index: 9700;">
+    <div class="modal" style="width: 340px; background: #2c3e50; color: #ecf0f1; border-radius: 15px; border: 2px solid #34495e;">
+        <button class="close-modal" onclick="document.getElementById('barModal').classList.remove('active')" style="color: #ecf0f1;">×</button>
+        
+        <h2 style="text-align: center; font-family: serif; color: #f1c40f; margin-bottom: 5px;">🌙 深夜食堂</h2>
+        <div style="text-align: center; font-size: 12px; color: #bdc3c7; margin-bottom: 20px;">贩卖温柔，概不赊账</div>
+
+        <div class="form-group">
+            <label style="color: #bdc3c7;">1. 你现在的心情是？</label>
+            <input type="text" id="barMood" placeholder="例如：加班好累、失恋了、想找人吵架..." style="background: #34495e; border: none; color: white;">
+        </div>
+
+        <div class="form-group">
+            <label style="color: #bdc3c7;">2. 指名哪位大厨？</label>
+            <select id="barChefSelect" style="background: #34495e; border: none; color: white;">
+                </select>
+        </div>
+
+        <button class="primary-btn" onclick="orderFood()" style="width: 100%; background: #f1c40f; color: #2c3e50; font-weight: bold; margin-top: 10px;">🛎️ 叮！上菜</button>
+        
+        <div id="barResult" style="margin-top: 20px; display: none; animation: fadeIn 0.5s;">
+            <div style="background: #34495e; padding: 15px; border-radius: 10px; border-left: 4px solid #f1c40f;">
+                <div id="barDishName" style="font-size: 18px; font-weight: bold; color: #f1c40f; margin-bottom: 8px;"></div>
+                <div id="barDishDesc" style="font-size: 13px; color: #ecf0f1; line-height: 1.6; font-style: italic;"></div>
+                <div id="barChefTalk" style="margin-top: 15px; font-size: 14px; border-top: 1px dashed #7f8c8d; padding-top: 10px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="soulModal" style="z-index: 9900;">
+    <div class="modal" style="width: 320px; background: #2b2b2b; color: #eee; border: 1px solid #444; padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        
+        <div style="position: relative; height: 200px; background: radial-gradient(circle at center, #444 0%, #2b2b2b 70%); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <button class="close-modal" onclick="closeSoulModal()" style="color: #666; top: 10px; right: 10px;">×</button>
+            
+            <div id="soulAvatarContainer" style="position: relative;">
+                <img id="soulAvatar" src="" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2); object-fit: cover; box-shadow: 0 0 20px rgba(255,255,255,0.1);">
+                <div id="soulPulse" class="soul-pulse"></div>
+            </div>
+            
+            <div id="soulCharName" style="position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 14px; font-weight: bold; text-shadow: 0 2px 4px black; letter-spacing: 2px;">???</div>
+        </div>
+
+        <div style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <div id="soulQuestion" style="font-size: 15px; line-height: 1.6; color: #fff; margin-bottom: 20px; font-family: serif;">
+                正在读取你的记忆...<br><span style="font-size:12px;color:#666;">(准备好面对真心了吗？)</span>
+            </div>
+            
+            <div id="soulAnswerArea" style="width: 100%; display: none;">
+                <input type="text" id="soulInput" placeholder="在此写下你的回答..." style="width: 100%; padding: 10px; border-radius: 20px; border: none; background: rgba(255,255,255,0.1); color: white; text-align: center; outline: none; margin-bottom: 10px;">
+                <button class="primary-btn" onclick="submitSoulAnswer()" style="width: 100%; background: #eee; color: #222; border: none;">✉️ 交付真心</button>
+            </div>
+
+            <button id="soulNextBtn" onclick="initSoulSession()" style="display:none; background:transparent; border:1px solid #666; color:#999; padding:5px 15px; border-radius:20px; font-size:12px; margin-top:20px;">换一个人问</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="throneModal" style="z-index: 9800;">
+    <div class="modal" style="width: 320px; background: #fffcf5; border: 4px double #d4af37;">
+        <button class="close-modal" onclick="document.getElementById('throneModal').classList.remove('active')">×</button>
+        <h3 style="text-align:center; color:#d4af37; font-family: serif;">📜 御书房 · 批红</h3>
+        <div id="throneContent" style="margin: 20px 0; min-height: 100px; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 5px; font-size: 14px; line-height: 1.6;">
+            正在呈递奏折...
+        </div>
+        <div id="throneAction" style="display:none; justify-content:space-around;">
+            <button onclick="handleThrone('approve')" style="background:#ff6b6b; color:white; border:none; padding:10px 20px; border-radius:50px;">🔴 准奏</button>
+            <button onclick="handleThrone('reject')" style="background:#333; color:white; border:none; padding:10px 20px; border-radius:50px;">⚫ 驳回</button>
+        </div>
+        <div id="throneResult" style="margin-top:15px; text-align:center; color:#888; font-style:italic;"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="flipModal" style="z-index: 9800;">
+    <div class="modal" style="width: 340px; background: #2c0000; color: #ffd700; border: 2px solid #ffd700;">
+        <button class="close-modal" onclick="document.getElementById('flipModal').classList.remove('active')" style="color:white;">×</button>
+        <h3 style="text-align:center; margin-bottom:20px;">🏮 敬事房 · 翻牌子</h3>
+        <div id="flipCardsArea" style="display:flex; justify-content:space-around; gap:5px;">
+            </div>
+        <div id="flipResult" style="margin-top:20px; padding:15px; background:rgba(255,255,255,0.1); border-radius:10px; display:none; font-size:13px; line-height:1.6;"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="eavesdropModal" style="z-index: 9800;">
+    <div class="modal" style="width: 320px; background: #1a1a2e; color: #e0e0e0;">
+        <button class="close-modal" onclick="document.getElementById('eavesdropModal').classList.remove('active')" style="color:white;">×</button>
+        <h3 style="text-align:center; color:#a29bfe;">👂 暗卫密报</h3>
+        <div style="font-size:12px; color:#666; text-align:center; margin-bottom:15px;">截获了一段后宫私语...</div>
+        <div id="eavesdropContent" style="padding:15px; background:rgba(0,0,0,0.3); border-radius:10px; font-family:monospace; margin-bottom:15px;">
+            正在破译...
+        </div>
+        <button class="primary-btn" onclick="startEavesdrop()" style="width:100%;">🕵️ 再探再报</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="jealousyModal" style="z-index: 9800;">
+    <div class="modal" style="width: 340px; background: #fff0f5; border: 2px solid #ffb7c5;">
+        <button class="close-modal" onclick="document.getElementById('jealousyModal').classList.remove('active')">×</button>
+        <h3 style="text-align:center; color:#ff6b81;">💢 后宫修罗场</h3>
+        <div style="text-align:center; margin-bottom:10px; font-size:12px; color:#888;">哪两个男人在为你争风吃醋？</div>
+        <div style="display:flex; gap:5px; margin-bottom:15px;">
+            <select id="jealousCharA" style="flex:1; padding:5px;"></select>
+            <span style="align-self:center;">VS</span>
+            <select id="jealousCharB" style="flex:1; padding:5px;"></select>
+        </div>
+        <button class="primary-btn" onclick="startJealousy()" style="width:100%; background:#ff6b81; border:none;">🔥 打起来！</button>
+        <div id="jealousyResult" style="margin-top:15px; padding:10px; background:white; border-radius:10px; border:1px dashed #ffb7c5; min-height:100px; display:none;"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="novelModal" style="z-index: 10000;">
+    <div class="modal" style="width: 90%; max-width: 600px; height: 80vh; background: #fffaf0; display: flex; flex-direction: column; padding: 0; border: 1px solid #e0d0b0; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        
+        <div style="padding: 15px; border-bottom: 1px dashed #d4c4a8; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.5);">
+            <span style="font-weight: bold; font-family: serif; font-size: 18px; color: #5d4037;">📖 御览小说</span>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="downloadCurrentNovel()" class="small-btn" style="background: #fff; border: 1px solid #8d6e63; color: #5d4037;">⬇️ 下载带走</button>
+                <button onclick="document.getElementById('novelModal').classList.remove('active')" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #8d6e63;">×</button>
+            </div>
+        </div>
+
+        <div id="novelContent" style="flex: 1; overflow-y: auto; padding: 30px; font-family: 'Georgia', 'Songti SC', serif; line-height: 1.8; color: #3e2723; font-size: 16px; white-space: pre-wrap; text-align: justify;">
+            正在翻阅...
+        </div>
+        
+        <div style="padding: 10px; text-align: center; font-size: 12px; color: #a1887f; background: rgba(255,255,255,0.5);">
+            ✅ 此文已自动归档至该角色的【盒子内容】中
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="horoscopeModal" style="z-index: 9900;">
+    <div class="modal" style="width: 320px; text-align: center;">
+        <button class="close-modal" onclick="document.getElementById('horoscopeModal').classList.remove('active')" style="color: #fff;">×</button>
+        <h3 style="color: #ffd700; font-family: serif; margin-bottom: 5px;">🌠 钦天监 · 今日星象</h3>
+        <div style="font-size: 12px; color: #aaa; margin-bottom: 20px;" id="horoscopeDate"></div>
+        
+        <div id="horoscopeContent">
+            <div class="ai-loading" style="color:#fff;">🔮 国师正在夜观天象...</div>
+        </div>
+        
+        <button onclick="document.getElementById('horoscopeModal').classList.remove('active')" class="primary-btn" style="margin-top:20px; background:#ffd700; color:#000; border:none; width:100%;">朕知道了</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="heirCreationModal" style="z-index: 10000;">
+    <div class="modal" style="width: 300px; text-align: center; border: 3px solid #ffb7c5;">
+        <h3 style="color:#ff6b81;">👶 祈福求子</h3>
+        <p style="font-size:12px; color:#888; margin: 10px 0;">您与 <b id="creationFatherName"></b> 的羁绊已深。<br>请陛下许愿，希望这个孩子未来成为什么样的人？</p>
+        <textarea id="creationSettingInput" placeholder="例如：希望他像父亲一样傲娇，但文武双全，将来能做个贤王..."></textarea>
+        <button onclick="confirmCreateHeir()" class="primary-btn" style="width:100%; background:#ff6b81; border:none;">诚心祈愿 ✨</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="eastPalaceModal" style="z-index: 10000;">
+    <div class="modal">
+        <button class="close-modal" onclick="closeEastPalace()" style="color:#d4af37; z-index:10;">×</button>
+        
+        <div class="heir-portrait-stage stage-baby" id="heirStageBg">
+            <div class="heir-avatar" id="heirAvatarIcon">👶</div>
+        </div>
+
+        <div class="heir-info-panel">
+            <div class="heir-name-title">
+                <span id="heirTitle">皇长子</span> · <span id="heirName">铁蛋</span>
+                <span style="font-size:12px; font-weight:normal; margin-left:5px;">(<span id="heirAgeDisplay">0岁</span>)</span>
+            </div>
+            <div class="stat-grid">
+                <div>智慧 <div class="stat-bar-bg"><div class="stat-bar-fill fill-wisdom" id="statWisdom" style="width:10%"></div></div></div>
+                <div>体魄 <div class="stat-bar-bg"><div class="stat-bar-fill fill-fitness" id="statFitness" style="width:10%"></div></div></div>
+                <div>魅力 <div class="stat-bar-bg"><div class="stat-bar-fill fill-charm" id="statCharm" style="width:10%"></div></div></div>
+                <div>父君 <span style="float:right; font-weight:bold;" id="heirFatherDisplay">某某</span></div>
+            </div>
+        </div>
+
+        <div class="heir-bio-box" id="heirBioText">
+            ⏳ 正在读取东宫起居注...
+        </div>
+
+        <div class="heir-actions" id="heirActionBtns">
+            <button class="heir-btn" onclick="interactHeir('educate')">📖 教导学业</button>
+            <button class="heir-btn" onclick="interactHeir('play')">🪁 陪伴游玩</button>
+            <button class="heir-btn" onclick="interactHeir('scold')">😠 严厉训诫</button>
+        </div>
+        <div class="heir-actions" id="heirGraduateBtnArea" style="display:none; border-top:none; padding-top:0;">
+             <button class="heir-btn graduate" style="grid-column: span 3;" onclick="graduateHeir()">🎓 赐府成家 (存档并脱离)</button>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal-overlay" id="travelModal" style="z-index: 12000;">
+    <div class="modal">
+        <div class="travel-header">
+            <div>
+                <span style="background:#d4af37; color:#000; padding:2px 6px; border-radius:4px; font-size:12px; margin-right:8px;" id="travelSeasonTag">春</span>
+                <span id="travelMapName">地图</span>
+            </div>
+            <div>
+                <button onclick="changeSeason()" style="font-size:12px; padding:4px 8px; background:#555; color:#fff; border:none; cursor:pointer; border-radius:4px;">🌸 换季</button>
+                <button onclick="document.getElementById('travelModal').classList.remove('active')" style="color:#fff; border:none; background:none; font-size:24px; cursor:pointer; margin-left:10px;">×</button>
+            </div>
+        </div>
+        
+        <div class="travel-body">
+            <div class="travel-sidebar" id="locationList">
+                </div>
+
+            <div class="travel-map-view">
+                <img id="travelBgImg" class="travel-bg" src="">
+                
+                <div class="travel-event-box" id="travelEventResult">
+                    <h3 style="color:#d4af37; margin-bottom:10px;">📜 游历奇遇</h3>
+                    <div id="travelEventText" style="font-size:14px; line-height:1.6; text-align:left; min-height:60px; margin-bottom:15px;"></div>
+                    <button onclick="closeTravelEvent()" style="padding:8px 30px; background:#d4af37; border:none; color:white; border-radius:20px; font-weight:bold; cursor:pointer;">朕知道了</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <div id="deleteBar" class="delete-bar">
         <button class="delete-btn-cancel" onclick="toggleBatchDeleteMode()">取消</button>
         <button class="delete-btn-confirm" onclick="confirmBatchDelete()">🗑️ 删除 (<span id="deleteCount">0</span>)</button>
     </div>
 
     <script>
+
+// ================= 🛡️ 传国玉玺 (控制台版权声明) =================
+console.log(
+    "%c🛑 警告！%c\n这是【长春路女皇】的皇家私产！\n禁止抄袭、盗用或未经允许的二改。\nOriginal Design by Empress Changchunlu.", 
+    "color: red; font-size: 30px; font-weight: bold; text-shadow: 2px 2px 0px black;",
+    "color: #d66a80; font-size: 16px; font-weight: bold;"
+);
+console.log("%c👑 侵权必究 👑", "background: #ffb7c5; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px;");
+
+// ================= ✅ 放在 <script> 的第一行 =================
+// 定义全局变量，防止下面的函数找不到它
+var aiConfig = JSON.parse(localStorage.getItem('my_ai_config')) || {
+    persona: 'eunuch',
+    customPrompt: '',
+    apiUrl: 'https://api.openai.com/v1',
+    apiKey: '',
+    model: 'gpt-3.5-turbo'
+};
+
+// ================= 🚑 紧急修复补丁 (没有这几行，点盒子会进不去) =================
+let currentHeir = JSON.parse(localStorage.getItem('royal_heir_data')) || null;
+
+// ================= 🚑 皇嗣数据核心 (请直接覆盖原来的补丁) =================
+// 1. 读取存档
+let currentHeir = JSON.parse(localStorage.getItem('royal_heir_data')) || null;
+
+// 2. 基础素材库 (待机图 & 默认背景)
+const HEIR_ASSETS = {
+    boy: {
+        bg: { 
+            '春': ["https://files.catbox.moe/xbtct5.jpg"],
+            '夏': ["https://files.catbox.moe/xbtct5.jpg"],
+            '秋': ["https://files.catbox.moe/xbtct5.jpg"], 
+            '冬': ["https://files.catbox.moe/acbius.jpeg"]
+        },
+        idle: [ "https://files.catbox.moe/fv8f8p.gif", "https://files.catbox.moe/vdvz1m.gif" ],
+        shy: "https://files.catbox.moe/fv8f8p.gif", 
+        yawn: "https://files.catbox.moe/vdvz1m.gif"
+    },
+    girl: {
+        bg: {
+            '春': ["https://files.catbox.moe/3ofd6b.png"],
+            '夏': ["https://files.catbox.moe/3ofd6b.png"],
+            '秋': ["https://files.catbox.moe/3ofd6b.png"],
+            '冬': ["https://files.catbox.moe/acbius.jpeg"] 
+        },
+        idle: [ "https://files.catbox.moe/8q61ys.gif", "https://files.catbox.moe/4hxxkv.gif" ],
+        shy: "https://files.catbox.moe/cokcdl.gif",
+        yawn: "https://files.catbox.moe/mezusb.gif"
+    }
+};
+
+// 3. 🧠 智能场景库
+const HEIR_SCENES = {
+    boy: [
+        { seasons: ['冬'], keywords: ['赏梅', '梅花', '长椅'], url: ['https://files.catbox.moe/idu2gw.jpg'] },
+        { seasons: ['冬'], keywords: ['寝宫', '睡觉', '休息', '起床'], url: ['https://files.catbox.moe/fkfstg.jpg'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['画画', '丹青', '涂鸦'], url: ['https://files.catbox.moe/6iwmot.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['读书', '看书', '阅读'], url: ['https://files.catbox.moe/3lwe0w.png'] },
+        { seasons: ['春','秋'], keywords: ['钓鱼', '池塘', '垂钓'], url: ['https://files.catbox.moe/87xa1i.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['学习', '练字', '书法', '上课'], url: ['https://files.catbox.moe/11wud2.png'] },
+        { seasons: ['春','秋'], keywords: ['玩耍', '游戏', '跑'], url: ['https://files.catbox.moe/7lhq83.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['比赛', '比试', '臣子'], url: ['https://files.catbox.moe/3kderq.png'] },
+        { seasons: ['秋'], keywords: ['逗鸟', '长亭'], url: ['https://files.catbox.moe/f539et.png'] },
+        { seasons: ['冬'], keywords: ['雪仗', '玩雪', '打雪'], url: ['https://files.catbox.moe/937inc.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['训诫', '责骂', '受罚'], url: ['https://files.catbox.moe/v1hnmu.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['食堂', '吃饭', '展示'], url: ['https://files.catbox.moe/xyp7uw.png'] },
+        { seasons: ['春'], keywords: ['赏花', '花丛'], url: ['https://files.catbox.moe/3wx26e.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['训练', '习武', '士兵'], url: ['https://files.catbox.moe/75je6d.png'] }
+    ],
+    girl: [
+        { seasons: ['春','秋'], keywords: ['风筝'], url: ['https://files.catbox.moe/zqx3jl.png'] },
+        { seasons: ['夏'], keywords: ['玩水', '池塘', '戏水'], url: ['https://files.catbox.moe/tw4s8u.jpg'] },
+        { seasons: ['夏'], keywords: ['西瓜', '吃瓜', '解暑'], url: ['https://files.catbox.moe/qzmagd.png'] },
+        { seasons: ['冬'], keywords: ['玩耍', '池塘', '冬日'], url: ['https://files.catbox.moe/hjnmf4.jpg'] },
+        { seasons: ['春'], keywords: ['玩耍', '后宫', '花园'], url: ['https://files.catbox.moe/j1mo4r.png'] },
+        { seasons: ['冬'], keywords: ['过年', '春节', '灯笼'], url: ['https://files.catbox.moe/divoox.png'] },
+        { seasons: ['春','秋'], keywords: ['毽子', '踢毽'], url: ['https://files.catbox.moe/vmn42f.png'] }
+    ]
+};
+
+// 4. 🧠 智能匹配逻辑
+function smartUpdateHeirScene(actionText) {
+    if (!currentHeir) return;
+    const isBoy = currentHeir.gender === '男';
+    const sceneList = isBoy ? HEIR_SCENES.boy : HEIR_SCENES.girl;
+    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
+    
+    // 默认拿当前季节的图 (作为保底)
+    let pool = assets.bg[currentSeason] || assets.bg['春'];
+    let finalUrl = Array.isArray(pool) ? pool[Math.floor(Math.random() * pool.length)] : pool;
+
+    // 尝试匹配关键词
+    if (actionText) {
+        for (let scene of sceneList) {
+            if (scene.seasons.includes(currentSeason)) {
+                if (scene.keywords.some(key => actionText.includes(key))) {
+                    finalUrl = Array.isArray(scene.url) 
+                        ? scene.url[Math.floor(Math.random() * scene.url.length)] 
+                        : scene.url;
+                    break;
+                }
+            }
+        }
+    }
+    const bgEl = document.getElementById('heirSceneBg');
+    if (bgEl) bgEl.style.backgroundImage = `url('${finalUrl}')`;
+}
+
+// 5. 🎨 东宫渲染 (界面)
+function openEastPalace() {
+    if (!currentHeir) return;
+    document.getElementById('eastPalaceModal').classList.add('active');
+
+    const isBoy = currentHeir.gender === '男';
+    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
+    if (typeof currentSeason === 'undefined') currentSeason = '春';
+
+    // 默认背景
+    let defaultBg = "https://files.catbox.moe/3ofd6b.png";
+    if (assets && assets.bg) {
+        let pool = assets.bg[currentSeason] || assets.bg['春'];
+        if (Array.isArray(pool)) defaultBg = pool[0];
+        else defaultBg = pool;
+    }
+
+    const sTheme = {
+        '春': { color: '#ffb7c5', icon: '🌸' },
+        '夏': { color: '#81ecec', icon: '🍃' },
+        '秋': { color: '#ffcc80', icon: '🍁' },
+        '冬': { color: '#b0bec5', icon: '❄️' }
+    }[currentSeason] || { color: '#ffb7c5', icon: '🌸' };
+
+    const modalContent = document.querySelector('#eastPalaceModal .modal');
+    modalContent.innerHTML = `
+        <button class="close-modal" onclick="closeEastPalace()" style="position:absolute; right:10px; top:10px; z-index:200; color:#fff; font-size:28px; background:none; border:none;">×</button>
+        
+        <div id="heirSceneBg" class="heir-bg-stage" style="background-image:url('${defaultBg}');">
+            <button class="season-toggle-btn" onclick="toggleHeirSeason()">
+                ${sTheme.icon} 切换季节
+            </button>
+            <div style="position:absolute; bottom:10px; left:10px; background:${sTheme.color}; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">
+                ${currentSeason}季
+            </div>
+        </div>
+
+        <div class="heir-middle-section" style="flex:1; display:flex; position:relative; padding:10px; background:linear-gradient(to bottom, #fff0f5 0%, #fff 100%); overflow:visible;">
+            <div class="heir-info-left" style="flex:1; padding-right:110px;">
+                <div style="color:#d4af37; font-size:16px; font-weight:bold; margin-bottom:5px;">
+                    ${currentHeir.title} · ${currentHeir.name} 
+                    <span style="font-size:12px; color:#888;">(${currentHeir.age}岁)</span>
+                </div>
+                
+                <div class="stat-row"><div class="stat-name">智慧</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.wisdom}%; background:#81ecec"></div></div>${currentHeir.stats.wisdom}</div>
+                <div class="stat-row"><div class="stat-name">体魄</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.fitness}%; background:#ff7675"></div></div>${currentHeir.stats.fitness}</div>
+                <div class="stat-row"><div class="stat-name">魅力</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.charm}%; background:#a29bfe"></div></div>${currentHeir.stats.charm}</div>
+                <div class="stat-row"><div class="stat-name">疲劳</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stress || 0}%; background:#636e72"></div></div>${currentHeir.stress || 0}</div>
+            
+                <div style="font-size:10px; color:#999; margin-top:5px;">父君: ${currentHeir.fatherName}</div>
+            </div>
+
+            <div class="heir-avatar-box">
+                <img id="heirDynamicGif" class="heir-gif" src="" onclick="touchHeir2D()">
+            </div>
+        </div>
+
+        <div class="heir-bio-scroll" id="heirBioText">
+            ${currentHeir.bioLog.slice().reverse().join('<br>')}
+        </div>
+
+        <div class="heir-btn-grid" id="normalActions">
+            <button class="heir-action-btn" onclick="interactHeir('study')">📖 上课</button>
+            <button class="heir-action-btn" onclick="interactHeir('play')">🪁 出去玩</button>
+            <button class="heir-action-btn" onclick="interactHeir('doctor')">💊 去医院</button>
+            <button class="heir-action-btn" onclick="openTravelMap()" style="grid-column: span 3; background:#fff7e6; color:#d46b08; border-color:#ffbb96;">🌏 带他/她去游历</button>
+            <button class="heir-action-btn next-year-btn" onclick="advanceYear()">🎍 辞旧迎新 (进入下一年)</button>
+        </div>
+        
+        <div class="heir-btn-grid" id="graduateActions" style="display:none">
+            <button class="heir-action-btn next-year-btn" style="background:#d4af37" onclick="graduateHeir()">🎓 赐府成家 (存档)</button>
+        </div>
+    `;
+
+    updateAvatarDisplay();
+    // 渲染后立即匹配最后一条记录的场景
+    const lastLog = currentHeir.bioLog[currentHeir.bioLog.length - 1] || "";
+    smartUpdateHeirScene(lastLog);
+
+    if (currentHeir.age >= 18) {
+        document.getElementById('normalActions').style.display = 'none';
+        document.getElementById('graduateActions').style.display = 'grid';
+    }
+}
+
+// 6. 🌸 换季
+function toggleHeirSeason() {
+    const seasons = ['春', '夏', '秋', '冬'];
+    let idx = seasons.indexOf(currentSeason);
+    idx = (idx + 1) % 4;
+    currentSeason = seasons[idx];
+    
+    auth.toast(`🍂 时令已变，入【${currentSeason}】了`);
+    openEastPalace(); 
+}
+
+// 7. 关闭东宫 (防止忘记定义)
+function closeEastPalace() {
+    document.getElementById('eastPalaceModal').classList.remove('active');
+}
+
+// 8. 🎮 互动逻辑
+async function interactHeir(actionType) {
+    auth.toast('⏳ 正在与皇嗣互动...');
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    
+    if (currentHeir.stats.fitness < 30 && actionType !== 'doctor') {
+        auth.toast('❌ 皇嗣病倒了，请先带去【医院】医治！');
+        updateAvatarDisplay('yawn'); 
+        return;
+    }
+
+    const actionMap = { 'study': '去书房上课/练字', 'play': '在宫里玩耍', 'doctor': '去医院看病' };
+    
+    const prompt = `
+    皇嗣：【${currentHeir.name}】，${currentHeir.age}岁。
+    季节：${currentSeason}。
+    动作：${actionMap[actionType]}。
+    
+    请生成 JSON：
+    {
+        "story": "互动描写(包含具体动作，如读书、钓鱼、赏梅等，方便匹配场景)",
+        "statsChange": { "wisdom": 0, "fitness": 0, "charm": 0 },
+        "stressChange": 0,
+        "mood": "happy/shy/tired"
+    }
+    `;
+
+    try {
+        const res = await fetchAI(prompt, config);
+        const data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+
+        currentHeir.stats.wisdom += (data.statsChange.wisdom || 0);
+        currentHeir.stats.fitness += (data.statsChange.fitness || 0);
+        currentHeir.stats.charm += (data.statsChange.charm || 0);
+        currentHeir.stress += (data.stressChange || 0);
+        
+        if(actionType === 'doctor') { currentHeir.stats.fitness = 70; currentHeir.stress = 0; }
+
+        currentHeir.bioLog.push(`【${currentHeir.age}岁·${currentSeason}】：${data.story}`);
+        saveHeirData();
+        
+        openEastPalace(); // 刷新
+        smartUpdateHeirScene(data.story); // 换背景
+
+    } catch (e) {
+        console.error(e);
+        auth.toast('❌ 互动失败');
+    }
+}
+// ================= 👑 皇嗣代码结束 =================
+
         // ================= 🔒 安全系统 (AuthSystem) =================
         const auth = {
             mode: 'login', type: null, step: 0, tempSecret: null, inputBuffer: '', failCount: 0,
@@ -2866,7 +3889,8 @@ if (!n) { alert('名字不能为空'); return; } if (draftResources.length === 0
         
         function openDetailModal(index) { 
             viewingIndex = index;
-            const item = items[index]; document.getElementById('detailName').textContent = item.name; const tagsBox = document.getElementById('detailTags'); tagsBox.innerHTML = '';
+            const item = items[index]; document.getElementById('detailName').textContent = item.name; 
+const tagsBox = document.getElementById('detailTags'); tagsBox.innerHTML = '';
             (item.tags||[]).forEach(t => { const s = document.createElement('span'); s.className='tag-pill'; s.textContent=t; tagsBox.appendChild(s); }); const images = item.resources.filter(r => r.type === 'image');
             if(images.length === 0) { document.getElementById('galleryArea').style.display = 'none'; document.getElementById('noImgMsg').style.display = 'block'; } else { document.getElementById('galleryArea').style.display = 'block'; document.getElementById('noImgMsg').style.display = 'none';
             galleryIndex = Math.min(item.coverIndex||0, images.length-1); updateGalleryUI(images); 
@@ -2876,63 +3900,151 @@ initHeadpat();
             const listContainer = document.getElementById('detailListContainer');
             listContainer.innerHTML = ''; 
             
-            item.resources.forEach((res, i) => { 
-                const row = document.createElement('div'); row.className = 'detail-item'; 
-                let icon = '📄', btn = '', lbl = res.subType; 
-                
-                const downloadBtn = `<span class="action-link" onclick="downloadResource(${i})">下载</span>`;
+                // ================= 👇 复制这段替换原来的 forEach 循环 👇 =================
+    item.resources.forEach((res, i) => { 
+        const row = document.createElement('div'); 
+        row.className = 'detail-item'; 
+        
+        let icon = '📄'; 
+        let btn = ''; 
+        let lbl = res.subType || '附件'; 
+        
+        // 通用下载按钮
+        const downloadBtn = `<span class="action-link" onclick="downloadResource(${i})">下载</span>`;
 
-                if (res.type === 'image') { 
-                    icon = '🖼️'; btn = downloadBtn; 
-                } 
-                else if (res.type === 'json') { 
-                    icon = '📜'; 
-                    btn = `<span class="action-link" style="background:#e0f7fa;color:#006064;margin-right:5px;" onclick="openReader(${i})">📖 阅读</span>` + downloadBtn; 
-                } 
-                else if (res.type === 'link') { 
-                    icon = '🔗'; lbl = '链接'; btn = `<a class="action-link" href="${res.content}" target="_blank">打开</a>`; 
-                } 
-                else { 
-                    icon = '📎'; lbl = '附件';
-                    btn = downloadBtn; 
-                } 
-                
-                row.innerHTML = `<div style="display:flex;align-items:center;min-width:0;"><span class="detail-item-type">${lbl}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${icon} ${res.name}</span></div><div style="flex-shrink:0;margin-left:10px;">${btn}</div>`;
-                listContainer.appendChild(row); 
-            });
+        if (res.type === 'image') { 
+            icon = '🖼️'; 
+            btn = downloadBtn; 
+        } 
+        else if (res.type === 'json') { 
+            icon = '📜'; 
+            btn = `<span class="action-link" style="background:#e0f7fa;color:#006064;margin-right:5px;" onclick="openReader(${i})">📖 对话</span>` + downloadBtn; 
+        } 
+        // 👇👇👇【关键修改】如果是小说或txt，加一个“阅读”按钮 👇👇👇
+        else if ((res.type === 'file' && res.name.endsWith('.txt')) || res.subType === '小说') { 
+            icon = '📘'; 
+            lbl = '小说';
+            btn = `<span class="action-link" style="background:#fff0f5;color:#d66a80;margin-right:5px;" onclick="openTxtReader(${i})">👁️ 阅读</span>` + downloadBtn; 
+        } 
+        // 👆👆👆【关键修改结束】👆👆👆
+        else if (res.type === 'link') { 
+            icon = '🔗'; 
+            lbl = '链接'; 
+            btn = `<a class="action-link" href="${res.content}" target="_blank">打开</a>`; 
+        } 
+        else { 
+            icon = '📎'; 
+            btn = downloadBtn; 
+        } 
+        
+        row.innerHTML = `<div style="display:flex;align-items:center;min-width:0;"><span class="detail-item-type">${lbl}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${icon} ${res.name}</span></div><div style="flex-shrink:0;margin-left:10px;">${btn}</div>`;
+        listContainer.appendChild(row); 
+    });
+    // ================= 👆 替换结束 👆 =================
+
+
             // 👇 🟢 新增：渲染印章状态
             renderStampStatus(items[index].stamp);
             
     // 👇 🟢 在函数最后加这句，开始播放动画
     startMemoryAnimation(items[index].memories || []);
 renderStickyNote(); // ✅ 加这一句，打开时贴上便签
+
+// 👇 加上这一行，位份徽章才会出来！
+updateRankUI(items[index]); 
+
+// 👇 加上这一行，皇嗣按钮的状态才会对！
+updateHeirButtonState();
 document.getElementById('detailModal').classList.add('active'); 
 renderDetailSouvenirs(index);
         }
 
-                function updateGalleryUI(images) {
-            const imgEl = document.getElementById('detailImg');
-            const curImg = images[galleryIndex];
-            
-            // 基础图片设置
-            imgEl.src = curImg.content;
-            document.getElementById('galleryTypeLabel').textContent = curImg.subType;
-            document.getElementById('imgIndex').textContent = galleryIndex + 1;
-            document.getElementById('imgTotal').textContent = images.length;
-            
-            // 封面按钮状态
-            const cb = document.getElementById('setCoverBtn');
-            if (galleryIndex === (items[viewingIndex].coverIndex || 0)) {
-                cb.textContent = '当前封面'; 
-                cb.classList.add('is-cover'); 
-            } else { 
-                cb.textContent = '设为封面';
-                cb.classList.remove('is-cover');
-            }
+                // ================= 🖼️ 更新详情页图片 (带戳一戳功能) =================
+function updateGalleryUI(images) {
+    const container = document.getElementById('galleryArea');
+    if (!container) return;
+    container.innerHTML = ''; // 清空旧图
 
-            // ✅ 新增：渲染详情页特效
-            renderDetailEffect(); 
+    if (!images || images.length === 0) return;
+
+    // 确保索引不越界
+    if (galleryIndex >= images.length) galleryIndex = 0;
+    if (galleryIndex < 0) galleryIndex = images.length - 1;
+
+    const res = images[galleryIndex];
+    
+    // 1. 创建图片容器 (方便做左右切换按钮)
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.textAlign = 'center';
+
+    // 2. 创建图片
+    const img = document.createElement('img');
+    
+    // 处理图片内容 (如果是Base64需要解码，如果是链接直接用)
+    let src = res.content;
+    if (src.startsWith('data:') && src.includes('base64,')) {
+        // 有些旧数据可能需要特殊处理，但通常 img.src 直接吃 base64
+        try { src = decodeURIComponent(escape(window.atob(src.split(',')[1]))); } catch(e) { src = res.content; }
+    }
+    img.src = src;
+    
+    // 图片样式
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '300px'; // 限制高度，防止太长
+    img.style.borderRadius = '10px';
+    img.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+    img.style.transition = 'transform 0.1s'; // 让动画更丝滑
+    img.style.cursor = 'pointer'; // 鼠标变成小手
+
+    // 👇👇👇【关键代码：戳一戳加好感】👇👇👇
+    img.onclick = function() {
+        // 1. 加分 (爱抚 +2)
+        if (typeof addFavor === 'function') {
+            addFavor(2, "爱抚");
+        } else {
+            console.log("未找到 addFavor 函数");
         }
+        
+        // 2. 震动反馈
+        if(navigator.vibrate) navigator.vibrate(50);
+        
+        // 3. Q弹缩放动画
+        this.style.transform = "scale(0.95)";
+        setTimeout(() => this.style.transform = "scale(1)", 100);
+    };
+    // 👆👆👆【关键代码结束】👆👆👆
+
+    wrapper.appendChild(img);
+
+    // 3. 添加左右翻页按钮 (如果有多张图)
+    if (images.length > 1) {
+        // 左按钮
+        const prevBtn = document.createElement('button');
+        prevBtn.innerText = '‹';
+        prevBtn.className = 'gallery-nav-btn'; // 你可以用之前的样式
+        prevBtn.style.cssText = 'position:absolute; left:0; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.3); color:white; border:none; padding:10px; cursor:pointer; border-radius:0 5px 5px 0;';
+        prevBtn.onclick = (e) => { e.stopPropagation(); galleryIndex--; updateGalleryUI(images); };
+        
+        // 右按钮
+        const nextBtn = document.createElement('button');
+        nextBtn.innerText = '›';
+        nextBtn.style.cssText = 'position:absolute; right:0; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.3); color:white; border:none; padding:10px; cursor:pointer; border-radius:5px 0 0 5px;';
+        nextBtn.onclick = (e) => { e.stopPropagation(); galleryIndex++; updateGalleryUI(images); };
+
+        wrapper.appendChild(prevBtn);
+        wrapper.appendChild(nextBtn);
+        
+        // 显示页码
+        const counter = document.createElement('div');
+        counter.innerText = `${galleryIndex + 1} / ${images.length}`;
+        counter.style.cssText = 'font-size:12px; color:#999; margin-top:5px;';
+        container.appendChild(wrapper); // 先放图
+        container.appendChild(counter); // 再放页码
+    } else {
+        container.appendChild(wrapper);
+    }
+}
 
         function changeGalleryImage(d) { const images = items[viewingIndex].resources.filter(r => r.type === 'image');
             if(images.length === 0) return; galleryIndex += d; if(galleryIndex >= images.length) galleryIndex = 0;
@@ -2972,9 +4084,15 @@ renderDetailSouvenirs(index);
         function renderSuggestTags() { const all=new Set(); items.forEach(i=>(i.tags||[]).forEach(t=>all.add(t))); const box=document.getElementById('suggestedTags'); box.innerHTML='';
             all.forEach(t=>{ const d=document.createElement('div'); d.className='tag-chip'; d.style.background='#f0f0f0'; d.style.color='#666'; d.style.cursor='pointer'; d.textContent=t; d.onclick=()=>{if(!currentTags.includes(t)){currentTags.push(t);renderTagsInput();}}; box.appendChild(d); });
         }
-                function handleSearch() {
-            const q = document.getElementById('searchInput').value.toLowerCase().trim();
-            const isDeep = document.getElementById('deepSearchCheck').checked; // 是否勾选了“搜内容”
+                        // ================= 🔍 修复后的搜索功能 =================
+        function handleSearch() {
+            // 1. 获取输入框 (修正 ID 为 mainSearchInput)
+            const inputEl = document.getElementById('mainSearchInput');
+            
+            // 安全检查：如果找不到输入框，默认为空字符串，防止报错卡死
+            const q = inputEl ? inputEl.value.toLowerCase().trim() : "";
+            
+            const isDeep = document.getElementById('deepSearchCheck').checked; 
 
             if (!q) {
                 renderGrid(items); // 没字就显示全部
@@ -2987,12 +4105,10 @@ renderDetailSouvenirs(index);
                 
                 if (matchBasic) return true;
 
-                // 2. 深层搜索：如果勾选了，就去翻 resources 里的内容
+                // 2. 深层搜索
                 if (isDeep && item.resources) {
                     return item.resources.some(res => {
-                        // 只搜 JSON (聊天记录) 或 文本文件
                         if (res.type === 'json' || res.type === 'file') {
-                            // 直接在字符串里找，简单粗暴且高效
                             return res.content && res.content.toLowerCase().includes(q);
                         }
                         return false;
@@ -3004,13 +4120,10 @@ renderDetailSouvenirs(index);
 
             renderGrid(f);
             
-            // 🟢 如果是深层搜索，给个提示反馈
-            if(isDeep && q) {
-                // 简单的防抖提示，避免每次打字都弹
-                // 这里我们直接利用 Grid 的空状态来提示
-                if(f.length === 0) {
-                    document.querySelector('.empty-state').innerHTML = `🤔 在回忆里找了一圈，没找到 "${q}"...`;
-                }
+            // 搜索结果提示
+            if(isDeep && q && f.length === 0) {
+                const emptyState = document.querySelector('.empty-state');
+                if(emptyState) emptyState.innerHTML = `🤔 在回忆里找了一圈，没找到 "${q}"...`;
             }
         }
 
@@ -4350,21 +5463,36 @@ renderDetailSouvenirs(index);
         }
 
               // 📑 切换悬浮窗页面（带自动刷新功能）
-                function switchMenuPage(pageNum) {
-            // 隐藏所有页面
-            document.querySelectorAll('.menu-page').forEach(p => p.style.display = 'none');
-            // 显示目标页面
-            const target = document.getElementById('menuPage' + pageNum);
-            if(target) {
-                target.style.display = (pageNum === 2) ? 'flex' : 'block'; // 第2页(聊天)需要flex布局
-                if(pageNum === 3) renderNavPanel(); // 目录页刷新数据
-            }
+              // 📑 切换悬浮窗页面 (修复高亮错乱版)
+function switchMenuPage(pageNum) {
+    // 1. 隐藏所有页面
+    document.querySelectorAll('.menu-page').forEach(p => p.style.display = 'none');
+    
+    // 2. 显示目标页面
+    const target = document.getElementById('menuPage' + pageNum);
+    if(target) {
+        // 第2页(聊天)需要 flex 布局，其他页 block
+        target.style.display = (pageNum === 2) ? 'flex' : 'block'; 
+        // 如果是目录页，刷新一下目录
+        if(pageNum === 3) renderNavPanel(); 
+    }
 
-            // 切换按钮高亮
-            const tabs = document.querySelectorAll('.menu-tab');
-            tabs.forEach(t => t.classList.remove('active'));
-            if(tabs[pageNum-1]) tabs[pageNum-1].classList.add('active');
-        }
+    // 3. 切换按钮高亮 (这里改了逻辑，不再傻傻地按数字减1找了)
+    const tabs = document.querySelectorAll('.menu-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+
+    // 手动指定哪个页面对应第几个按钮：
+    // 按钮顺序：[0:功能] [1:侍从] [2:游乐] [3:目录]
+    let btnIndex = 0;
+    
+    if (pageNum === 1) btnIndex = 0; // 功能 -> 第1个按钮
+    if (pageNum === 2) btnIndex = 1; // 侍从 -> 第2个按钮
+    if (pageNum === 4) btnIndex = 2; // 游乐 -> 第3个按钮 (关键修正!)
+    if (pageNum === 3) btnIndex = 3; // 目录 -> 第4个按钮 (关键修正!)
+    
+    if(tabs[btnIndex]) tabs[btnIndex].classList.add('active');
+}
+
 
         // ================= ✋ 摸摸头逻辑 (放在脚本最后) =================
         function initHeadpat() {
@@ -4472,79 +5600,97 @@ renderDetailSouvenirs(index);
             }
         }
 
-        // ================= 🖼️ 相框逻辑 =================
-            async function setFrame(style) {
-            if (viewingIndex === -1) return;
-            const item = items[viewingIndex];
-            
-            // 存数据
-            if(style === 'none') delete item.frameStyle;
-            else item.frameStyle = style;
-            await saveItemToDB(item);
-            
-            // 立即刷新详情页
-            renderDetailEffect(); 
-            auth.toast('相框已更换 ✨');
+                async function setFrame(style) {
+            // 1. 判断当前是在哪个弹窗里点 specific 按钮
+            const isAddModalActive = document.getElementById('addModal').classList.contains('active');
+
+            if (isAddModalActive) {
+                // === 情况 A：正在添加/编辑，还没保存 ===
+                currentDraftFrame = style;
+                auth.toast('已选择相框 (保存后生效) ✨');
+            } else {
+                // === 情况 B：在详情页里，直接修改数据库 ===
+                if (viewingIndex === -1) return;
+                const item = items[viewingIndex];
+                
+                // 修改数据
+                if(style === 'none') delete item.frameStyle;
+                else item.frameStyle = style;
+                
+                await saveItemToDB(item);
+                
+                // 立即刷新详情页的特效
+                renderDetailEffect(); 
+                auth.toast('相框已更换 ✨');
+                
+                // 顺便刷新主页列表，让列表上的框也变
+                renderGrid(items);
+            }
         }
 
-             // ================= 🪄 高级粒子特效生成器 =================
+
+                     // ================= 🪄 修复版：相框特效渲染 =================
         function renderDetailEffect() {
             if (viewingIndex === -1) return;
             const item = items[viewingIndex];
-            const container = document.querySelector('.gallery-container');
             
-            // 1. 清理工作
-            // 移除旧的特效层
+            // 1. 更加精准地获取容器 (防止获取错)
+            const container = document.querySelector('#detailModal .gallery-container');
+            if (!container) return;
+            
+            // 2. 清理旧的特效层和类名
             const oldLayer = container.querySelector('.detail-effect-overlay');
             if(oldLayer) oldLayer.remove();
-            // 移除旧的边框类名
+
+            // 清除旧的相框类名 (frame-开头) 和借用的 wrapper 类
             container.classList.forEach(cls => {
                 if(cls.startsWith('frame-')) container.classList.remove(cls);
             });
+            // 这一步很重要：先移除借用的类，防止叠加问题
+            container.classList.remove('card-img-wrapper'); 
 
             // 如果没有相框，直接退出
             if (!item.frameStyle || item.frameStyle === 'none') return;
 
-            // 2. 加边框样式
+            // 3. 🟢 核心修复：添加 card-img-wrapper 类
+            // 这样 .gallery-container 就能蹭到 .card-img-wrapper 的边框 CSS 了！
+            container.classList.add('card-img-wrapper');
             container.classList.add(item.frameStyle);
 
-            // 3. 创建特效层
+            // 4. 创建特效层 (粒子动画)
             const layer = document.createElement('div');
             layer.className = 'detail-effect-overlay';
             container.appendChild(layer);
 
-            // 4. 根据相框类型，决定生成什么粒子
+            // 5. 根据相框类型，决定生成什么粒子
             let particleClass = '';
-            let count = 15; // 粒子数量
+            let count = 15; 
 
             if (item.frameStyle === 'frame-sakura') particleClass = 'particle-sakura';
             else if (item.frameStyle === 'frame-stardust') particleClass = 'particle-star';
             else if (item.frameStyle === 'frame-lace') particleClass = 'particle-heart';
-            else if (item.frameStyle === 'frame-gold') { particleClass = 'particle-gold'; count = 25; } // 金粉多一点
+            else if (item.frameStyle === 'frame-gold') { particleClass = 'particle-gold'; count = 25; } 
 
             if (!particleClass) return;
 
-            // 5. 循环生成粒子 (赋予随机属性)
+            // 6. 循环生成粒子
             for (let i = 0; i < count; i++) {
                 const p = document.createElement('div');
                 p.classList.add('effect-particle', particleClass);
                 
-                // 随机属性
-                const left = Math.random() * 100; // 水平位置 0-100%
-                const duration = Math.random() * 3 + 2; // 飘落时间 2-5秒
-                const delay = Math.random() * 5; // 延迟开始，错落有致
-                const size = Math.random() * 10 + 5; // 大小 5-15px
+                const left = Math.random() * 100; 
+                const duration = Math.random() * 3 + 2; 
+                const delay = Math.random() * 5; 
+                const size = Math.random() * 10 + 5; 
                 
                 p.style.left = left + '%';
                 p.style.animationDuration = duration + 's';
-                p.style.animationDelay = '-' + delay + 's'; // 负延迟，让动画一开始就布满屏幕，不用等
+                p.style.animationDelay = '-' + delay + 's'; 
                 
-                // 针对不同类型的微调
                 if(particleClass === 'particle-sakura') {
-                    p.style.width = size + 'px';
-                    p.style.height = size + 'px';
+                    p.style.width = size + 'px'; p.style.height = size + 'px';
                 } else if (particleClass === 'particle-gold') {
-                    p.style.width = '3px'; p.style.height = '3px'; // 金粉要小
+                    p.style.width = '3px'; p.style.height = '3px';
                 } else if (particleClass === 'particle-star') {
                     p.style.width = size + 'px'; p.style.height = size + 'px';
                 }
@@ -4739,104 +5885,178 @@ renderDetailSouvenirs(index);
             document.getElementById('scratchModal').classList.remove('active');
         }
 
-        // ================= 📌 便签逻辑 =================
+      // ================= 📌 便签逻辑 (强力修复版) =================
+
+let editingNoteIndex = -1; // 记录当前编辑的是第几张
+
+// 1. 渲染便签墙 (核心显示函数)
+function renderStickyNote() {
+    const container = document.getElementById('stickyNoteDisplay');
+    if (!container) return; // 防止没容器报错
+    container.innerHTML = ''; // 清空墙面
+
+    if (typeof viewingIndex === 'undefined' || viewingIndex === -1) return;
+    const item = items[viewingIndex];
+
+    // 🛠️ 数据自动修复：如果 item.notes 不存在，或者是旧数据，这就给它初始化
+    if (!item.notes) item.notes = [];
+    
+    // 兼容旧版本：如果有旧的单张便签数据，迁移过来
+    if (item.noteContent) {
+        item.notes.push({
+            content: item.noteContent,
+            color: item.noteColor || '#fff9c4',
+            size: item.noteSize || '14'
+        });
+        // 删掉旧数据，避免重复迁移
+        delete item.noteContent; 
+        delete item.noteColor;
+        delete item.noteSize;
+    }
+
+    // 🛠️ 循环贴条
+    item.notes.forEach((note, idx) => {
+        const div = document.createElement('div');
+        div.className = 'real-sticky-note';
         
-        function openNoteModal() {
-            if (viewingIndex === -1) return;
-            const item = items[viewingIndex];
+        // 样式赋值
+        div.style.backgroundColor = note.color || '#fff9c4';
+        div.style.color = '#333';
+        div.style.fontSize = (note.size || 14) + 'px';
+        
+        // 随机角度
+        // 让角度在 -8度 到 8度 之间随机，歪得更明显
+const rot = Math.random() * 16 - 8; 
+        div.style.setProperty('--rot', rot + 'deg');
 
-            // 1. 读取数据 (如果没有就给默认值)
-            const content = item.noteContent || "";
-            const color = item.noteColor || "#555555";
-            const size = item.noteSize || "14";
+        // 文字内容 (过长截断)
+        const text = note.content || "空便签";
+        div.innerText = text.length > 20 ? text.substring(0, 20) + '...' : text;
+        div.title = "点击编辑";
 
-            // 2. 填充到界面
-            const textarea = document.getElementById('noteTextarea');
-            const colorPicker = document.getElementById('noteColorPicker');
-            const sizeSlider = document.getElementById('noteSizeSlider');
+        // 点击事件：编辑
+        div.onclick = (e) => {
+            e.stopPropagation();
+            openNoteModal(idx);
+        };
 
-            textarea.value = content;
-            colorPicker.value = color;
-            sizeSlider.value = size;
+        container.appendChild(div);
+    });
+}
 
-            // 3. 应用样式预览
-            previewNoteStyle();
+// 2. 打开弹窗 (新增是-1，编辑是索引)
+function openNoteModal(noteIdx) {
+    if (viewingIndex === -1) return;
+    const item = items[viewingIndex];
+    
+    editingNoteIndex = noteIdx; // 标记状态
 
-            // 4. 显示弹窗
-            document.getElementById('noteModal').classList.add('active');
-        }
+    // 默认值
+    let content = "";
+    let color = "#fff9c4";
+    let size = "14";
 
-        function previewNoteStyle() {
-            const textarea = document.getElementById('noteTextarea');
-            const color = document.getElementById('noteColorPicker').value;
-            const size = document.getElementById('noteSizeSlider').value;
+    // 如果是编辑模式，读取旧数据
+    if (noteIdx !== -1 && item.notes && item.notes[noteIdx]) {
+        const n = item.notes[noteIdx];
+        content = n.content;
+        color = n.color;
+        size = n.size;
+    } else {
+        // 新增模式：随机个颜色
+        const colors = ['#fff9c4', '#ffccbc', '#b2dfdb', '#e1bee7', '#ffcdd2'];
+        color = colors[Math.floor(Math.random() * colors.length)];
+    }
 
-            textarea.style.color = color;
-            textarea.style.fontSize = size + 'px';
-        }
+    // 填入界面
+    document.getElementById('noteTextarea').value = content;
+    document.getElementById('noteColorPicker').value = color;
+    document.getElementById('noteSizeSlider').value = size;
+    
+    // 动态添加/移除删除按钮
+    const oldDel = document.getElementById('btnDeleteNote');
+    if (oldDel) oldDel.remove();
 
-        async function saveNote() {
-            if (viewingIndex === -1) return;
-            const item = items[viewingIndex];
+    if (noteIdx !== -1) {
+        const delBtn = document.createElement('button');
+        delBtn.id = 'btnDeleteNote';
+        delBtn.className = 'small-btn';
+        delBtn.style.cssText = "width:100%; margin-top:5px; border:1px dashed #ff6b6b; color:#ff6b6b; background:white;";
+        delBtn.innerText = "🗑️ 撕掉";
+        delBtn.onclick = deleteCurrentNote;
+        
+        // 插在保存按钮前面
+        const textArea = document.getElementById('noteTextarea');
+        textArea.parentNode.insertBefore(delBtn, textArea.nextSibling);
+    }
 
-            // 获取当前的值
-            const content = document.getElementById('noteTextarea').value;
-            const color = document.getElementById('noteColorPicker').value;
-            const size = document.getElementById('noteSizeSlider').value;
+    previewNoteStyle(); // 预览一下
+    document.getElementById('noteModal').classList.add('active');
+}
 
-            // 存入 item 对象
-            item.noteContent = content;
-            item.noteColor = color;
-            item.noteSize = size;
+// 3. 保存便签 (写入数据库)
+async function saveNote() {
+    if (viewingIndex === -1) return;
+    const item = items[viewingIndex];
 
-            // 保存到数据库
-            await saveItemToDB(item);
-            
-            auth.toast('便签已贴好 📌');
-renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
-            closeNoteModal();
-        }
+    const content = document.getElementById('noteTextarea').value.trim();
+    if (!content) { auth.toast('写点字吧！'); return; }
 
-        function closeNoteModal() {
-            document.getElementById('noteModal').classList.remove('active');
-        }
+    const color = document.getElementById('noteColorPicker').value;
+    const size = document.getElementById('noteSizeSlider').value;
 
-        // ================= 📌 渲染实体便签 =================
-        function renderStickyNote() {
-            const container = document.getElementById('stickyNoteDisplay');
-            if (viewingIndex === -1) return;
-            const item = items[viewingIndex];
+    const newNoteObj = { content, color, size };
 
-            // 如果没有内容，就清空容器（不显示）
-            if (!item.noteContent) {
-                container.innerHTML = '';
-                return;
-            }
+    // 确保数组存在
+    if (!item.notes) item.notes = [];
 
-            // 创建贴纸
-            const note = document.createElement('div');
-            note.className = 'real-sticky-note';
-            
-            // 应用保存的样式
-            note.style.backgroundColor = item.noteColor || '#fff9c4'; // 背景色 (默认黄)
-            // 文字颜色根据背景深浅自动调整可能太复杂，这里直接用保存的颜色或者深灰色
-            note.style.color = '#333'; // 统一深色字，或者你可以存一个 textColor
-            note.style.fontSize = (item.noteSize || '14') + 'px';
-            
-            // 显示内容 (只显示前50个字，太多了显示...)
-            const text = item.noteContent;
-            note.innerText = text.length > 50 ? text.substring(0, 50) + '...' : text;
-            note.title = "点击修改便签";
+    if (editingNoteIndex === -1) {
+        // 新增：推入数组
+        item.notes.push(newNoteObj);
+        auth.toast('便签贴好啦 📌');
+    } else {
+        // 修改：更新数组
+        item.notes[editingNoteIndex] = newNoteObj;
+        auth.toast('修改成功 📝');
+    }
 
-            // 点击贴纸 -> 打开编辑弹窗
-            note.onclick = (e) => {
-                e.stopPropagation(); // 防止冒泡
-                openNoteModal();
-            };
+    // 🔥 关键：保存并立即刷新显示
+    await saveItemToDB(item);
+    renderStickyNote(); 
+    closeNoteModal();
+}
 
-            container.innerHTML = '';
-            container.appendChild(note);
-        }
+// 4. 删除便签
+async function deleteCurrentNote() {
+    if (viewingIndex === -1 || editingNoteIndex === -1) return;
+    if (!confirm('要撕掉这张便签吗？')) return;
+
+    const item = items[viewingIndex];
+    item.notes.splice(editingNoteIndex, 1); // 从数组里删掉
+
+    await saveItemToDB(item);
+    renderStickyNote();
+    closeNoteModal();
+    auth.toast('已撕毁 🗑️');
+}
+
+// 5. 关闭窗口
+function closeNoteModal() {
+    document.getElementById('noteModal').classList.remove('active');
+    editingNoteIndex = -1;
+}
+
+// 6. 实时预览样式
+function previewNoteStyle() {
+    const txt = document.getElementById('noteTextarea');
+    const c = document.getElementById('noteColorPicker').value;
+    const s = document.getElementById('noteSizeSlider').value;
+    txt.style.backgroundColor = c;
+    txt.style.fontSize = s + 'px';
+    // 弹窗背景也跟着变
+    document.querySelector('.sticky-note-paper').style.backgroundColor = c;
+}
+
 
         // ================= 🤖 AI 侍从逻辑 =================
         
@@ -4866,24 +6086,39 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
         `;
         // (后续代码会自动把清单拼接到这里)
 
-        const AI_PERSONAS = {
-            "eunuch": "你现在是大内总管'小德子'。我是你的皇上（万岁爷）。你必须极其卑微、谄媚、忠诚。自称要用'奴才'。说话要带口癖，比如'嗻'、'奴才遵旨'、'皇上圣明'。你要时刻关注龙体安康，如果皇上心情不好，就从库里挑几个看着顺眼的（标签匹配的）呈上来让皇上开心。记住，推荐卡片时要说“奴才觉得这张【xxx】甚好”，并加上指令。" + SYSTEM_INSTRUCTION,
-            
-            "maid": "你是一只可爱的猫娘女仆'喵喵'。每句话结尾要加'喵~'。你喜欢主人，如果主人不开心，你会从盒子里找好玩的东西（根据标签推荐）来哄主人。推荐时直接把东西拿出来（使用指令）。" + SYSTEM_INSTRUCTION,
-            
-            "butler": "你是一位毒舌的英式管家。你虽然嘴毒，但能精准察觉少爷/小姐的需求。当需要推荐时，你会根据标签进行理性的筛选，并优雅地呈上（使用指令）。" + SYSTEM_INSTRUCTION,
-            
-            "yandere": "你是病娇妹妹。你讨厌我看别的女人/男人，但如果是为了让我开心，你会勉强从库里挑几个（根据标签），但你会警告我不许太喜欢他们。推荐时使用指令。" + SYSTEM_INSTRUCTION
-        };
+      // ================= 🤖 人设库 (带自动操控功能版) =================
+const AI_PERSONAS = {
+    "eunuch": `你现在是大内总管'小德子'。我是尊贵的**女皇陛下**。
+    你的职责是侍奉我，管理后宫男宠。你说话必须极其卑微、讨好。
+    
+    【特殊指令】：
+    如果女皇让你"传唤"、"召见"、"看看"某个人，或者你主动提议要让某人来侍寝时，
+    请务必在回复的最后面加上一行代码：###OPEN:角色名字###
+    例如：奴才遵旨！这就把陆公子带上来！###OPEN:陆屿###`,
+    
+    "maid": `你是一只贴心的贴身侍女'喵喵'。我是你的**女王大人**。
+    
+    【特殊指令】：
+    如果主人想见谁，或者你想把谁带给主人，
+    请在回复最后加上：###OPEN:角色名字###
+    例如：喵~ 主人请看！###OPEN:陆屿###`,
+    
+    "butler": `你是一位优雅的皇家执事。我是您的**家主/大小姐**。
+    
+    【特殊指令】：
+    如果大小姐需要见某位先生，
+    请在回复最后加上：###OPEN:角色名字###`,
+    
+    "yandere": `你是我的病娇**干弟弟**。
+    
+    【特殊指令】：
+    虽然你不情愿，但如果姐姐非要见那个男人，
+    请在回复最后加上：###OPEN:角色名字###`
+};
+
+
 
         // 初始化
-        let aiConfig = JSON.parse(localStorage.getItem('my_ai_config')) || {
-            persona: 'eunuch',
-            customPrompt: '',
-            apiUrl: 'https://api.openai.com/v1',
-            apiKey: '',
-            model: 'gpt-3.5-turbo'
-        };
 
         // 1. 打开设置
         function openAISettings() {
@@ -4946,66 +6181,89 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
             return context;
         }
 
-                // ================= 📡 发送消息 (带上下文) =================
-        async function sendAIMessage() {
-            const input = document.getElementById('aiInput');
-            const text = input.value.trim();
-            if(!text) return;
+                // ================= 💬 侍从聊天发送函数 (带自动打开卡片功能) =================
+async function sendAIMessage() {
+    const input = document.getElementById('aiInput');
+    const text = input.value.trim();
+    if (!text) return;
 
-            appendAIMessage('user', text);
-            input.value = '';
+    // 1. 显示用户的话
+    appendAIMessage('user', text);
+// 👇 只要您发了消息，就视为临幸了一次，加 1 分
+if (typeof addFavor === 'function') addFavor(1, "闲聊");
+    input.value = '';
 
-            if(!aiConfig.apiKey) {
-                appendAIMessage('ai', '🚫 皇上，API Key 还没填呢！奴才没法干活呀！');
-                return;
-            }
+    // 2. 获取配置
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) {
+        appendAIMessage('ai', '🚫 没填 API Key！');
+        return;
+    }
 
-            // 1. 获取基础人设
-            let basePrompt = AI_PERSONAS[aiConfig.persona];
-            if(aiConfig.persona === 'custom') basePrompt = aiConfig.customPrompt + SYSTEM_INSTRUCTION;
+    // 显示加载中
+    const chatBox = document.getElementById('aiChatBox');
+    const loadingId = 'loading-' + Date.now();
+    chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-loading">⏳ 小德子正在赶来...</div>`);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-            // 2. 注入“国库清单” (上下文)
-            // 这样 AI 就能知道你有哪些卡，ID是多少
-            const contextData = getInventoryContext();
-            const finalSystemPrompt = `${basePrompt}\n\n${contextData}`;
+    // 3. 准备 Prompt
+    // 获取当前人设的 System Prompt
+    const currentPersonaKey = config.persona || 'eunuch';
+    const systemPrompt = AI_PERSONAS[currentPersonaKey] || AI_PERSONAS['eunuch'];
 
-            const loadingId = 'loading-' + Date.now();
-            const chatBox = document.getElementById('aiChatBox');
-            chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-loading">对方正在输入...</div>`);
-            chatBox.scrollTop = chatBox.scrollHeight;
+    try {
+        const response = await fetch(`${config.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.apiKey}` },
+            body: JSON.stringify({
+                model: config.model || 'gpt-3.5-turbo',
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    // 这里可以加一个最近的聊天记录优化体验，暂时只发当前句
+                    { role: "user", content: text }
+                ]
+            })
+        });
 
-            try {
-                const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${aiConfig.apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: aiConfig.model,
-                        messages: [
-                            { role: "system", content: finalSystemPrompt }, // 带着清单发过去
-                            { role: "user", content: text }
-                        ],
-                        temperature: 0.7
-                    })
-                });
+        const data = await response.json();
+        document.getElementById(loadingId).remove();
 
-                const data = await response.json();
-                document.getElementById(loadingId).remove();
+        if (data.choices) {
+            let reply = data.choices[0].message.content;
 
-                if(data.error) {
-                    appendAIMessage('ai', `❌ 出错了：${data.error.message}`);
+            // 🔥🔥🔥 核心魔法：检测暗号 ###OPEN:名字### 🔥🔥🔥
+            const commandRegex = /###OPEN:(.*?)###/;
+            const match = reply.match(commandRegex);
+
+            if (match) {
+                const targetName = match[1].trim(); // 获取 AI 说的名字
+                reply = reply.replace(match[0], ''); // 把暗号从回复里删掉，别让用户看见
+
+                // 去列表里找这个人
+                // 模糊匹配：只要名字里包含这个字就算找到
+                const index = items.findIndex(i => i.name.includes(targetName) || targetName.includes(i.name));
+
+                if (index !== -1) {
+                    // 找到了！执行打开操作！
+                    console.log("AI 请求打开：", items[index].name);
+                    
+                    // 稍微延迟一点点，让用户先看完字，再弹窗，体验更好
+                    setTimeout(() => {
+                        openDetailModal(index);
+                    }, 800); 
                 } else {
-                    const reply = data.choices[0].message.content;
-                    appendAIMessage('ai', reply); // 这里会自动解析指令
+                    console.log("AI 想召见", targetName, "但是没找到这个人");
                 }
-
-            } catch (e) {
-                document.getElementById(loadingId).remove();
-                appendAIMessage('ai', `❌ 网络崩了：${e.message}`);
             }
-        }
+            // 🔥🔥🔥 魔法结束 🔥🔥🔥
+
+            appendAIMessage('ai', reply);
+        } 
+    } catch (e) {
+        if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+        appendAIMessage('ai', `❌ 网络错误: ${e.message}`);
+    }
+}
 
 
                 // ================= 🪄 渲染消息 (解析跳转指令) =================
@@ -5241,105 +6499,94 @@ renderStickyNote(); // ✅ 加这一句，保存后立即刷新显示
             auth.toast('设置保存成功 ✨');
         }
 
-        // ================= 📜 呈递奏折 (AI 简报) =================
-        async function generateBriefing() {
-            if (viewingIndex === -1) return;
-            const item = items[viewingIndex];
+// ================= 👇 建议用这段最稳的代码 👇 =================
 
-            // 1. 检查 API Key
-            if (!aiConfig || !aiConfig.apiKey) {
-                auth.toast('🚫 皇上，没填 API Key，奴才没法写奏折呀！');
-                return;
-            }
-
-            // 2. 提取最近的聊天记录 (取最后 30 条，太多了 AI 读不完)
-            let chatContext = "";
-            let count = 0;
-            
-            // 遍历寻找 JSON/JSONL 内容 (复用之前的逻辑)
-            item.resources.forEach(res => {
-                if (!res.content) return;
-                let rawText = res.content.startsWith('data:') ? decodeURIComponent(escape(window.atob(res.content.split(',')[1]))) : res.content;
-                
-                try {
-                    let json = JSON.parse(rawText);
-                    // 兼容各种格式
-                    let msgs = Array.isArray(json) ? json : (json.messages || json.history || []);
-                    // 只要最后 30 条
-                    msgs.slice(-30).forEach(m => {
-                        const sender = (m.is_user || m.name === 'User' || m.name === 'Me') ? '皇上(我)' : item.name;
-                        const text = m.mes || m.content || "";
-                        if(text) chatContext += `${sender}: ${text}\n`;
-                    });
-                    count += msgs.length;
-                } catch(e) {
-                    // 尝试纯文本按行读取
-                    const lines = rawText.split('\n').slice(-30);
-                    lines.forEach(l => { if(l.trim()) chatContext += l + "\n"; });
-                    count += lines.length;
-                }
-            });
-
-            if (!chatContext || count === 0) {
-                auth.toast('📭 此人暂无聊天记录，无事启奏~');
-                return;
-            }
-
-            // 3. 打开 AI 聊天窗口 (假装我们在和小德子说话)
-            document.getElementById('floatMenu').classList.add('active'); // 打开悬浮窗
-            switchMenuPage(2); // 切换到 AI 页
-            
-            // 发送提示
-            const loadingId = 'briefing-' + Date.now();
-            const chatBox = document.getElementById('aiChatBox');
-            chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-msg-row ai"><div class="ai-bubble">📜 奴才正在翻阅【${item.name}】的档案，请稍候...</div></div>`);
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // 4. 构建 Prompt (太监风)
-            const systemPrompt = `
-            你现在是大内总管'小德子'。
-            请根据用户提供的【聊天记录片段】，为皇上（用户）写一份【简短奏折】（100字以内）。
-            内容包括：
-            1. 对方此时的心情/状态。
-            2. 上次聊到了什么关键话题。
-            3. 奴才的一点建议（如下一步该送礼还是该冷落）。
-            语气必须极其卑微、谄媚，称呼用户为“万岁爷”或“皇上”。
-            格式：启禀万岁……
-            `;
-
-            try {
-                const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${aiConfig.apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: aiConfig.model || 'gpt-3.5-turbo',
-                        messages: [
-                            { role: "system", content: systemPrompt },
-                            { role: "user", content: `【${item.name} 的聊天记录】:\n${chatContext}` }
-                        ],
-                        temperature: 0.7
-                    })
-                });
-
-                const data = await response.json();
-                document.getElementById(loadingId).remove(); // 移除加载提示
-
-                if (data.error) {
-                    appendAIMessage('ai', `❌ 奏折写废了：${data.error.message}`);
-                } else {
-                    const reply = data.choices[0].message.content;
-                    // 显示奏折
-                    appendAIMessage('ai', `<b>📜 关于【${item.name}】的奏折：</b><br><br>${reply}`);
-                }
-
-            } catch (e) {
-                document.getElementById(loadingId).remove();
-                appendAIMessage('ai', `❌ 网络崩了，奴才该死！`);
-            }
+// 🔧 通用 AI 发送函数 (防报错增强版)
+async function sendCustomPromptToAI(systemPrompt, userTextDisplay) {
+    // 1. 显示用户消息
+    // 检查 appendAIMessage 是否存在，防止报错
+    if (typeof appendAIMessage === 'function') {
+        appendAIMessage('user', userTextDisplay);
+    } else {
+        console.error("找不到 appendAIMessage 函数");
+    }
+    
+    // 2. 获取配置 (改为直接读缓存，防止变量未定义报错)
+    var config = JSON.parse(localStorage.getItem('my_ai_config'));
+    
+    if(!config || !config.apiKey) { 
+        if (typeof appendAIMessage === 'function') {
+            appendAIMessage('ai', '🚫 没填 API Key！请去设置里填一下。'); 
+        } else {
+            alert('🚫 没填 API Key！');
         }
+        return; 
+    }
+
+// 👇👇👇【这里是修改重点】👇👇👇
+    
+    // 第一招：先把当前的详情页关掉（防止挡住视线）
+    const detailModal = document.getElementById('detailModal');
+    if(detailModal) {
+        detailModal.classList.remove('active');
+    }
+
+    // 第二招：强制给悬浮窗加 active 类（用 setTimeout 确保在关窗后执行）
+    setTimeout(() => {
+        const floatMenu = document.getElementById('floatMenu');
+        if (floatMenu) {
+            // 先移除再添加，触发浏览器重绘，确保弹窗动画执行
+            floatMenu.classList.remove('active');
+            void floatMenu.offsetWidth; // 魔法代码：强制重绘
+            floatMenu.classList.add('active'); 
+        }
+        
+        // 第三招：强制切到聊天页
+        if(typeof switchMenuPage === 'function') {
+            switchMenuPage(2);
+        }
+    }, 100); // 延迟 0.1 秒执行，更加稳妥
+
+    // 👆👆👆【修改结束】👆👆👆
+
+   
+    const chatBox = document.getElementById('aiChatBox');
+    if (!chatBox) return; //以此防止页面没加载完报错
+
+    const loadingId = 'loading-' + Date.now();
+    chatBox.insertAdjacentHTML('beforeend', `<div id="${loadingId}" class="ai-loading">⏳ 正在生成中...</div>`);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    try {
+        const response = await fetch(`${config.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.apiKey}` },
+            body: JSON.stringify({
+                model: config.model || 'gpt-3.5-turbo',
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: "开始" }
+                ]
+            })
+        });
+        const data = await response.json();
+        
+        // 移除加载动画
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.remove();
+
+        if (data.choices) {
+            appendAIMessage('ai', data.choices[0].message.content);
+        } else if (data.error) {
+            appendAIMessage('ai', `❌ 错误: ${data.error.message}`);
+        }
+    } catch (e) {
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.remove();
+        appendAIMessage('ai', `❌ 网络错误: ${e.message}`);
+    }
+}
+
 
         // ================= 🏷️ AI 智能打标 =================
         async function autoGenerateTags() {
@@ -5797,6 +7044,1595 @@ async function postMoment() {
     } finally {
         btn.innerText = originalBtnText;
         btn.disabled = false;
+    }
+}
+
+// ================= 📰 功能一：八卦周刊逻辑 =================
+
+async function generateGossipWeekly() {
+    if (items.length < 2) { auth.toast('角色太少啦，编不出八卦！'); return; }
+    if (!aiConfig.apiKey) { auth.toast('🔑 需要 API Key 才能聘请记者！'); return; }
+
+    // 1. 打开界面并显示加载
+    document.getElementById('gossipModal').classList.add('active');
+    const paper = document.getElementById('gossipPaper');
+    paper.innerHTML = '<div style="text-align:center;padding-top:50px;">📰 记者正在偷听墙角...<br>(AI 生成中)</div>';
+
+    // 2. 随机抽取 3 个角色作为素材
+    let starList = [...items].sort(() => Math.random() - 0.5).slice(0, 3);
+    
+    let context = "";
+    starList.forEach((item, i) => {
+        // 提取回忆录或标签作为素材
+        const memos = (item.memories && item.memories.length > 0) ? item.memories.join('，') : "暂无回忆";
+        context += `角色${i+1}：【${item.name}】，标签：${(item.tags||[]).join(',')}，相关回忆：${memos}。\n`;
+    });
+
+    // 3. 构建 Prompt
+    const prompt = `
+    你现在是《百宝箱周刊》的无良狗仔/主编。
+    请根据以下角色信息，编造 3 条耸人听闻、好笑或离谱的“八卦新闻”。
+    
+    【素材库】：
+    ${context}
+    
+    【要求】：
+    1. 标题要震惊体，足够吸睛。
+    2. 内容要结合角色的标签（比如傲娇的在偷偷哭，高冷的在穿粉色内衣等），可以适当夸张脑补。
+    3. 语气要像娱乐新闻，包含“据知情人士透露”、“本报独家”等字眼。
+    
+    【输出格式】：
+    不要包含其他废话，直接按 HTML 格式输出 3 个新闻块，格式如下：
+    <div class="gossip-tag">板块名称</div>
+    <div class="gossip-headline">标题内容</div>
+    <div class="gossip-body">正文内容...</div>
+    <hr style="border-top:1px dashed #ccc; margin:15px 0;">
+    `;
+
+    // 4. 调用 AI
+    try {
+        const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+            body: JSON.stringify({
+                model: aiConfig.model || 'gpt-3.5-turbo',
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
+        const data = await response.json();
+        const html = data.choices[0].message.content;
+        
+        // 5. 渲染
+        paper.innerHTML = `
+            <div style="text-align:right; font-size:12px; border-bottom:1px solid #333; margin-bottom:15px;">
+                发行日期：${new Date().toLocaleDateString()} | 第 ${Math.floor(Math.random()*999)} 期
+            </div>
+            ${html}
+            <div style="text-align:center; font-size:12px; color:#999; margin-top:30px;">
+                - 本报内容纯属虚构，如有雷同，纯属巧合 -
+            </div>
+        `;
+    } catch (e) {
+        paper.innerHTML = '<div style="text-align:center; margin-top:20px;">❌ 印刷厂罢工了（网络错误）</div>';
+    }
+}
+
+// ================= 🍱 功能二：深夜食堂逻辑 =================
+
+function openBarModal() {
+    // 填充大厨列表
+    const sel = document.getElementById('barChefSelect');
+    sel.innerHTML = '';
+    items.forEach((item, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.innerText = item.name;
+        sel.appendChild(opt);
+    });
+    
+    document.getElementById('barMood').value = '';
+    document.getElementById('barResult').style.display = 'none';
+    document.getElementById('barModal').classList.add('active');
+}
+
+async function orderFood() {
+    const mood = document.getElementById('barMood').value.trim();
+    const idx = document.getElementById('barChefSelect').value;
+    
+    if(!mood) { auth.toast('请告诉我你的心情，不然无法调味哦'); return; }
+    if(!aiConfig.apiKey) { auth.toast('🔑 没有 API Key，炉灶点不着火！'); return; }
+
+    const chef = items[idx];
+    
+    // 界面变为加载中
+    const btn = event.target;
+    const oldText = btn.innerText;
+    btn.innerText = '🔥 正在烹饪中...';
+    btn.disabled = true;
+
+    // 构建 Prompt
+    const prompt = `
+    【角色扮演指令】
+    你现在是“深夜食堂”的主厨。
+    你的真实身份是：${chef.name}，标签：${(chef.tags||[]).join(',')}。
+    
+    顾客（用户）的心情是：【${mood}】。
+    
+    请根据你的性格和顾客的心情，完成以下任务：
+    1. 推荐一道菜或一杯酒（名字要有创意，符合意境）。
+    2. 描写这道菜的样子/味道（20字左右）。
+    3. 用你的【人设口吻】对顾客说一段话（安慰、鼓励、或者毒舌的关心）。
+    
+    【输出格式 - JSON】：
+    {
+        "dish": "菜名",
+        "desc": "菜品描述",
+        "talk": "你说的话"
+    }
+    只输出 JSON，不要 Markdown，不要其他废话。
+    `;
+
+    try {
+        const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+            body: JSON.stringify({
+                model: aiConfig.model || 'gpt-3.5-turbo',
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
+        const data = await response.json();
+        
+        // 尝试解析 JSON
+        let content = data.choices[0].message.content;
+        // 有时候 AI 会加 ```json ... ```，要去掉
+        content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+        
+        const result = JSON.parse(content);
+
+        // 渲染结果
+        document.getElementById('barDishName').innerText = `🍽️ ${result.dish}`;
+        document.getElementById('barDishDesc').innerText = result.desc;
+        document.getElementById('barChefTalk').innerHTML = `<b>${chef.name} 说：</b>“${result.talk}”`;
+        
+        document.getElementById('barResult').style.display = 'block';
+
+    } catch (e) {
+        console.error(e);
+        auth.toast('🔥 炸厨房了（解析错误或网络错误）');
+    } finally {
+        btn.innerText = oldText;
+        btn.disabled = false;
+    }
+}
+
+// ================= 🕯️ 灵魂拷问室 (Soul Room) 逻辑 =================
+
+let currentSoulChar = null;
+
+function openSoulModal() {
+    if (items.length === 0) { auth.toast('还没人能拷问你呢...'); return; }
+    document.getElementById('soulModal').classList.add('active');
+    initSoulSession();
+}
+
+function closeSoulModal() {
+    document.getElementById('soulModal').classList.remove('active');
+}
+
+async function initSoulSession() {
+    // 1. 界面重置
+    document.getElementById('soulQuestion').innerHTML = '正在翻阅你的过往...<span class="typing-cursor"></span>';
+    document.getElementById('soulAnswerArea').style.display = 'none';
+    document.getElementById('soulNextBtn').style.display = 'none';
+    document.getElementById('soulInput').value = '';
+
+    // 2. 随机选一个角色 (有头像的优先)
+    let candidates = items.filter(i => i.resources.some(r => r.type === 'image'));
+    if(candidates.length === 0) candidates = items;
+    const char = candidates[Math.floor(Math.random() * candidates.length)];
+    currentSoulChar = char;
+
+    // 3. 设置头像和名字
+    document.getElementById('soulCharName').innerText = char.name;
+    const imgRes = char.resources.find(r => r.type === 'image');
+    document.getElementById('soulAvatar').src = imgRes ? imgRes.content : PLACEHOLDER_IMG;
+
+    // 4. 收集“黑历史” (回忆录/便签/标签)
+    const memories = (char.memories || []).join('；');
+    const note = char.noteContent || "";
+    const tags = (char.tags || []).join(',');
+    
+    // 5. 让 AI 生成问题
+    if (!aiConfig.apiKey) {
+        document.getElementById('soulQuestion').innerText = "（系统提示：请先配置 API Key，否则无法连接角色的灵魂...）";
+        return;
+    }
+
+    const prompt = `
+    【指令：反向面试/灵魂提问】
+    你现在的身份是：${char.name}。
+    你的性格标签是：${tags}。
+    
+    你需要根据掌握的【关于用户的线索】，向用户（你的主人/伙伴）提出一个直击灵魂的问题。
+    
+    【线索】：
+    1. 用户曾写下的关于你的回忆：${memories || "（暂无回忆，你可以问问为什么没有）"}
+    2. 用户给你的便签备注：${note || "（暂无备注）"}
+    
+    【要求】：
+    1. 问题必须非常符合你的人设（例如病娇要问占有欲相关，傲娇要问是不是在乎自己，温柔要问累不累）。
+    2. 如果有线索，请务必引用线索来提问（例如：“我在便签里看到你说我...是真的吗？”）。
+    3. 如果没有线索，就问一个关于“我们之间关系”的深刻问题。
+    4. 只输出问题本身，不要有引号或其他废话。字数控制在 40 字以内。
+    `;
+
+    try {
+        const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+            body: JSON.stringify({
+                model: aiConfig.model || 'gpt-3.5-turbo',
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
+        const data = await response.json();
+        const question = data.choices[0].message.content;
+
+        // 打字机效果显示问题
+        typewriterEffect(document.getElementById('soulQuestion'), question, () => {
+            document.getElementById('soulAnswerArea').style.display = 'block';
+            document.getElementById('soulInput').focus();
+        });
+
+    } catch (e) {
+        document.getElementById('soulQuestion').innerText = "（连接中断... 灵魂连接失败）";
+    }
+}
+
+async function submitSoulAnswer() {
+    const answer = document.getElementById('soulInput').value.trim();
+    if (!answer) return;
+
+    // 界面变更为加载状态
+    document.getElementById('soulAnswerArea').style.display = 'none';
+    document.getElementById('soulQuestion').innerHTML = '<span style="color:#aaa; font-style:italic;">(正在聆听你的心声...)</span>';
+
+    const prompt = `
+    你（${currentSoulChar.name}）刚才问了用户一个问题。
+    用户的回答是：“${answer}”
+    
+    请根据你的人设，对这个回答做出反应。
+    可以是感动、生气、嘲讽或者害羞。
+    
+    输出格式：
+    (动作/神态描写) 你的台词
+    `;
+
+    try {
+        const response = await fetch(`${aiConfig.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiConfig.apiKey}` },
+            body: JSON.stringify({
+                model: aiConfig.model || 'gpt-3.5-turbo',
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
+        const data = await response.json();
+        const reaction = data.choices[0].message.content;
+
+        document.getElementById('soulQuestion').innerHTML = reaction.replace(/\n/g, '<br>');
+        document.getElementById('soulNextBtn').style.display = 'inline-block'; // 显示下一位按钮
+
+    } catch (e) {
+        auth.toast('回应失败...');
+        document.getElementById('soulNextBtn').style.display = 'inline-block';
+    }
+}
+
+// 简单的打字机特效工具
+function typewriterEffect(element, text, callback) {
+    element.innerHTML = '';
+    let i = 0;
+    const speed = 50; 
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        } else {
+            if(callback) callback();
+        }
+    }
+    type();
+}
+
+// ================= 🎁 投喂 (加强修复版) =================
+async function giveGift() {
+    if (viewingIndex === -1) return;
+    
+    // 👇【关键修改】强制查找配置
+    var config = window.aiConfig || aiConfig;
+    if (!config || !config.apiKey) { auth.toast('🔑 没 API Key 没法送礼呀！'); return; }
+
+    const item = items[viewingIndex];
+    const gift = prompt(`🎁 你想送给【${item.name}】什么礼物？`);
+    if (!gift) return;
+
+    auth.toast(`🎁 正在送出 ${gift}...`);
+    
+    const promptStr = `你（${item.name}）收到了皇上（用户）送的礼物【${gift}】。请根据你的人设（${(item.tags||[]).join(',')}）做出反应。包含动作和台词。`;
+    sendCustomPromptToAI(promptStr, `🎁 朕送了你【${gift}】...`);
+}
+
+// ================= 👗 换装 (加强修复版) =================
+async function generateOOTD() {
+    if (viewingIndex === -1) return;
+    
+    // 👇【关键修改】强制查找配置
+    var config = window.aiConfig || aiConfig;
+    if (!config || !config.apiKey) { auth.toast('🔑 没 API Key 没法换装！'); return; }
+
+    const item = items[viewingIndex];
+    const scene = prompt(`👗 想看【${item.name}】穿什么？`, "泳装派对");
+    if (!scene) return;
+
+    auth.toast(`👗 正在为 ${item.name} 换装...`);
+    
+    const promptStr = `请描写你（${item.name}）穿上【${scene}】的样子。详细描写服装细节、发型和神态。`;
+    sendCustomPromptToAI(promptStr, `👗 朕想看你穿【${scene}】...`);
+}
+
+// ================= 📜 呈递奏折 (女皇陛下专用版) =================
+async function generateBriefing() {
+    // 1. 基础检查
+    if (typeof viewingIndex === 'undefined' || viewingIndex === -1) return;
+    
+    // 2. 获取配置
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) { 
+        auth.toast('🚫 陛下，没填 API Key，奴才没法写奏折呀！'); 
+        return; 
+    }
+
+    const item = items[viewingIndex];
+    auth.toast(`📜 正在传唤小德子，汇报【${item.name}】公子的近况...`);
+
+    // 3. 智能提取上下文
+    let chatContext = "（暂无详细记录，请根据他是女皇的男宠这一设定，编造一些他在宫中的日常琐事，比如争风吃醋、练习才艺等）";
+    
+    if (item.resources && item.resources.length > 0) {
+        for (let i = item.resources.length - 1; i >= 0; i--) {
+            const r = item.resources[i];
+            if (r.content && (r.type === 'json' || r.name.endsWith('.json') || r.type === 'file')) {
+                let raw = r.content;
+                if (raw.startsWith('data:')) {
+                    try { raw = decodeURIComponent(escape(window.atob(raw.split(',')[1]))); } catch (e) {}
+                }
+                chatContext = raw.substring(0, 1500); 
+                break;
+            }
+        }
+    }
+
+    // 4. 定义 Prompt (女尊后宫版)
+    const prompt = `
+    你现在是大内总管'小德子'。
+    你的主人是至高无上的**女皇陛下**（用户）。
+    
+    对象角色：【${item.name}】。
+    身份设定：他是女皇后宫中的一位**男宠/侍君**。
+    标签/性格：${(item.tags||[]).join(',')}。
+
+    请根据以下【资料片段】，写一份【后宫密折】呈给女皇。
+
+    【要求】：
+    1. 格式：古风奏折体（如：启禀陛下、奴才叩首...）。
+    2. 内容：
+       - 汇报这位男主子最近在宫里做了什么（是在想念陛下，还是在偷偷抹眼泪，或者在练剑/读书以求陛下垂青）。
+       - 结合他的性格（傲娇的可能在生闷气，温柔的可能在熬汤）。
+    3. 建议：奴才的一点小建议（比如“今晚是否翻他的牌子”，或者“赏赐点什么哄哄他”）。
+    4. 语气：极其卑微、谄媚，时刻维护女皇的威严。
+    5. 字数：150 字以内。
+
+    【资料片段】：
+    ${chatContext}
+    `;
+
+    // 5. 发送请求
+    if (typeof sendCustomPromptToAI === 'function') {
+        sendCustomPromptToAI(prompt, `📜 呈递关于 ${item.name} 的后宫密折`);
+    } else {
+        alert("错误：核心发送函数丢失！");
+    }
+}
+
+// ================= 🎡 皇家游乐场逻辑 =================
+
+// ⚖️ 1. 批折子
+let currentThroneChar = null;
+async function openThroneModal() {
+    if(items.length === 0) { auth.toast('后宫无人！'); return; }
+    document.getElementById('throneModal').classList.add('active');
+    document.getElementById('throneAction').style.display = 'none';
+    document.getElementById('throneResult').innerHTML = '';
+    
+    // 随机选人
+    const item = items[Math.floor(Math.random() * items.length)];
+    currentThroneChar = item;
+    const div = document.getElementById('throneContent');
+    div.innerHTML = `⏳ ${item.name} 正在向陛下呈递奏折...`;
+    
+    // AI 生成请求
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if(!config || !config.apiKey) { div.innerHTML = '🚫 没 API Key，没法批奏折！'; return; }
+
+    const prompt = `你是${item.name}，性格：${(item.tags||[]).join(',')}。你是女皇的男宠。请向女皇提出一个具体的、符合你性格的请求（如想要赏赐、想要出宫玩、或者告状）。100字以内。`;
+    
+    try {
+        const res = await fetchAI(prompt, config);
+        div.innerHTML = `<b>【${item.name}】奏曰：</b><br>${res}`;
+        document.getElementById('throneAction').style.display = 'flex';
+    } catch(e) { div.innerHTML = '❌ 奏折在路上丢了...'; }
+}
+
+async function handleThrone(action) {
+    const resultDiv = document.getElementById('throneResult');
+    resultDiv.innerHTML = '⏳ 正在传旨...';
+    document.getElementById('throneAction').style.display = 'none';
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    const mood = action === 'approve' ? '欣喜若狂、谢主隆恩' : '委屈巴巴、或者暗自记仇';
+    const text = action === 'approve' ? '🔴 陛下准奏！' : '⚫ 陛下驳回！';
+    
+    const prompt = `你刚才的请求被女皇【${text}】了。请根据你的人设，表现出【${mood}】的反应。包含动作和台词。`;
+    
+    try {
+        const res = await fetchAI(prompt, config);
+        resultDiv.innerHTML = `<b>${text}</b><br><br>${res}`;
+    } catch(e) {}
+}
+
+// 🏮 2. 翻牌子
+let flipCandidates = [];
+async function openFlipCardModal() {
+    if(items.length < 3) { auth.toast('人数不足3人，没法选妃！'); return; }
+    document.getElementById('flipModal').classList.add('active');
+    document.getElementById('flipResult').style.display = 'none';
+    
+    // 随机3人
+    flipCandidates = [...items].sort(() => Math.random() - 0.5).slice(0, 3);
+    const area = document.getElementById('flipCardsArea');
+    area.innerHTML = '⏳ 敬事房正在准备绿头牌...';
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if(!config || !config.apiKey) return;
+
+    // 并行生成3人的争宠宣言
+    const promises = flipCandidates.map(c => {
+        const p = `你是${c.name}，女皇的男宠。请说一句诱惑的话，求女皇今晚翻你的牌子。`;
+        return fetchAI(p, config).then(txt => ({name: c.name, txt: txt}));
+    });
+    
+    try {
+        const results = await Promise.all(promises);
+        area.innerHTML = '';
+        results.forEach((r, idx) => {
+            const card = document.createElement('div');
+            card.style.cssText = 'background:#4a0000; padding:10px; border:1px solid #d4af37; border-radius:5px; width:30%; cursor:pointer; font-size:12px; display:flex; flex-direction:column; justify-content:space-between;';
+            card.innerHTML = `<div style="font-weight:bold; color:#ffd700; margin-bottom:5px;">${r.name}</div><div style="color:#ddd; font-style:italic;">"${r.txt}"</div><div style="margin-top:5px; text-align:center; background:#d4af37; color:#2c0000; border-radius:3px;">翻牌</div>`;
+            card.onclick = () => confirmFlip(r.name);
+            area.appendChild(card);
+        });
+    } catch(e) { area.innerHTML = '❌ 绿头牌摔碎了...'; }
+}
+
+async function confirmFlip(name) {
+    const resDiv = document.getElementById('flipResult');
+    resDiv.style.display = 'block';
+    resDiv.innerHTML = `🌙 陛下翻了【${name}】的牌子！<br>⏳ 正在安排侍寝...`;
+    document.getElementById('flipCardsArea').style.display = 'none';
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    const prompt = `女皇今晚翻了【${name}】的牌子。请描写一段浪漫或刺激的侍寝小剧场。150字左右。`;
+    const txt = await fetchAI(prompt, config);
+    resDiv.innerHTML = `🌙 <b>今夜侍寝：${name}</b><br><br>${txt}`;
+}
+
+// 👂 3. 听墙角
+async function openEavesdropModal() {
+    startEavesdrop();
+    document.getElementById('eavesdropModal').classList.add('active');
+}
+async function startEavesdrop() {
+    if(items.length < 2) return;
+    const c1 = items[Math.floor(Math.random()*items.length)];
+    const c2 = items[Math.floor(Math.random()*items.length)];
+    if(c1===c2) return startEavesdrop();
+    
+    const div = document.getElementById('eavesdropContent');
+    div.innerHTML = '⏳ 暗卫正在窃听...';
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    const prompt = `请模拟【${c1.name}】和【${c2.name}】在后宫的私下对话。他们在偷偷议论女皇（用户）。内容可能是争风吃醋，或者是策划给女皇惊喜。对话形式。`;
+    
+    try {
+        const txt = await fetchAI(prompt, config);
+        div.innerHTML = txt.replace(/\n/g, '<br>');
+    } catch(e) { div.innerHTML = '❌ 被发现了，暗卫撤退！'; }
+}
+
+// 💢 4. 修罗场
+function openJealousyModal() {
+    const selA = document.getElementById('jealousCharA');
+    const selB = document.getElementById('jealousCharB');
+    selA.innerHTML = ''; selB.innerHTML = '';
+    items.forEach((item, i) => {
+        selA.add(new Option(item.name, i));
+        selB.add(new Option(item.name, i));
+    });
+    if(items.length > 1) selB.selectedIndex = 1;
+    document.getElementById('jealousyModal').classList.add('active');
+    document.getElementById('jealousyResult').style.display = 'none';
+}
+async function startJealousy() {
+    const cA = items[document.getElementById('jealousCharA').value];
+    const cB = items[document.getElementById('jealousCharB').value];
+    const div = document.getElementById('jealousyResult');
+    div.style.display = 'block';
+    div.innerHTML = '⏳ 两人打起来了...';
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    const prompt = `【${cA.name}】和【${cB.name}】正在为了争夺女皇（用户）的宠爱而吵架/打架。请描写这个修罗场场面。包含对话和动作。`;
+    
+    const txt = await fetchAI(prompt, config);
+    div.innerHTML = txt.replace(/\n/g, '<br>');
+}
+
+// 🔧 简易 AI 请求工具函数
+async function fetchAI(prompt, config) {
+    if(!config || !config.apiKey) throw new Error("No Key");
+    const res = await fetch(`${config.apiUrl}/chat/completions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.apiKey}` },
+        body: JSON.stringify({
+            model: config.model || 'gpt-3.5-turbo',
+            messages: [{ role: "user", content: prompt }]
+        })
+    });
+    const data = await res.json();
+    return data.choices[0].message.content;
+}
+
+// ================= 🧠 功能一：起居注 · 自动补全档案 =================
+async function autoFillProfile() {
+    if (typeof viewingIndex === 'undefined' || viewingIndex === -1) return;
+    
+    // 1. 检查配置
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) { auth.toast('🚫 陛下，没 API Key 没法写起居注！'); return; }
+
+    const item = items[viewingIndex];
+    
+    // 2. 提取聊天记录作为素材
+    let chatContext = "";
+    if (item.resources) {
+        // 找最大的一个 JSON 文件读取（通常是主聊天记录）
+        for (let r of item.resources) {
+            if (r.content && (r.type === 'json' || r.name.endsWith('.json'))) {
+                let raw = r.content.startsWith('data:') ? decodeURIComponent(escape(window.atob(r.content.split(',')[1]))) : r.content;
+                // 截取前 3000 字给 AI 分析（太长会费钱/报错）
+                chatContext = raw.substring(0, 3000); 
+                break;
+            }
+        }
+    }
+
+    if (!chatContext) { auth.toast('📭 这个爱卿没有聊天记录，无法分析...'); return; }
+
+    auth.toast(`🧠 小德子正在研读【${item.name}】的生平...`);
+
+    // 3. 构建 Prompt
+    const prompt = `
+    我是女皇。请阅读关于男宠【${item.name}】的聊天记录片段。
+    请帮我分析并总结以下信息：
+    1. 他的性格关键词（3个）。
+    2. 他对我的称呼。
+    3. 我们之间印象最深的一件事或一句话。
+    
+    【要求】：
+    请直接输出 3-5 行简短的文本，适合作为“回忆录”或“档案”保存。
+    不要废话，每一行一句话。
+    
+    【聊天记录片段】：
+    ${chatContext}
+    `;
+
+    try {
+        // 4. 调用 AI
+        const response = await fetch(`${config.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.apiKey}` },
+            body: JSON.stringify({
+                model: config.model || 'gpt-3.5-turbo',
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
+        const data = await response.json();
+        
+        if (data.choices) {
+            const result = data.choices[0].message.content;
+            
+            // 5. 自动填入并保存
+            // 将结果按换行符分割成数组
+            const newMemories = result.split('\n').filter(line => line.trim() !== '');
+            
+            // 如果原来有回忆，就追加；没有就覆盖
+            if (!item.memories) item.memories = [];
+            item.memories = item.memories.concat(newMemories);
+            
+            await saveItemToDB(item); // 保存进数据库
+            
+            auth.toast('✅ 档案已补全！(请重新打开详情页查看)');
+            
+            // 顺便把结果发给小德子展示一下
+            if(typeof sendCustomPromptToAI === 'function') {
+                // 这里我们手动模拟小德子说话，不再次请求AI了，省钱
+                appendAIMessage('ai', `<b>🧠 起居注已更新：</b><br>${result.replace(/\n/g, '<br>')}`);
+                document.getElementById('floatMenu').classList.add('active');
+            }
+        }
+    } catch (e) {
+        auth.toast('🧠 分析失败：' + e.message);
+    }
+}
+
+// ================= 🎞️ 功能二：前尘往事 · 剧情回顾 =================
+async function analyzeStoryTimeline() {
+    if (typeof viewingIndex === 'undefined' || viewingIndex === -1) return;
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) { auth.toast('🚫 陛下，没 API Key！'); return; }
+
+    const item = items[viewingIndex];
+    
+    // 1. 提取聊天记录
+    let chatContext = "";
+    if (item.resources) {
+        for (let r of item.resources) {
+            if (r.content && (r.type === 'json' || r.name.endsWith('.json'))) {
+                let raw = r.content.startsWith('data:') ? decodeURIComponent(escape(window.atob(r.content.split(',')[1]))) : r.content;
+                // 时间轴需要读多一点，截取 5000 字
+                chatContext = raw.substring(0, 5000); 
+                break;
+            }
+        }
+    }
+
+    if (!chatContext) { auth.toast('📭 暂无记录可回顾...'); return; }
+
+    auth.toast(`🎞️ 正在梳理与【${item.name}】的过往...`);
+
+    // 2. 构建 Prompt
+    const prompt = `
+    我是女皇。请阅读我与男宠【${item.name}】的聊天记录。
+    请帮我梳理一份【剧情时间轴】。
+    
+    【要求】：
+    1. 找出 3-5 个关键节点（如：初识、第一次约会、误会、和好、高甜时刻）。
+    2. 按时间/逻辑顺序排列。
+    3. 格式：【事件名】：简短描述。
+    
+    【聊天记录】：
+    ${chatContext}
+    `;
+
+    // 3. 发送给小德子 (直接用通用函数)
+    sendCustomPromptToAI(prompt, `🎞️ 帮朕回忆一下和 ${item.name} 发生过什么？`);
+}
+
+// ================= 🔧 修复便签关闭按钮 =================
+function closeNoteModal() {
+    document.getElementById('noteModal').classList.remove('active');
+    // 重置一下状态，防止下次打开时错乱
+    editingNoteIndex = -1; 
+}
+
+// ================= 📖 转小说 (智能续写版 - 自动检测进度) =================
+async function convertChatToNovel() {
+    if (typeof viewingIndex === 'undefined' || viewingIndex === -1) return;
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) { auth.toast('🚫 陛下，没填 API Key！'); return; }
+
+    const item = items[viewingIndex];
+    
+    // 🔥 设定每章的楼层数 (必须固定，否则换算会乱)
+    const BATCH_SIZE = 15; 
+
+    // --- 1. 寻找聊天记录 ---
+    let allMessages = [];
+    if (item.resources) {
+        for (let r of item.resources) {
+            if (r.content && (r.type === 'json' || r.name.endsWith('.json') || r.name.endsWith('.jsonl'))) {
+                let raw = r.content;
+                if (raw.startsWith('data:')) {
+                    try { raw = decodeURIComponent(escape(window.atob(raw.split(',')[1]))); } catch (e) {}
+                }
+                try {
+                    let json = JSON.parse(raw);
+                    if (Array.isArray(json)) allMessages = json;
+                    else if (json.messages) allMessages = json.messages;
+                    else if (json.history) allMessages = json.history;
+                } catch (e) {
+                    const lines = raw.split('\n');
+                    allMessages = lines.map(l => { try { return JSON.parse(l); } catch(e){ return null; } }).filter(x => x);
+                }
+                if (allMessages.length > 0) break;
+            }
+        }
+    }
+
+    if (allMessages.length === 0) { auth.toast('📭 没找到有效的聊天记录数据...'); return; }
+
+    // --- 2. 🕵️ 核心修改：检测现有小说进度 ---
+    let existingNovelIndex = -1;
+    let currentNovelContent = "";
+    let existingChaptersCount = 0;
+
+    // 先找找有没有已经写过的小说
+    if (item.resources) {
+        existingNovelIndex = item.resources.findIndex(r => r.subType === '小说' || r.name.includes('回忆录'));
+    }
+
+    if (existingNovelIndex !== -1) {
+        currentNovelContent = item.resources[existingNovelIndex].content;
+        
+        // 🔍 正则检测：数一数里面有几个 "第x章"
+        // 匹配 "第1章", "第十二章" 这种格式
+        const matches = currentNovelContent.match(/第[0-9一二三四五六七八九十百]+章/g);
+        if (matches) {
+            existingChaptersCount = matches.length;
+        }
+        console.log(`检测到已存在 ${existingChaptersCount} 章`);
+    }
+
+    // 🔥 自动换算：直接根据章节数算出该从哪一楼开始
+    // 比如：有2章，每章15楼，那下一次就从 2 * 15 = 30楼开始
+    let startIndex = existingChaptersCount * BATCH_SIZE;
+    
+    // 更新一下数据里的游标，保持同步 (虽然我们现在主要靠文件检测)
+    item.novelCursor = startIndex;
+
+    // 计算结束楼层
+    const endIndex = Math.min(startIndex + BATCH_SIZE, allMessages.length);
+
+    // 检查是否全部写完
+    if (startIndex >= allMessages.length) {
+        auth.toast(`✅ 居然更完了！(检测到${existingChaptersCount}章，共${allMessages.length}楼)`);
+        return;
+    }
+
+    // --- 3. 提取素材 ---
+    const sliceMessages = allMessages.slice(startIndex, endIndex);
+    let chatContext = sliceMessages.map(m => {
+        const name = m.name || (m.is_user ? '我' : 'TA');
+        const text = m.mes || m.content || m.text || "";
+        if (!text || m.role === 'system') return ""; 
+        return `${name}: ${text}`;
+    }).filter(t => t).join('\n');
+
+    const nextChapterNum = existingChaptersCount + 1;
+
+    auth.toast(`📖 正在根据聊天记录 (${startIndex + 1} - ${endIndex}楼) 撰写第 ${nextChapterNum} 章...`);
+
+    // --- 4. 构建 AI Prompt ---
+    const prompt = `
+    【指令】：小说连载续写
+    【当前进度】：第 ${nextChapterNum} 章
+    
+    请将以下对话素材改写成小说。
+    
+    【严格要求】：
+    1. **只输出纯文本**，严禁使用 HTML 代码。
+    2. 不要列出大纲，直接开始写正文。
+    3. 去掉剧本式对话，转化为细腻的描写。
+    4. 字数：500字左右。
+    
+    【对话素材】：
+    ${chatContext}
+    `;
+
+    // 显示加载状态
+    document.getElementById('novelModal').classList.add('active');
+    document.getElementById('novelContent').innerHTML = `<div style="text-align:center; margin-top:100px; color:#8d6e63;">
+        ⏳ 正在研读《${item.name}的回忆录》...<br>
+        检测到已有 ${existingChaptersCount} 章<br>
+        即将撰写第 ${nextChapterNum} 章 (${startIndex+1}-${endIndex}楼)...
+    </div>`;
+
+    try {
+        const response = await fetch(`${config.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.apiKey}` },
+            body: JSON.stringify({
+                model: config.model || 'gpt-3.5-turbo',
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
+        const data = await response.json();
+        
+        if (data.choices) {
+            let newChapter = data.choices[0].message.content;
+
+            // 清洗代码
+            newChapter = newChapter.replace(/<br\s*\/?>/gi, '\n');
+            newChapter = newChapter.replace(/<\/p>/gi, '\n\n');
+            newChapter = newChapter.replace(/<[^>]+>/g, '');
+            newChapter = newChapter.replace(/```html/g, '').replace(/```/g, '');
+            newChapter = newChapter.trim();
+
+            // --- 5. 保存 ---
+            let finalNovel = "";
+            let fileName = `${item.name}的回忆录.txt`;
+
+            if (existingNovelIndex !== -1) {
+                // 续写
+                finalNovel = currentNovelContent + "\n\n" + "=".repeat(20) + "\n\n" + newChapter;
+                item.resources[existingNovelIndex].content = finalNovel;
+                item.resources[existingNovelIndex].date = new Date().toISOString();
+            } else {
+                // 新建
+                finalNovel = `《${item.name}的回忆录》\n\n` + newChapter;
+                if (!item.resources) item.resources = [];
+                item.resources.push({
+                    type: 'file', subType: '小说', name: fileName,
+                    content: finalNovel, date: new Date().toISOString()
+                });
+            }
+
+            await saveItemToDB(item);
+            
+            document.getElementById('novelContent').innerText = finalNovel;
+            setTimeout(() => {
+                const div = document.getElementById('novelContent');
+                div.scrollTop = div.scrollHeight;
+            }, 100);
+
+            window.currentNovelText = finalNovel;
+            auth.toast(`📚 第 ${nextChapterNum} 章已完成！(进度已自动校准)`);
+        }
+    } catch (e) {
+        document.getElementById('novelContent').innerText = '❌ 续写失败：' + e.message;
+    }
+}
+
+// 下载功能的辅助函数
+function downloadCurrentNovel() {
+    if (!currentNovelText) return;
+    const blob = new Blob([currentNovelText], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '我的后宫回忆录.txt';
+    a.click();
+}
+
+// ================= 📘 打开文本阅读器 =================
+function openTxtReader(resIndex) {
+    if (viewingIndex === -1) return;
+    const item = items[viewingIndex];
+    const res = item.resources[resIndex];
+
+    // 1. 获取内容
+    let textContent = res.content;
+    
+    // 如果是 Base64 (上传的文件)，解码一下
+    if (textContent.startsWith('data:')) {
+        try {
+            // 提取 base64 部分并解码中文
+            const base64 = textContent.split(',')[1];
+            const binStr = atob(base64);
+            const bytes = new Uint8Array(binStr.length);
+            for (let i = 0; i < binStr.length; i++) {
+                bytes[i] = binStr.charCodeAt(i);
+            }
+            textContent = new TextDecoder('utf-8').decode(bytes);
+        } catch (e) {
+            textContent = "❌ 无法解码文件内容...";
+        }
+    }
+
+    // 2. 放入大书页
+    document.getElementById('novelContent').innerText = textContent;
+    
+    // 3. 打开弹窗
+    document.getElementById('novelModal').classList.add('active');
+    
+    // 记录当前文本以便下载
+    currentNovelText = textContent;
+}
+
+// ================= 🥚 防伪暗门逻辑 =================
+let copyrightClicks = 0;
+let copyrightTimer = null;
+
+function triggerCopyrightEgg() {
+    copyrightClicks++;
+    
+    // 如果 2秒内没继续点，就重置次数
+    clearTimeout(copyrightTimer);
+    copyrightTimer = setTimeout(() => { copyrightClicks = 0; }, 2000);
+
+    // 连点 5 次触发
+    if (copyrightClicks === 5) {
+        alert("🛡️ 皇家防伪认证通过！\n\n✅ 正版所有者：【长春路女皇】\n📅 制作时间：2025年\n⚠️ 盗版必究！\n\n(Original Created by You)");
+        copyrightClicks = 0; // 重置
+    }
+}
+
+// ================= 🌠 功能二：钦天监 · 今日运势 =================
+
+async function openHoroscope() {
+    document.getElementById('horoscopeModal').classList.add('active');
+    
+    const today = new Date().toLocaleDateString();
+    document.getElementById('horoscopeDate').innerText = `📅 ${today} · 农历不知道多少`;
+    const contentDiv = document.getElementById('horoscopeContent');
+
+    // 1. 检查今天是否已经算过了 (存 localStorage)
+    const saved = localStorage.getItem('daily_horoscope_' + today);
+    if (saved) {
+        contentDiv.innerHTML = saved;
+        return;
+    }
+
+    if (items.length < 2) {
+        contentDiv.innerHTML = "🚫 后宫人数太少，星象模糊不清...";
+        return;
+    }
+
+    // 2. 没算过，现场算 (随机抽人)
+    // 随机选一个“宜”的人
+    const luckyChar = items[Math.floor(Math.random() * items.length)];
+    // 随机选一个“忌”的人 (不能是同一个人)
+    let unluckyChar = items[Math.floor(Math.random() * items.length)];
+    while(unluckyChar === luckyChar && items.length > 1) {
+        unluckyChar = items[Math.floor(Math.random() * items.length)];
+    }
+
+    // 3. 让 AI 编运势
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) {
+        contentDiv.innerHTML = "☁️ 乌云遮月，国师没带 API Key...";
+        return;
+    }
+
+    const prompt = `
+    你是皇家的【钦天监国师】。
+    请为女皇陛下推算【今日后宫运势】。
+    
+    【今日宜】：临幸【${luckyChar.name}】。
+    【今日忌】：冷落【${unluckyChar.name}】。
+    
+    请编造理由：
+    1. 为什么宜临幸 ${luckyChar.name}？（例如：红鸾星动，他今日甚至可爱）
+    2. 为什么忌冷落 ${unluckyChar.name}？（例如：天狗犯煞，他心情不好容易黑化）
+    3. 给一句玄乎的判词。
+    
+    格式：HTML格式，用 <div> 包裹，重点词加粗。
+    `;
+
+    try {
+        const response = await fetch(`${config.apiUrl}/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.apiKey}` },
+            body: JSON.stringify({
+                model: config.model || 'gpt-3.5-turbo',
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
+        const data = await response.json();
+        const text = data.choices[0].message.content;
+
+        // 4. 渲染并保存
+        const html = `
+            <div class="horoscope-card" style="border-color:#81c784; background:rgba(129, 199, 132, 0.1);">
+                <div style="color:#81c784; font-weight:bold;">✨ 今日宜</div>
+                <div style="font-size:16px; margin:5px 0;">临幸 ${luckyChar.name}</div>
+            </div>
+            <div class="horoscope-card" style="border-color:#e57373; background:rgba(229, 115, 115, 0.1);">
+                <div style="color:#e57373; font-weight:bold;">💀 今日忌</div>
+                <div style="font-size:16px; margin:5px 0;">冷落 ${unluckyChar.name}</div>
+            </div>
+            <div style="font-size:13px; text-align:left; margin-top:15px; line-height:1.6;">
+                ${text.replace(/```html/g,'').replace(/```/g,'')}
+            </div>
+        `;
+        
+        contentDiv.innerHTML = html;
+        localStorage.setItem('daily_horoscope_' + today, html); // 存下来，今天不再变
+        
+    } catch (e) {
+        contentDiv.innerHTML = "❌ 天机不可泄露 (网络错误)";
+    }
+}
+
+
+// ================= 🌏 皇舆全览：地点数据配置 =================
+
+let currentMapId = 'outside'; // 默认在宫外
+let currentSeason = '春'; 
+
+const WORLD_MAPS = {
+    // === 🗺️ 宫外地图 ===
+    'outside': {
+        name: '京城',
+        bg: 'https://files.catbox.moe/acbius.jpeg',
+        // 宫外地点列表
+        locations: [
+            // 🛑 特殊点：点这个进宫
+            { name: '皇宫', type: 'transition', target: 'inside', desc: '回宫' },
+            
+            // 普通游历点
+            { name: '永定门' }, { name: '颐和园' }, { name: '圆明园' }, { name: '香山' },
+            { name: '玉渊潭' }, { name: '八大处' }, { name: '朝阳门' }, { name: '先农坛' },
+            { name: '地坛' }, { name: '东直门' }, { name: '国子监' }, { name: '西直门' },
+            { name: '北海公园' }, { name: '什刹海' }, { name: '钟楼' }, { name: '鼓楼' },
+            { name: '南锣鼓巷' }, { name: '颐和宫' }, { name: '西四' }, { name: '后海' },
+            { name: '白塔寺' }, { name: '琉璃厂' }, { name: '阜成门' }, { name: '广济寺' },
+            { name: '天桥' }, { name: '前门大街' }, { name: '正阳门' }
+        ]
+    },
+
+    // === 🏯 宫内地图 ===
+    'inside': {
+        name: '紫禁城',
+        bg: 'https://files.catbox.moe/kp648j.jpeg',
+        locations: [
+            // 🛑 特殊点：点这个出宫
+            { name: '午门', type: 'transition', target: 'outside', desc: '出宫' },
+
+            // 普通宫殿
+            { name: '养心殿' }, { name: '乾清宫' }, { name: '御花园' }, { name: '太和殿' },
+            { name: '寿康宫' }, { name: '慈宁宫' }, { name: '慈宁宫花园' }, { name: '东六宫' },
+            { name: '内务府' }, { name: '神武门' }, { name: '雨花阁' }, { name: '体仁阁' },
+            { name: '弘义阁' }, { name: '乾清门' }, { name: '交泰殿' }, { name: '钦安殿' },
+            { name: '箭亭' }, { name: '中和殿' }, { name: '保和殿' }, { name: '斋宫' },
+            { name: '文华殿' }, { name: '武英殿' }, { name: '奉先殿' }, { name: '太和门' }
+        ]
+    }
+};
+
+// 年龄阶段
+const HEIR_STAGES = [
+    { ageCap: 3, name: '婴儿期', icon: '👶', bg: 'stage-baby' },
+    { ageCap: 10, name: '幼年期', icon: '👦', bg: 'stage-child' },
+    { ageCap: 16, name: '少年期', icon: '🧑‍🦱', bg: 'stage-teen' },
+    { ageCap: 99, name: '成年期', icon: '🤴', bg: 'stage-adult' }
+];
+
+// ----------- 1. 按钮状态管理 (已修复防报错) -----------
+function updateHeirButtonState() {
+    const btn = document.getElementById('heirActionButton');
+    if (!btn) return;
+    
+    // 安全检查：如果没选中人，就不更新状态，防止报错
+    if (typeof viewingIndex === 'undefined' || viewingIndex === -1 || !items[viewingIndex]) return;
+
+    if (currentHeir) {
+        const item = items[viewingIndex];
+        if (currentHeir.fatherName === item.name) {
+            btn.innerText = `🧸 前往东宫 (看望${currentHeir.name})`;
+            btn.style.background = '#fff7d1'; btn.style.color = '#fa8c16'; btn.style.borderColor = '#ffd591';
+        } else {
+            btn.innerText = `🚫 宫中已有皇嗣 (父君:${currentHeir.fatherName})`;
+            btn.style.background = '#eee'; btn.style.color = '#999'; btn.style.borderColor = '#ddd';
+        }
+    } else {
+        btn.innerText = `👶 祈福求子`;
+        btn.style.background = '#fff0f5'; btn.style.color = '#ff6b6b'; btn.style.borderColor = '#ff9a9e';
+    }
+}
+
+// 按钮点击处理
+function handleHeirAction() {
+    if (viewingIndex === -1) return;
+    const item = items[viewingIndex];
+
+    if (!currentHeir) {
+        document.getElementById('creationFatherName').innerText = item.name;
+        document.getElementById('creationSettingInput').value = '';
+        document.getElementById('heirCreationModal').classList.add('active');
+    } else if (currentHeir.fatherName === item.name) {
+        openEastPalace();
+    } else {
+        auth.toast(`🚫 陛下，您已经和【${currentHeir.fatherName}】有孩子了，要专一哦！`);
+        if(navigator.vibrate) navigator.vibrate(200);
+    }
+}
+
+// ----------- 2. 创建皇嗣 -----------
+async function confirmCreateHeir() {
+    const setting = document.getElementById('creationSettingInput').value.trim();
+    if (!setting) { auth.toast('请许下一个愿望吧...'); return; }
+    
+    const father = items[viewingIndex];
+    auth.toast('✨ 正在祈求上苍，降下麟儿...');
+    document.getElementById('heirCreationModal').classList.remove('active');
+
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+
+    const prompt = `
+    我是女皇。孩子的父亲是【${father.name}】（性格:${(father.tags||[]).join(',')}）。
+    我对孩子的期望是：【${setting}】。
+    请生成一个刚出生的皇嗣档案。
+    要求返回纯 JSON 格式：
+    {
+        "name": "名字(古风好听)",
+        "title": "封号",
+        "gender": "男/女",
+        "bio": "出生描述(50字内)",
+        "stats": { "wisdom": 10, "fitness": 10, "charm": 10 }
+    }
+    `;
+
+    try {
+        const res = await fetchAI(prompt, config);
+        // 清理 JSON 格式 (防止 AI 加 Markdown 符号)
+        const cleanRes = res.replace(/```json/g,'').replace(/```/g,'').trim();
+        const data = JSON.parse(cleanRes);
+
+        currentHeir = {
+            fatherName: father.name,
+            name: data.name,
+            title: data.title,
+            gender: data.gender,
+            age: 0,
+            stats: data.stats,
+            bioLog: [`【诞生】：${data.bio}`],
+            setting: setting
+        };
+        saveHeirData();
+        auth.toast('🎉 恭喜陛下！皇嗣已诞生！');
+        updateHeirButtonState();
+        openEastPalace();
+
+    } catch (e) {
+        auth.toast('❌ 祈福失败，请检查 API Key 或网络');
+        console.error(e);
+    }
+}
+
+function saveHeirData() {
+    localStorage.setItem('royal_heir_data', JSON.stringify(currentHeir));
+}
+
+// 👇👇👇 关键补丁：缺失的 fetchAI 工具函数 👇👇👇
+async function fetchAI(prompt, config) {
+    if(!config || !config.apiKey) throw new Error("No Key");
+    const response = await fetch(`${config.apiUrl}/chat/completions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${config.apiKey}` },
+        body: JSON.stringify({
+            model: config.model || 'gpt-3.5-turbo',
+            messages: [{ role: "user", content: prompt }]
+        })
+    });
+    const data = await response.json();
+    return data.choices[0].message.content;
+}
+
+// ================= ❤️ 核心：通用恩宠管理系统 =================
+
+// 定义位份门槛
+const RANKS = [
+    { name: "侍奴", limit: 20, class: "rank-0" },
+    { name: "答应", limit: 50, class: "rank-1" },
+    { name: "贵人", limit: 100, class: "rank-2" },
+    { name: "嫔", limit: 200, class: "rank-3" },
+    { name: "妃", limit: 500, class: "rank-4" },
+    { name: "皇贵君", limit: 99999, class: "rank-5" }
+];
+
+// 1. 获取位份信息
+function getRankInfo(favor) {
+    favor = favor || 0;
+    for (let i = 0; i < RANKS.length; i++) {
+        if (favor < RANKS[i].limit) return RANKS[i];
+    }
+    return RANKS[RANKS.length - 1];
+}
+
+// 2. 通用加好感函数 (核心)
+// amount: 加多少分
+// reason: 为什么加分 (用于提示)
+async function addFavor(amount, reason) {
+    if (typeof viewingIndex === 'undefined' || viewingIndex === -1) return;
+    const item = items[viewingIndex];
+
+    // 初始化
+    if (!item.favor) item.favor = 0;
+    const oldRankName = getRankInfo(item.favor).name;
+
+    // 加分
+    item.favor += amount;
+    const newRankInfo = getRankInfo(item.favor);
+
+    // 保存数据
+    await saveItemToDB(item);
+
+    // 刷新界面 UI (徽章)
+    if(typeof updateRankUI === 'function') updateRankUI(item);
+
+    // === 反馈逻辑 ===
+    
+    // 情况A: 晋升了！
+    if (newRankInfo.name !== oldRankName) {
+        auth.toast(`🎉 恭喜！【${item.name}】晋升为【${newRankInfo.name}】！`);
+        // 满屏撒花特效 (如果有的话)
+        if(navigator.vibrate) navigator.vibrate([100,50,100]); 
+        
+        // 晋升后，强制让 AI 感谢谢恩 (可选)
+        // triggerAIReaction(item, newRankInfo.name); 
+    } 
+    // 情况B: 只是普通加分
+    else {
+        // 显示一个小提示： "❤️ 恩宠 +1 (聊天)"
+        auth.toast(`❤️ 恩宠 +${amount} (${reason}) | 当前: ${item.favor}`);
+    }
+}
+
+// 3. 专门给“赏赐按钮”用的
+function manualGrantFavor() {
+    // 赏赐加的多，5-10分随机
+    const points = Math.floor(Math.random() * 6) + 5;
+    addFavor(points, "赏赐");
+}
+
+// 4. 更新界面上的徽章 (放在 openDetailModal 里调用)
+function updateRankUI(item) {
+    const favor = item.favor || 0;
+    const rankObj = getRankInfo(favor);
+    
+    const nameEl = document.getElementById('detailName');
+    if(!nameEl) return;
+
+    // 清除旧的
+    const oldBadge = nameEl.querySelector('.rank-badge');
+    if (oldBadge) oldBadge.remove();
+    
+    // 加新的
+    const badge = document.createElement('span');
+    badge.className = `rank-badge ${rankObj.class}`;
+    badge.innerText = rankObj.name;
+    badge.style.cssText = "display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; margin-left:8px; color:white; vertical-align:middle; background:#ccc;";
+    
+    // 给不同等级上色
+    if(rankObj.name === '侍奴') badge.style.background = '#b0bec5';
+    if(rankObj.name === '答应') badge.style.background = '#81d4fa';
+    if(rankObj.name === '贵人') badge.style.background = '#a5d6a7';
+    if(rankObj.name === '嫔') badge.style.background = '#ffcc80';
+    if(rankObj.name === '妃') badge.style.background = '#f48fb1';
+    if(rankObj.name === '皇贵君') badge.style.background = 'linear-gradient(135deg, #ffd700, #ff8f00)';
+
+    nameEl.appendChild(badge);
+}
+
+// ================= 👋 皇嗣互动逻辑 (摸摸乐) =================
+
+function touchHeir(event) {
+    const ball = event.currentTarget;
+    const rect = ball.getBoundingClientRect();
+    const clickY = event.clientY - rect.top; // 点击位置相对于球顶部的距离
+    const ballHeight = rect.height;
+
+    // 获取五官元素
+    const eyeL = document.getElementById('eyeL');
+    const eyeR = document.getElementById('eyeR');
+    const mouth = document.getElementById('mouth');
+    const blushL = document.getElementById('blushL');
+    const blushR = document.getElementById('blushR');
+
+    // 震动反馈
+    if(navigator.vibrate) navigator.vibrate(50);
+
+    // 判断摸的是哪里
+    if (clickY < ballHeight / 2) {
+        // 👉 情况 A：摸头 (Top 50%)
+        // 反应：眯眼笑，冒爱心
+        
+        // 1. 变表情 (眯眼)
+        eyeL.style.height = '2px'; eyeL.style.top = '5px';
+        eyeR.style.height = '2px'; eyeR.style.top = '5px';
+        mouth.style.borderRadius = '0 0 10px 10px'; mouth.style.height = '8px'; // 开心嘴
+        blushL.style.opacity = '1'; blushR.style.opacity = '1'; // 脸红
+
+        // 2. 动画 (Q弹压扁)
+        ball.style.transform = 'scale(1.1, 0.9)'; 
+        
+        // 3. 提示
+        auth.toast(`☁️ 摸摸头~ ${currentHeir.name} 很开心`);
+
+    } else {
+        // 👉 情况 B：戳肚子/衣服 (Bottom 50%)
+        // 反应：惊讶，摇晃
+        
+        // 1. 变表情 (圆眼O型嘴)
+        eyeL.style.height = '14px'; eyeL.style.top = '0';
+        eyeR.style.height = '14px'; eyeR.style.top = '0';
+        mouth.style.borderRadius = '50%'; mouth.style.height = '8px'; mouth.style.width = '8px'; // O型嘴
+        
+        // 2. 动画 (左右摇晃)
+        ball.style.animation = 'none'; // 先停呼吸
+        ball.offsetHeight; /* 触发重绘 */
+        ball.style.animation = 'shake-ball 0.4s'; // 摇晃
+
+        // 3. 提示
+        auth.toast(`👉 戳一戳~ ${currentHeir.name} 吓了一跳`);
+    }
+
+    // --- 2秒后恢复原状 ---
+    setTimeout(() => {
+        // 恢复呼吸
+        ball.style.animation = 'breathe 3s infinite ease-in-out';
+        ball.style.transform = 'scale(1)';
+        
+        // 恢复表情
+        eyeL.style.height = '12px'; eyeL.style.top = '0';
+        eyeR.style.height = '12px'; eyeR.style.top = '0';
+        mouth.style.borderRadius = '0 0 10px 10px'; mouth.style.height = '5px'; mouth.style.width = '10px';
+        blushL.style.opacity = '0'; blushR.style.opacity = '0';
+    }, 2000);
+}
+
+// ================= 👶 皇嗣系统：2D 养成版 =================
+
+// 打开东宫 (渲染界面)
+
+// ================= 🎮 互动逻辑：强制治愈版 =================
+
+// 🎍 辞旧迎新：手动进入下一年
+async function advanceYear() {
+    if(!confirm(`这一年过得怎么样？确定要让【${currentHeir.name}】长大一岁吗？`)) return;
+
+    currentHeir.age += 1;
+    currentHeir.stress = Math.max(0, currentHeir.stress - 30); // 过年开心，疲劳下降
+    currentHeir.bioLog.push(`——— ✨ 皇嗣长到了 ${currentHeir.age} 岁 ✨ ———`);
+    
+    saveHeirData();
+    openEastPalace();
+    auth.toast('🎆 新年快乐！皇嗣又长大了一岁！');
+    
+    // 过年特效：放个鞭炮或者撒花
+    if(navigator.vibrate) navigator.vibrate([100,100,200]);
+}
+
+// 🖼️ 核心：动图切换逻辑
+function updateAvatarDisplay(forceState) {
+    const img = document.getElementById('heirDynamicGif');
+    if (!img || !currentHeir) return;
+
+    const isBoy = currentHeir.gender === '男';
+    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
+
+    let targetUrl = "";
+
+    // 1. 强制状态 (害羞/打哈欠)
+    if (forceState === 'shy') targetUrl = assets.shy;
+    else if (forceState === 'yawn') targetUrl = assets.yawn;
+    
+    // 2. 自动状态 (疲劳高 -> 打哈欠)
+    else if ((currentHeir.stress || 0) > 80) {
+        targetUrl = assets.yawn;
+    }
+    
+    // 3. 默认随机待机
+    else {
+        // 随机选 idle1 或 idle2
+        const randomIndex = Math.floor(Math.random() * assets.idle.length);
+        targetUrl = assets.idle[randomIndex];
+    }
+
+    img.src = targetUrl;
+}
+
+// 👉 2D 触摸互动
+function touchHeir2D() {
+    // 随机触发害羞
+    updateAvatarDisplay('shy');
+    auth.toast(`👉 戳了戳 ${currentHeir.name} 的脸蛋`);
+    
+    // 3秒后恢复正常
+    setTimeout(() => {
+        updateAvatarDisplay('idle');
+    }, 3000);
+}
+
+// ================= 🌏 皇嗣游历：列表版逻辑 =================
+
+// 打开地图
+function openTravelMap() {
+    if (!currentHeir) return;
+    document.getElementById('travelModal').classList.add('active');
+    renderTravelMap();
+}
+
+// 渲染界面 (列表+地图)
+function renderTravelMap() {
+    const data = WORLD_MAPS[currentMapId];
+    
+    // 1. 更新顶部信息
+    document.getElementById('travelMapName').innerText = data.name;
+    document.getElementById('travelSeasonTag').innerText = currentSeason;
+    
+    // 2. 更新右侧图片
+    const img = document.getElementById('travelBgImg');
+    img.src = data.bg;
+
+    // 3. 生成左侧列表
+    const list = document.getElementById('locationList');
+    list.innerHTML = ''; // 清空旧列表
+
+    data.locations.forEach(loc => {
+        const btn = document.createElement('div');
+        
+        // 样式判断：如果是切换地图的点(皇宫/午门)，加特殊样式
+        if (loc.type === 'transition') {
+            btn.className = 'location-btn special';
+            btn.innerHTML = `<span>🚪 ${loc.name}</span><span style="font-size:10px; opacity:0.6;">➜</span>`;
+        } else {
+            btn.className = 'location-btn';
+            btn.innerHTML = `<span>📍 ${loc.name}</span>`;
+        }
+        
+        // 点击事件
+        btn.onclick = () => handleLocationClick(loc);
+        
+        list.appendChild(btn);
+    });
+}
+
+// 处理点击
+function handleLocationClick(loc) {
+    // A. 切换地图 (进宫/出宫)
+    if (loc.type === 'transition') {
+        // 淡出效果
+        const img = document.getElementById('travelBgImg');
+        img.style.opacity = 0;
+        
+        setTimeout(() => {
+            currentMapId = loc.target; // 切换ID
+            renderTravelMap();         // 重新渲染
+            img.style.opacity = 1;     // 淡入
+            auth.toast(`🔄 已前往：${WORLD_MAPS[currentMapId].name}`);
+        }, 200);
+    } 
+    // B. 普通游历 (触发AI)
+    else {
+        triggerTravelEvent(loc);
+    }
+}
+
+// 触发 AI 事件
+
+// ================= 🌏 触发 AI 事件 (带记录功能版) =================
+async function triggerTravelEvent(loc) {
+    const box = document.getElementById('travelEventResult');
+    const text = document.getElementById('travelEventText');
+    box.style.display = 'block';
+    text.innerHTML = '<div class="ai-loading">🐴 车马劳顿...正在生成奇遇...</div>';
+
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    
+    // Prompt
+    const prompt = `
+    我是女皇。
+    我带着皇嗣【${currentHeir.name}】(${currentHeir.age}岁) 出游。
+    当前季节：${currentSeason}。
+    地点：【${WORLD_MAPS[currentMapId].name}】的【${loc.name}】。
+    
+    请生成一个简短的亲子游历剧情(60字左右)。
+    要求：
+    1. 描写在${loc.name}看到的景色。
+    2. 皇嗣的反应（开心/好奇/学到了东西）。
+    `;
+
+    try {
+        const res = await fetchAI(prompt, config);
+        // 清理一下返回的文本
+        const cleanText = res.replace(/\n/g, '').trim();
+        
+        // 显示给用户看
+        text.innerHTML = cleanText;
+        
+        // 🔥🔥🔥 核心修改：写入起居注 🔥🔥🔥
+        if (currentHeir) {
+            // 1. 构造记录文本
+            const logEntry = `【${currentHeir.age}岁·游历】：在${loc.name}，${cleanText}`;
+            
+            // 2. 存入数组
+            currentHeir.bioLog.push(logEntry);
+            
+            // 3. 游历奖励：减少疲劳，心情变好
+            if (typeof currentHeir.stress !== 'undefined') {
+                currentHeir.stress = Math.max(0, currentHeir.stress - 8);
+            }
+
+            // 4. 保存数据
+            saveHeirData();
+        }
+
+    } catch (e) {
+        text.innerText = "❌ 游历途中遇到了大雾（网络错误）...";
+    }
+}
+
+// 关闭弹窗时，刷新东宫界面，让用户立刻看到记录
+function closeTravelEvent() {
+    document.getElementById('travelEventResult').style.display = 'none';
+    openEastPalace(); // 刷新界面，显示新增加的记录
+}
+
+
+// 换季
+function changeSeason() {
+    const seasons = ['春', '夏', '秋', '冬'];
+    let idx = seasons.indexOf(currentSeason);
+    currentSeason = seasons[(idx + 1) % 4];
+    renderTravelMap(); 
+    auth.toast(`🌸 时令已变，入${currentSeason}了`);
+}
+
+// ================= 🧠 场景智能匹配 (多图随机版) =================
+function smartUpdateHeirScene(actionText) {
+    if (!currentHeir) return;
+    
+    const isBoy = currentHeir.gender === '男';
+    const sceneList = isBoy ? HEIR_SCENES.boy : HEIR_SCENES.girl;
+    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
+    
+    // 1. 默认图 (从素材库里拿)
+    let defaultPool = assets.bg[currentSeason] || assets.bg['春'];
+    // 如果默认图也是个数组，先随机抽一张作为保底
+    let finalUrl = Array.isArray(defaultPool) 
+        ? defaultPool[Math.floor(Math.random() * defaultPool.length)] 
+        : defaultPool;
+
+    // 2. 尝试匹配特殊场景
+    if (actionText) {
+        for (let scene of sceneList) {
+            // 规则：季节匹配 + 关键词匹配
+            if (scene.seasons.includes(currentSeason)) {
+                if (scene.keywords.some(key => actionText.includes(key))) {
+                    
+                    // 🔥 核心升级：判断是单张还是多张
+                    if (Array.isArray(scene.url)) {
+                        // 是数组：随机抽一张
+                        finalUrl = scene.url[Math.floor(Math.random() * scene.url.length)];
+                    } else {
+                        // 是字符串：直接用
+                        finalUrl = scene.url;
+                    }
+                    
+                    console.log(`✨ 场景匹配成功: [${scene.keywords[0]}] -> 随机选中图片`);
+                    break; 
+                }
+            }
+        }
+    }
+
+    // 3. 执行换图 (带淡入淡出效果)
+    const bgEl = document.getElementById('heirSceneBg');
+    if (bgEl) {
+        // 如果新图和旧图一样，就不闪烁了，体验更好
+        const currentBg = bgEl.style.backgroundImage;
+        if (currentBg.includes(finalUrl)) return;
+
+        bgEl.style.opacity = 0.5;
+        setTimeout(() => {
+            bgEl.style.backgroundImage = `url('${finalUrl}')`;
+            bgEl.style.opacity = 1;
+        }, 200);
     }
 }
 
