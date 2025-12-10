@@ -8599,34 +8599,49 @@ var HEIR_SCENES = {
     ]
 };
 
-// ================= 👗 新增：锦衣阁服装数据库 =================
-const CLOTHING_DB = {
+// ================= 👗 服装数据库 (已关联小人动图) =================
+var CLOTHING_DB = {
     boy: [
-        { name: "蓝色官帽服", url: "https://files.catbox.moe/9gp0ek.gif", desc: "小小年纪就有官威" },
-        { name: "摄政王装", url: "https://files.catbox.moe/be9pdw.gif", desc: "霸气侧漏，权倾朝野" },
-        { name: "皇子装", url: "https://files.catbox.moe/xeario.gif", desc: "标准的宫廷常服" },
-        { name: "运动健身装", url: "https://files.catbox.moe/9bj1yr.gif", desc: "强身健体，活力满满" },
-        { name: "骑马装", url: "https://files.catbox.moe/k3llhx.gif", desc: "鲜衣怒马少年郎" },
-        { name: "逗鸟装", url: "https://files.catbox.moe/lyipsc.gif", desc: "闲情逸致" },
-        { name: "冬天雪地装", url: "https://files.catbox.moe/qpcrp5.gif", desc: "瑞雪兆丰年" },
-        // 👇 这套是双图，点击可以切换
-        { name: "书社学习装", url: ["https://files.catbox.moe/nnjk7t.gif", "https://files.catbox.moe/aj9p4u.gif"], desc: "两款样式随心换" },
-        { name: "紫色赏花装", url: "https://files.catbox.moe/4nfj1y.gif", desc: "花前月下，风流倜傥" },
-        { name: "战场练武装", url: "https://files.catbox.moe/4rm59z.gif", desc: "保家卫国" }
+        { name: "蓝色官帽服", url: "https://files.catbox.moe/9gp0ek.gif", gif: "https://files.catbox.moe/zccnqu.gif", desc: "小小年纪就有官威" },
+        { 
+            name: "摄政王装", 
+            url: "https://files.catbox.moe/be9pdw.gif", 
+            gif: ["https://files.catbox.moe/a6gf30.gif", "https://files.catbox.moe/9h92p0.gif"], // 双动图
+            desc: "霸气侧漏，权倾朝野" 
+        },
+        { 
+            name: "皇子装", 
+            url: "https://files.catbox.moe/xeario.gif", 
+            gif: ["https://files.catbox.moe/3u8z7c.gif", "https://files.catbox.moe/hmecrx.gif"], // 双动图
+            desc: "标准的宫廷常服" 
+        },
+        { name: "运动健身装", url: "https://files.catbox.moe/9bj1yr.gif", gif: "https://files.catbox.moe/pcdreg.gif", desc: "强身健体，活力满满" },
+        { name: "骑马装", url: "https://files.catbox.moe/k3llhx.gif", gif: "https://files.catbox.moe/lv998z.gif", desc: "鲜衣怒马少年郎" },
+        { name: "逗鸟装", url: "https://files.catbox.moe/lyipsc.gif", gif: "https://files.catbox.moe/no0u75.gif", desc: "闲情逸致" },
+        { name: "冬天雪地装", url: "https://files.catbox.moe/qpcrp5.gif", gif: "https://files.catbox.moe/z4oen5.gif", desc: "瑞雪兆丰年" },
+        { 
+            name: "书社学习装", 
+            url: ["https://files.catbox.moe/nnjk7t.gif", "https://files.catbox.moe/aj9p4u.gif"], // 商店展示双图
+            gif: ["https://files.catbox.moe/c72oz2.gif", "https://files.catbox.moe/kcyafw.gif"], // 实际穿着双动图
+            desc: "两款样式随心换" 
+        },
+        { name: "紫色赏花装", url: "https://files.catbox.moe/4nfj1y.gif", gif: "https://files.catbox.moe/pv75lr.gif", desc: "花前月下，风流倜傥" },
+        { name: "战场练武装", url: "https://files.catbox.moe/4rm59z.gif", gif: "https://files.catbox.moe/hngj1i.gif", desc: "保家卫国" }
     ],
     girl: [
-        { name: "鹅黄色襦裙", url: "https://files.catbox.moe/x2g8fs.gif", desc: "温婉可人" },
-        { name: "蓝粉夏日裙", url: "https://files.catbox.moe/qyq1sy.gif", desc: "清凉一夏" },
-        { name: "紫色襦裙", url: "https://files.catbox.moe/xez8lk.gif", desc: "高贵典雅" },
-        { name: "冬日虎头装", url: "https://files.catbox.moe/sbxewc.gif", desc: "虎头虎脑" },
-        { name: "上粉下蓝可爱装", url: "https://files.catbox.moe/360a8k.gif", desc: "俏皮可爱" },
-        { name: "大红过年装", url: "https://files.catbox.moe/1h3cy5.gif", desc: "喜气洋洋" },
-        { name: "玩耍装", url: "https://files.catbox.moe/izucss.gif", desc: "方便跑跳" },
-        { name: "春日赏景装", url: "https://files.catbox.moe/md5dz9.gif", desc: "人比花娇" },
-        { name: "妩媚摇扇装", url: "https://files.catbox.moe/xuzyz4.gif", desc: "风情万种" },
-        { name: "过节喜庆装", url: "https://files.catbox.moe/cgn0b2.gif", desc: "热闹非凡" }
+        { name: "鹅黄色襦裙", url: "https://files.catbox.moe/x2g8fs.gif", gif: "https://files.catbox.moe/bntmw6.gif", desc: "温婉可人" },
+        { name: "蓝粉夏日裙", url: "https://files.catbox.moe/qyq1sy.gif", gif: "https://files.catbox.moe/iw9m37.gif", desc: "清凉一夏" },
+        { name: "紫色襦裙", url: "https://files.catbox.moe/xez8lk.gif", gif: "https://files.catbox.moe/pemsyn.gif", desc: "高贵典雅" },
+        { name: "冬日虎头装", url: "https://files.catbox.moe/sbxewc.gif", gif: "https://files.catbox.moe/dutxp4.gif", desc: "虎头虎脑" },
+        { name: "上粉下蓝可爱装", url: "https://files.catbox.moe/360a8k.gif", gif: "https://files.catbox.moe/m4mmab.gif", desc: "俏皮可爱" },
+        { name: "大红过年装", url: "https://files.catbox.moe/1h3cy5.gif", gif: "https://files.catbox.moe/uummm9.gif", desc: "喜气洋洋" },
+        { name: "玩耍装", url: "https://files.catbox.moe/izucss.gif", gif: "https://files.catbox.moe/xyaa83.gif", desc: "方便跑跳" },
+        { name: "春日赏景装", url: "https://files.catbox.moe/md5dz9.gif", gif: "https://files.catbox.moe/7tu8va.gif", desc: "人比花娇" },
+        { name: "妩媚摇扇装", url: "https://files.catbox.moe/xuzyz4.gif", gif: "https://files.catbox.moe/og0tcu.gif", desc: "风情万种" },
+        { name: "过节喜庆装", url: "https://files.catbox.moe/cgn0b2.gif", gif: "https://files.catbox.moe/dgvp4o.gif", desc: "热闹非凡" }
     ]
 };
+
 
 // 3. 诞生逻辑
 async function confirmCreateHeir() {
@@ -8661,10 +8676,12 @@ async function confirmCreateHeir() {
 }
 
 // 4. 🎨 东宫界面渲染 (修复版：高亮手机按钮)
+
+// 🎨 东宫主界面 (修复版：优先显示穿戴的衣服)
 function openEastPalace() {
     if (!currentHeir) return;
-    if (!currentHeir.params || !currentHeir.body) { location.reload(); return; }
-
+    if (!currentHeir.params) { location.reload(); return; }
+    
     if (currentHeir.isDead && !currentHeir.isViewingMemories) { renderDeadView(); return; }
     if (currentHeir.isRunaway && !currentHeir.isViewingMemories) { renderRunawayView(); return; }
     if (currentHeir.isViewingMemories) { renderMemoryBook(); return; }
@@ -8674,90 +8691,71 @@ function openEastPalace() {
     var isBoy = currentHeir.gender === '男';
     var assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
     
+    // 1. 背景图逻辑
     var displayBg = "";
     if (currentHeir.currentScene) {
         displayBg = currentHeir.currentScene;
     } else {
         var pool = assets.bg[currentHeir.season] || assets.bg['春'];
-        displayBg = Array.isArray(pool) ? pool[0] : pool;
+        displayBg = Array.isArray(pool) ? pool[Math.floor(Math.random()*pool.length)] : pool;
         currentHeir.currentScene = displayBg;
         saveHeirData();
     }
 
-    var avatarState = currentHeir.body.sick ? 'yawn' : 'idle';
-    var avatarUrl = getAvatarUrl(avatarState);
+    // 🔥 2. 立绘逻辑 (核心修复) 🔥
+    var avatarUrl = "";
+    // 如果生病了，强制显示生病图 (优先级最高)
+    if (currentHeir.body.sick) {
+        avatarUrl = assets.yawn; 
+    } 
+    // 如果没生病且穿了衣服，显示衣服动图
+    else if (currentHeir.currentOutfit) {
+        avatarUrl = currentHeir.currentOutfit;
+    } 
+    // 否则显示默认随机待机图
+    else {
+        var idlePool = assets.idle;
+        avatarUrl = Array.isArray(idlePool) ? idlePool[0] : idlePool;
+    }
+
+    // 🎓 职业与恋爱状态
+    var careerHtml = (currentHeir.age>=18 && currentHeir.career) ? `<span class="career-badge ${CAREER_DB.find(c=>c.name===currentHeir.career)?.type||'normal'}">${currentHeir.career}</span>` : '';
+    var loveHtml = (currentHeir.dating && currentHeir.dating.partners && currentHeir.dating.partners.length>0) ? '<span class="love-status-tag">💑 热恋</span>' : '';
 
     var modalContent = document.querySelector('#eastPalaceModal .modal');
     
-    var renderBar = (label, val, color) => `
-        <div style="display:flex; align-items:center; margin-bottom:3px; font-size:10px; line-height:1;">
-            <span style="width:24px; text-align:right; margin-right:4px; color:#666;">${label}</span>
-            <div style="flex:1; height:6px; background:#f0f0f0; border-radius:3px; overflow:hidden;">
-                <div style="width:${val}%; height:100%; background:${color}; transition:width 0.5s;"></div>
-            </div>
-            <span style="width:20px; text-align:right; color:#999; font-family:monospace;">${val}</span>
-        </div>
-    `;
+    // 辅助：进度条HTML生成器
+    var renderBar = (label, val, color) => `<div style="display:flex;align-items:center;margin-bottom:3px;font-size:10px;"><span style="width:24px;text-align:right;color:#666;">${label}</span><div style="flex:1;height:6px;background:#f0f0f0;margin:0 4px;border-radius:3px;"><div style="width:${val}%;height:100%;background:${color};"></div></div><span style="width:20px;color:#999;">${val}</span></div>`;
 
-    var renderInfoPanel = () => `
-        <div class="info-grid">
-            <div class="info-item"><span class="info-label">生日</span>${currentHeir.season}季</div>
-            <div class="info-item"><span class="info-label">身高</span>${currentHeir.body.height}cm</div>
-            <div class="info-item"><span class="info-label">体重</span>${currentHeir.body.weight}kg</div>
-            <div class="info-item"><span class="info-label">心率</span>${currentHeir.body.heartRate}bpm</div>
-            <div class="info-item"><span class="info-label">健康</span>
-                <span class="status-tag ${currentHeir.body.health>60?'status-good':'status-bad'}">${currentHeir.body.health}%</span>
-            </div>
-            <div class="info-item"><span class="info-label">状态</span>
-                ${currentHeir.body.sick ? '<span class="status-tag status-bad">生病中</span>' : '<span class="status-tag status-good">健康</span>'}
-            </div>
-            <div class="info-item"><span class="info-label">废品</span>
-                <span class="status-tag ${currentHeir.body.waste<50?'status-good':'status-warn'}">${currentHeir.body.waste}%</span>
-            </div>
-        </div>
-    `;
-
+    // 辅助：中间面板内容
     var middlePanelHtml = "";
     if (currentHeir.panelMode === 'info') {
-        middlePanelHtml = renderInfoPanel();
+        middlePanelHtml = `<div class="info-grid"><div class="info-item"><span>生日</span>${currentHeir.season}</div><div class="info-item"><span>身高</span>${currentHeir.body.height}cm</div><div class="info-item"><span>体重</span>${currentHeir.body.weight}kg</div><div class="info-item"><span>心率</span>${currentHeir.body.heartRate}</div><div class="info-item"><span>健康</span>${currentHeir.body.health}%</div><div class="info-item"><span>状态</span>${currentHeir.body.sick?'🤒':'✨'}</div><div class="info-item"><span>职业</span>${currentHeir.career||'无'}</div></div>`;
     } else {
-        middlePanelHtml = `
-            <div style="display:grid; grid-template-columns: 1fr 1fr; grid-gap: 2px 10px;">
-                ${renderBar('亲密', currentHeir.params.affection, '#ff7675')}
-                ${renderBar('勤勉', currentHeir.params.diligence, '#0984e3')}
-                ${renderBar('叛逆', currentHeir.params.rebellion, '#636e72')}
-                ${renderBar('野心', currentHeir.params.ambition, '#6c5ce7')}
-                ${renderBar('心情', currentHeir.mood, '#fdcb6e')}
-                ${renderBar('道德', currentHeir.params.morality, '#00b894')}
-                ${renderBar('智慧', currentHeir.params.wisdom, '#00cec9')}
-                ${renderBar('体魄', currentHeir.params.fitness, '#d63031')}
-            </div>
-        `;
+        middlePanelHtml = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;">${renderBar('亲密',currentHeir.params.affection,'#ff7675')}${renderBar('勤勉',currentHeir.params.diligence,'#0984e3')}${renderBar('叛逆',currentHeir.params.rebellion,'#636e72')}${renderBar('野心',currentHeir.params.ambition,'#6c5ce7')}${renderBar('心情',currentHeir.mood,'#fdcb6e')}${renderBar('道德',currentHeir.params.morality,'#00b894')}${renderBar('智慧',currentHeir.params.wisdom,'#00cec9')}${renderBar('体魄',currentHeir.params.fitness,'#d63031')}</div>`;
     }
 
     modalContent.innerHTML = `
-        <button class="close-modal" onclick="closeEastPalace()" style="position:absolute; right:10px; top:10px; z-index:200; color:#fff; font-size:24px; background:none; border:none; text-shadow:0 1px 2px rgba(0,0,0,0.3);">×</button>
+        <button class="close-modal" onclick="closeEastPalace()" style="position:absolute;right:10px;top:10px;z-index:200;color:#fff;font-size:24px;background:none;border:none;text-shadow:0 1px 2px rgba(0,0,0,0.3);">×</button>
         
-        <div id="heirSceneBg" class="heir-bg-stage" style="background-image:url('${displayBg}'); height:150px; transition:background 0.5s; position:relative; overflow:hidden; border-bottom:3px solid #fff;">
-            <div style="position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.9); padding:3px 8px; border-radius:10px; font-size:11px; font-weight:bold; color:#555; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-               📅 ${currentHeir.age}岁 · ${currentHeir.season}季 
-${(currentHeir.age>=18 && currentHeir.career) ? `<span class="career-badge ${CAREER_DB.find(c=>c.name===currentHeir.career)?.type||'normal'}">${currentHeir.career}</span>` : ''}
-${(currentHeir.dating && currentHeir.dating.partners && currentHeir.dating.partners.length>0) ? '<span class="love-status-tag">💑 热恋</span>' : ''}
+        <div id="heirSceneBg" class="heir-bg-stage" style="background-image:url('${displayBg}');height:150px;position:relative;border-bottom:3px solid #fff;">
+            <div style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.9);padding:3px 8px;border-radius:10px;font-size:11px;font-weight:bold;color:#555;box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+                📅 ${currentHeir.age}岁 · ${currentHeir.season}季 ${careerHtml} ${loveHtml}
             </div>
-            <button onclick="readMind()" style="position:absolute; top:10px; right:135px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.8); border-radius:20px; padding:3px 10px; font-size:10px; cursor:pointer;">🔮 读心</button>
-            <button onclick="openMemories()" style="position:absolute; top:10px; right:50px; background:rgba(255,255,255,0.8); color:#555; border:1px solid #ddd; border-radius:20px; padding:3px 10px; font-size:10px; cursor:pointer; font-weight:bold;">📖 回忆录</button>
+            
+            <button onclick="readMind()" style="position:absolute;top:10px;right:135px;background:rgba(0,0,0,0.5);color:#fff;border:1px solid rgba(255,255,255,0.8);border-radius:20px;padding:3px 10px;font-size:10px;cursor:pointer;">🔮 读心</button>
+            <button onclick="openMemories()" style="position:absolute;top:10px;right:50px;background:rgba(255,255,255,0.8);color:#555;border:1px solid #ddd;border-radius:20px;padding:3px 10px;font-size:10px;cursor:pointer;font-weight:bold;">📖 回忆</button>
 
-            <button onclick="openPhone()" style="position:absolute; bottom:10px; left:10px; width:40px; height:40px; border-radius:50%; background:#fff; border:2px solid #ddd; font-size:22px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; z-index:50;" title="打开手机">
-                📱
-            </button>
-            <div id="heirBubble" style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:#fff; padding:8px 12px; border-radius:15px; font-size:12px; max-width:80%; box-shadow:0 5px 15px rgba(0,0,0,0.2); opacity:0; transition:all 0.3s; pointer-events:none; z-index:30; color:#444; text-align:center;">...</div>
+            <button onclick="openPhone()" style="position:absolute;bottom:10px;left:10px;width:40px;height:40px;border-radius:50%;background:#fff;border:2px solid #ddd;font-size:22px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;z-index:50;" title="打开手机">📱</button>
+
+            <div id="heirBubble" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:#fff;padding:8px 12px;border-radius:15px;font-size:12px;max-width:80%;box-shadow:0 5px 15px rgba(0,0,0,0.2);opacity:0;transition:all 0.3s;pointer-events:none;z-index:30;color:#444;text-align:center;">...</div>
         </div>
 
-        <div style="display:flex; height:140px; background:#fff; border-bottom:1px dashed #eee; padding:10px;">
-            <div style="width:100px; height:100%; position:relative; flex-shrink:0; border-right:1px dashed #eee; margin-right:10px; display:flex; align-items:flex-end; justify-content:center;">
-                <img id="heirDynamicGif" class="heir-gif" src="${avatarUrl}" onclick="touchHeir2D()" style="max-height:100%; max-width:100%; object-fit:contain; filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.1));">
+        <div style="display:flex;height:140px;padding:10px;background:#fff;border-bottom:1px dashed #eee;">
+            <div style="width:100px;height:100%;position:relative;flex-shrink:0;border-right:1px dashed #eee;margin-right:10px;display:flex;align-items:flex-end;justify-content:center;">
+                <img id="heirDynamicGif" class="heir-gif" src="${avatarUrl}" onclick="touchHeir2D()" style="max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.1));">
             </div>
-            <div style="flex:1; overflow-y:auto;">
+            <div style="flex:1;overflow-y:auto;">
                 <div style="text-align:right;">
                     <button class="switch-btn ${currentHeir.panelMode==='stats'?'active':''}" onclick="switchPanel('stats')">性格</button>
                     <button class="switch-btn ${currentHeir.panelMode==='info'?'active':''}" onclick="switchPanel('info')">档案</button>
@@ -8766,14 +8764,15 @@ ${(currentHeir.dating && currentHeir.dating.partners && currentHeir.dating.partn
             </div>
         </div>
 
-        <div style="flex:1; display:flex; flex-direction:column; background:#f9f9f9; overflow:hidden;">
+        <div style="flex:1;display:flex;flex-direction:column;background:#f9f9f9;overflow:hidden;">
             <div id="heirChatArea" class="heir-chat-container" style="padding:10px;">
-                ${(currentHeir.history || []).map(h => `<div class="heir-msg ${h.role}">${h.content}</div>`).join('')}
+                <div style="text-align:center;color:#ccc;font-size:10px;margin-top:5px;">—— 记录 ——</div>
+                ${(currentHeir.history||[]).map(h=>`<div class="heir-msg ${h.role}">${h.content}</div>`).join('')}
             </div>
             <div class="heir-input-area" style="padding:8px;">
                 <div class="heir-input-row">
                     <input type="text" id="heirInput" class="heir-input-box" placeholder="说点什么..." onkeydown="if(event.key==='Enter') sendToHeir()">
-                    <button class="heir-send-btn" onclick="sendToHeir()" style="padding:0 15px; font-size:13px;">发送</button>
+                    <button class="heir-send-btn" onclick="sendToHeir()" style="padding:0 15px;font-size:13px;">发送</button>
                 </div>
                 <div class="heir-func-row" style="margin-top:5px;">
                     <button class="heir-func-btn" onclick="toggleHeirSeason()">🍃 换季</button>
@@ -8786,6 +8785,7 @@ ${(currentHeir.dating && currentHeir.dating.partners && currentHeir.dating.partn
     var chatArea = document.getElementById('heirChatArea');
     if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
 }
+
 
 
 // 7. 📱 手机系统逻辑
@@ -8864,30 +8864,37 @@ function openApp(name) {
 
 // ================= 👗 锦衣阁 (服装店) =================
 
+// 👗 锦衣阁 (逻辑更新：展示静态图，穿戴动态图)
 function renderClothingApp(container) {
     var gender = currentHeir.gender === '男' ? 'boy' : 'girl';
-    var list = CLOTHING_DB[gender]; // 读取刚才定义的数据
-    
+    var list = CLOTHING_DB[gender];
     if (!currentHeir.inventory) currentHeir.inventory = [];
     
     var gridHtml = list.map((item, idx) => {
         var isOwned = currentHeir.inventory.includes(item.name);
-        // 处理双图逻辑
-        var displayUrl = Array.isArray(item.url) ? item.url[0] : item.url;
         
-        var btnText = isOwned ? (currentHeir.currentOutfit === displayUrl ? "已穿戴" : "穿戴") : "购买";
+        // 1. 商店展示图 (始终用 url，如果是数组取第0张)
+        var shopImgUrl = Array.isArray(item.url) ? item.url[0] : item.url;
+        
+        // 2. 判断当前是否穿在身上 (比较 gif 链接)
+        // 注意：currentOutfit 存的是 gif 链接
+        var currentGifUrl = Array.isArray(item.gif) ? item.gif[0] : item.gif;
+        var isWearing = (currentHeir.currentOutfit === currentGifUrl) || 
+                        (Array.isArray(item.gif) && item.gif.includes(currentHeir.currentOutfit));
+
+        var btnText = isOwned ? (isWearing ? "已穿戴" : "穿戴") : "购买";
         var btnAction = isOwned ? `wearOutfit('${gender}', ${idx}, 0)` : `buyOutfit('${item.name}')`;
         var btnStyle = isOwned ? "background:#00b894" : "background:#ff7675";
         
-        // 切换样式的按钮
-        var toggleBtn = (Array.isArray(item.url) && isOwned) 
-            ? `<button class="shop-btn" style="background:#a29bfe; margin-top:5px; font-size:10px; width:100%;" onclick="wearOutfit('${gender}', ${idx}, 1)">🔄 换个样式</button>` 
+        // 3. 切换样式按钮 (如果 gif 是数组，说明有多种动作)
+        var toggleBtn = (Array.isArray(item.gif) && isOwned) 
+            ? `<button class="shop-btn" style="background:#a29bfe; margin-top:5px; font-size:10px; width:100%;" onclick="wearOutfit('${gender}', ${idx}, 1)">🔄 换个动作</button>` 
             : '';
 
         return `
             <div class="clothing-card" style="background:white; border-radius:8px; padding:10px; border:1px solid #eee; position:relative;">
-                ${isOwned ? '<span class="clothing-tag owned">已拥有</span>' : ''}
-                <img src="${displayUrl}" class="clothing-img">
+                ${isOwned ? '<div style="position:absolute; top:5px; right:5px; background:#00b894; color:white; font-size:10px; padding:2px 5px; border-radius:4px;">已拥有</div>' : ''}
+                <img src="${shopImgUrl}" class="clothing-img">
                 <div style="font-weight:bold; font-size:12px; margin-bottom:2px;">${item.name}</div>
                 <div style="font-size:10px; color:#999; margin-bottom:5px;">${item.desc}</div>
                 <button class="shop-btn" style="${btnStyle}; width:100%;" onclick="${btnAction}">${btnText}</button>
@@ -8899,14 +8906,15 @@ function renderClothingApp(container) {
     container.innerHTML = `
         <div class="app-header">
             <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
-            <span>锦衣阁</span>
-            <span></span>
+            <span style="flex:1; text-align:center;">锦衣阁</span>
+            <span style="width:20px;"></span>
         </div>
         <div class="app-content">
             <div class="clothing-grid">${gridHtml}</div>
         </div>
     `;
 }
+
 
 function buyOutfit(name) {
     if (!currentHeir.inventory.includes(name)) {
@@ -8917,14 +8925,31 @@ function buyOutfit(name) {
     }
 }
 
+// 穿戴逻辑 (存入 GIF)
+
+// 👗 穿戴逻辑 (修正版：存入动图)
 function wearOutfit(gender, idx, variantIdx) {
     var item = CLOTHING_DB[gender][idx];
-    var url = Array.isArray(item.url) ? item.url[variantIdx] : item.url;
-    currentHeir.currentOutfit = url;
+    
+    // 获取对应的动图链接
+    // 逻辑：如果数据里有 gif 字段，就用 gif；否则用 url（防报错）
+    var targetGif = "";
+    if (item.gif) {
+        targetGif = Array.isArray(item.gif) ? item.gif[variantIdx || 0] : item.gif;
+    } else {
+        // 如果这件衣服没配动图，就回退到静态图（或者你可以填一个默认图）
+        targetGif = Array.isArray(item.url) ? item.url[0] : item.url;
+    }
+    
+    currentHeir.currentOutfit = targetGif; // 🔥 核心：把动图存进存档
     saveHeirData();
-    auth.toast('👗 换装成功！');
-    openApp('clothing');
+    
+    auth.toast(`👗 已换上：${item.name}`);
+    openApp('clothing'); // 刷新商店显示状态
+    openEastPalace();    // 立即刷新主页
 }
+
+
 
 // ================= ❤️ 恋爱系统 2.0 (循序渐进版) =================
 
