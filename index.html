@@ -10135,48 +10135,226 @@ function renderRunawayView() {
     var modalContent = document.querySelector('#eastPalaceModal .modal');
     modalContent.innerHTML = `<button class="close-modal" onclick="closeEastPalace()" style="position:absolute;right:10px;top:10px">×</button><div style="height:100%;display:flex;justify-content:center;align-items:center;flex-direction:column"><h3>🏚️ 人去楼空</h3><button onclick="openMemories()">📖 回忆录</button></div>`;
 }
-// 14. 🗺️ 地图逻辑
+
+// ================= 🗺️ 出游系统 2.0 (AI陪聊+随机事件版) =================
+
+// 1. 打开地图 (选择目的地)
 function openTravelMap() {
     var modalContent = document.querySelector('#eastPalaceModal .modal');
     var mapData = WORLD_MAPS['outside'];
-    var locHtml = mapData.locations.map(loc => `<div class="location-card" onclick="enterLocation('${loc.name}', '${loc.desc}', '${loc.type}')"><div style="font-size:24px;">${loc.icon}</div><div>${loc.name}</div>${loc.desc?`<div style="color:#999;font-size:10px;">${loc.desc}</div>`:''}</div>`).join('');
-    modalContent.innerHTML = `<div class="map-modal-body"><div class="map-header" style="background-image:url('${mapData.bg}')"><div class="map-title-badge">🌏 ${mapData.name}</div><button onclick="closeTravelMode()" style="position:absolute;right:10px;top:10px;background:rgba(0,0,0,0.5);color:#fff;border:none;padding:5px 12px;border-radius:15px;">✖ 关闭</button></div><div class="map-grid">${locHtml}</div></div>`;
+    
+    // 渲染地点卡片
+    var locHtml = mapData.locations.map(loc => `
+        <div class="location-card" onclick="enterLocation('${loc.name}', '${loc.desc}', '${loc.type}')" 
+             style="background:#fff; border:1px solid #e0d0b0; padding:10px 5px; text-align:center; border-radius:8px; cursor:pointer; transition:transform 0.2s;">
+            <div style="font-size:24px;">${loc.icon}</div>
+            <div style="font-weight:bold; font-size:12px; margin-top:5px; color:#5d4037;">${loc.name}</div>
+            ${loc.desc ? `<div style="color:#999; font-size:10px;">${loc.desc}</div>` : ''}
+        </div>
+    `).join('');
+
+    modalContent.innerHTML = `
+        <div class="map-modal-body" style="height:100%; display:flex; flex-direction:column; background:#fffbf0;">
+            <div class="map-header" style="height:150px; background:url('${mapData.bg}') center/cover; position:relative; flex-shrink:0;">
+                <div class="map-title-badge" style="position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.8); padding:5px 12px; border-radius:15px; font-weight:bold; color:#d4af37;">
+                    🌏 ${mapData.name}
+                </div>
+                <button onclick="closeTravelMode()" style="position:absolute; right:10px; top:10px; background:rgba(0,0,0,0.5); color:#fff; border:none; padding:5px 12px; border-radius:15px; cursor:pointer;">✖ 关闭</button>
+            </div>
+            <div style="padding:10px; text-align:center; font-size:12px; color:#d46b08; background:#ffeaa7;">
+                🚗 带 ${currentHeir.name} 去哪里散心呢？
+            </div>
+            <div class="map-grid" style="flex:1; overflow-y:auto; padding:15px; display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; align-content:start;">
+                ${locHtml}
+            </div>
+        </div>
+    `;
 }
+
+// 2. 进入景点 (初始化聊天界面)
 var currentTravelLoc = null;
+
 function enterLocation(name, desc, type) {
     if (type === 'exit') { closeTravelMode(); return; }
+    
     currentTravelLoc = name;
     var modalContent = document.querySelector('#eastPalaceModal .modal');
+    
+    // 背景图逻辑
     var bgUrl = WORLD_MAPS['outside'].bg; 
+    
+    // 小人立绘
     var assets = currentHeir.gender === '男' ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
-    var avatarUrl = Array.isArray(assets.idle) ? assets.idle[0] : assets.idle;
-    modalContent.innerHTML = `<div class="travel-chat-view"><div class="travel-scene-area" style="background-image:url('${bgUrl}')"><div style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.9);padding:5px 10px;border-radius:10px;font-weight:bold;color:#d46b08;">📍 ${name}</div><img src="${avatarUrl}" class="travel-avatar"></div><div id="travelChatBox" class="travel-chat-box"></div><div class="travel-controls"><input type="text" id="travelInput" style="flex:1;border:1px solid #ddd;padding:8px;border-radius:20px;" placeholder="聊聊风景..."><button onclick="sendTravelChat()" style="background:#ff9a9e;color:#fff;border:none;padding:0 15px;border-radius:20px;">说</button><button onclick="openTravelMap()" style="background:#eee;color:#666;border:none;padding:0 15px;border-radius:20px;">🔙</button></div></div>`;
+    var avatarUrl = getAvatarUrl('idle');
+
+    modalContent.innerHTML = `
+        <div class="travel-chat-view" style="display:flex; flex-direction:column; height:100%; background:#fff;">
+            <div class="travel-scene-area" style="height:200px; background:url('${bgUrl}') center/cover; position:relative; display:flex; align-items:flex-end; justify-content:center; flex-shrink:0;">
+                <div style="position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.9); padding:5px 10px; border-radius:10px; font-weight:bold; color:#d46b08; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+                    📍 ${name}
+                </div>
+                
+                <img src="${avatarUrl}" class="travel-avatar" style="height:140px; filter:drop-shadow(0 5px 10px rgba(0,0,0,0.3)); cursor:pointer;" onclick="touchHeir2D()">
+                
+                <button onclick="triggerRandomEvent()" style="position:absolute; right:10px; bottom:10px; background:#ff7675; color:white; border:none; padding:5px 10px; border-radius:15px; font-size:12px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+                    🎲 触发意外
+                </button>
+            </div>
+
+            <div id="travelChatBox" class="travel-chat-box" style="flex:1; overflow-y:auto; padding:15px; background:#f9f9f9; display:flex; flex-direction:column; gap:10px;">
+                <div style="text-align:center; color:#ccc; font-size:12px;">—— 抵达 ${name} ——</div>
+            </div>
+
+            <div class="travel-controls" style="padding:10px; border-top:1px solid #eee; display:flex; gap:10px; background:#fff;">
+                <button onclick="openTravelMap()" style="background:#eee; color:#666; border:none; padding:0 15px; border-radius:20px; cursor:pointer;">🔙</button>
+                <input type="text" id="travelInput" style="flex:1; padding:8px 12px; border:1px solid #ddd; border-radius:20px; outline:none;" placeholder="聊聊风景，或提醒注意安全..." onkeydown="if(event.key==='Enter') sendTravelChat()">
+                <button onclick="sendTravelChat()" style="background:#ff9a9e; color:#white; border:none; padding:0 20px; border-radius:20px; cursor:pointer; font-weight:bold;">发送</button>
+            </div>
+        </div>
+    `;
+    
+    // 刚进去，触发第一句开场白
     triggerTravelStart(name);
 }
+
+// 3. 发送聊天消息
 async function sendTravelChat() {
-    var input = document.getElementById('travelInput'); var text = input.value.trim(); if (!text) return;
-    appendTravelMsg('user', text); input.value = '';
+    var input = document.getElementById('travelInput');
+    var text = input.value.trim();
+    if (!text) return;
+
+    // 用户说话上屏
+    appendTravelMsg('user', text);
+    input.value = '';
+
     var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
-    var prompt = `地点:${currentTravelLoc}。性格:${JSON.stringify(currentHeir.params)}。用户:${text}。JSON:{ "reply":"", "changes":{ "mood":2 } }`;
+    if (!config || !config.apiKey) { appendTravelMsg('ai', '（请配置API Key）'); return; }
+
+    // 构建 Prompt
+    var prompt = `
+    【场景】：${currentTravelLoc} (出游中)。
+    【角色】：${currentHeir.name}，${currentHeir.age}岁。
+    【性格】：${JSON.stringify(currentHeir.params)}。
+    
+    用户（家长）说：“${text}”
+    
+    请以角色口吻回复。结合当前景点环境。
+    JSON格式：{ "reply": "回复内容", "changes": { "mood": 2, "affection": 1 } }
+    `;
+
     try {
-        var res = await fetchAI(prompt, config); var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
-        appendTravelMsg('ai', data.reply); updateHeirStats(data.changes); saveHeirData();
-    } catch(e) { appendTravelMsg('ai', '...'); }
+        // 显示打字中
+        var loadingId = 'loading-' + Date.now();
+        var box = document.getElementById('travelChatBox');
+        box.insertAdjacentHTML('beforeend', `<div id="${loadingId}" style="font-size:10px; color:#999; margin-left:10px;">✍️ 正在思考...</div>`);
+        
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        
+        document.getElementById(loadingId).remove();
+        
+        appendTravelMsg('ai', data.reply);
+        updateHeirStats(data.changes);
+        saveHeirData();
+    } catch(e) { 
+        if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+        appendTravelMsg('ai', '（看风景入迷了，没听清...）'); 
+    }
 }
-async function triggerTravelStart(locName) {
+
+// 4. 🎲 触发随机事件 / 意外 (核心新功能)
+async function triggerRandomEvent() {
     var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
-    var prompt = `到了${locName}。性格:${JSON.stringify(currentHeir.params)}。一句感想。JSON:{"reply":""}`;
+    if (!config || !config.apiKey) return;
+
+    auth.toast('🎲 命运的齿轮转动了...');
+    
+    var prompt = `
+    【指令】：生成一个出游途中的随机事件。
+    地点：${currentTravelLoc}。
+    角色：${currentHeir.name}。
+    
+    请设计一个突发状况，可能是：
+    1. 惊喜（捡到钱、遇到祥瑞）。
+    2. 意外（下雨、迷路、丢东西）。
+    3. 惊吓（遇到坏人、踩到坑、生病受伤）。
+    
+    请直接以【旁白】或【角色】的口吻描述发生了什么。
+    并给出属性变化。
+    
+    JSON格式：{ "event": "事件描述", "healthChange": -10, "moodChange": -20 }
+    (healthChange 为负数代表受伤/生病)
+    `;
+
     try {
-        var res = await fetchAI(prompt, config); var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
-        appendTravelMsg('ai', data.reply); currentHeir.bioLog.push(`【${currentHeir.age}岁·游历】：${locName}，${data.reply}`); saveHeirData();
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        
+        // 渲染事件气泡 (特殊样式)
+        var box = document.getElementById('travelChatBox');
+        var eventHtml = `
+            <div style="background:#fff7e6; border:1px dashed #ffa502; padding:10px; border-radius:10px; margin:10px 0; text-align:center;">
+                <div style="font-weight:bold; color:#d46b08; margin-bottom:5px;">⚡ 突发事件</div>
+                <div style="font-size:13px; color:#5d4037;">${data.event}</div>
+            </div>
+        `;
+        box.insertAdjacentHTML('beforeend', eventHtml);
+        box.scrollTop = box.scrollHeight;
+
+        // 应用属性变化
+        if (data.healthChange) {
+            currentHeir.body.health = Math.max(0, currentHeir.body.health + data.healthChange);
+            if(data.healthChange < 0) {
+                currentHeir.body.sick = true; // 如果扣血，可能导致生病
+                auth.toast(`💔 健康 ${data.healthChange} (可能生病了！)`);
+            }
+        }
+        if (data.moodChange) {
+            updateHeirStats({ mood: data.moodChange });
+        }
+        
+        saveHeirData();
     } catch(e) {}
 }
-function appendTravelMsg(role, text) {
-    var box = document.getElementById('travelChatBox'); var div = document.createElement('div');
-    div.style.cssText = `background:${role==='user'?'#ffeaa7':'#fff'};padding:8px;border-radius:10px;margin-bottom:8px;align-self:${role==='user'?'flex-end':'flex-start'};max-width:85%;margin-left:${role==='user'?'auto':'0'};`;
-    div.innerText = text; box.appendChild(div); box.scrollTop = box.scrollHeight;
+
+// 5. 到达景点开场白
+async function triggerTravelStart(locName) {
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) return;
+
+    var prompt = `你刚到了【${locName}】。请根据性格(${JSON.stringify(currentHeir.params)})发表一句感想。JSON:{"reply":""}`;
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        appendTravelMsg('ai', data.reply);
+        
+        // 记录到生平
+        currentHeir.bioLog.push(`【${currentHeir.age}岁·游历】：在${locName}，${data.reply}`);
+        saveHeirData();
+    } catch(e) {}
 }
-function closeTravelMode() { openEastPalace(); }
+
+// 6. 辅助：渲染气泡
+function appendTravelMsg(role, text) {
+    var box = document.getElementById('travelChatBox');
+    var div = document.createElement('div');
+    
+    // 气泡样式
+    if (role === 'user') {
+        div.style.cssText = `align-self:flex-end; background:#ff9a9e; color:white; padding:8px 12px; border-radius:15px; border-bottom-right-radius:2px; max-width:80%; font-size:13px; box-shadow:0 2px 5px rgba(0,0,0,0.1);`;
+    } else {
+        div.style.cssText = `align-self:flex-start; background:#fff; color:#333; padding:8px 12px; border-radius:15px; border-bottom-left-radius:2px; max-width:80%; font-size:13px; border:1px solid #eee; box-shadow:0 2px 5px rgba(0,0,0,0.05);`;
+    }
+    
+    div.innerText = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+function closeTravelMode() {
+    openEastPalace(); // 回到主界面
+}
+
 
 // 📓 自动写日记逻辑 (新增)
 async function writeDailyDiary() {
