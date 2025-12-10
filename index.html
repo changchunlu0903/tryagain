@@ -9459,18 +9459,44 @@ function showItemDetail(type, idx) {
     requestAnimationFrame(() => overlay.classList.add('show'));
 }
 
+// 💰 购买/使用物品 (修复版：太医局包治百病)
 function buyAIItem(type, idx) {
+    // 获取商品信息
     var item = currentHeir.phoneData.shops[type][idx];
-    if(type==='hospital') { currentHeir.body.health = 100; if(item.name.includes('神')) currentHeir.body.sick = false; }
-    if(type==='shop') currentHeir.mood += 10;
-    if(type==='meituan') currentHeir.body.waste = Math.max(0, currentHeir.body.waste - 20);
     
+    // 🏥 1. 太医局 (医院) 逻辑修复
+    if (type === 'hospital') {
+        // 只要是医院买的，直接痊愈！不看名字了！
+        currentHeir.body.sick = false;  // 移除生病状态
+        currentHeir.body.health = 100;  // 健康值回满
+        auth.toast(`💊 药到病除！${currentHeir.name} 身体痊愈了！`);
+    }
+    
+    // 🛍️ 2. 珍宝阁 (商店)
+    if (type === 'shop') {
+        currentHeir.mood = Math.min(100, currentHeir.mood + 20); // 加心情
+        // 如果是书，额外加智慧
+        if (item.name.includes('书') || item.name.includes('经')) {
+            currentHeir.params.wisdom = Math.min(100, currentHeir.params.wisdom + 5);
+            auth.toast(`📚 读了书，智慧 +5`);
+        } else {
+            auth.toast(`✨ 心情变好了！`);
+        }
+    }
+    
+    // 🍱 3. 御膳房 (外卖)
+    if (type === 'meituan') {
+        currentHeir.body.waste = Math.max(0, currentHeir.body.waste - 40); // 大幅消除疲劳
+        auth.toast(`🍱 吃饱喝足，疲劳消除了！`);
+    }
+    
+    // 保存数据
     saveHeirData();
-    auth.toast(`✨ 使用了 ${item.name}！`);
-}
-
-
     
+    // 🔥 关键：立即刷新主界面
+    // 这样如果之前是生病立绘(yawn)，现在会马上变回正常立绘(idle)
+    openEastPalace(); 
+}
 
 
 // 💬 5. 微聊防骚扰补丁 (请把这个函数覆盖掉)
