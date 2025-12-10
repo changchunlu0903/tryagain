@@ -2214,6 +2214,165 @@
     flex-direction: row !important;
 }
 
+/* ================= 🎓 4.0 新增样式：职业与家族 ================= */
+
+/* 职业徽章 */
+.career-badge {
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    color: white; padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; margin-left: 5px; font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); vertical-align: middle;
+}
+/* 坏职业用红色 */
+.career-badge.bad { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
+/* 皇权职业用金色 */
+.career-badge.royal { background: linear-gradient(135deg, #ffd700, #fdb931); color: #8a6d3b; }
+
+/* 恋爱状态标 */
+.love-status-tag {
+    background: #ff9a9e; color: white; border-radius: 10px;
+    padding: 2px 8px; font-size: 10px; margin-left: 5px;
+    animation: pulse 2s infinite;
+}
+
+/* 家族列表 (手机微聊里用) */
+.family-separator {
+    font-size: 10px; color: #999; margin: 10px 0 5px 10px; font-weight: bold;
+}
+
+/* ================= 🎓 新增：职业与家族徽章样式 ================= */
+.career-badge {
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    color: white; padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; margin-left: 5px; font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); vertical-align: middle;
+}
+/* 坏职业用红色，皇权用金色 */
+.career-badge.bad { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
+.career-badge.royal { background: linear-gradient(135deg, #ffd700, #fdb931); color: #8a6d3b; }
+
+/* 恋爱状态 */
+.love-status-tag {
+    background: #ff9a9e; color: white; border-radius: 10px;
+    padding: 2px 8px; font-size: 10px; margin-left: 5px;
+    animation: pulse 2s infinite;
+}
+
+/* ================= ❤️ 恋爱系统 2.0 样式 ================= */
+
+/* 恋爱进度条容器 */
+.love-progress-box {
+    background: #fff0f5; padding: 10px; border-radius: 12px; margin-bottom: 10px;
+    border: 1px solid #ffb7c5;
+}
+.love-bar-bg {
+    height: 10px; background: #eee; border-radius: 5px; overflow: hidden; margin-top: 5px;
+    position: relative;
+}
+.love-bar-fill {
+    height: 100%; background: linear-gradient(90deg, #ff9a9e, #f687b3);
+    transition: width 0.5s ease;
+}
+/* 状态文字 */
+.love-status-text {
+    font-size: 12px; font-weight: bold; color: #d66a80; display: flex; justify-content: space-between;
+}
+
+/* 恋爱日志区域 */
+.love-log-area {
+    flex: 1; overflow-y: auto; background: #fff; border-radius: 10px;
+    padding: 10px; margin-bottom: 10px; border: 1px solid #f0f0f0;
+    font-size: 12px; line-height: 1.5; color: #555;
+    min-height: 150px;
+}
+.love-log-item {
+    margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #eee;
+}
+.love-log-date { color: #999; font-size: 10px; margin-bottom: 2px; }
+
+/* 详情页头部 */
+.partner-detail-header {
+    text-align: center; padding: 15px; background: #fff;
+    border-bottom: 1px dashed #eee; margin-bottom: 10px;
+}
+.partner-big-avatar {
+    width: 70px; height: 70px; border-radius: 50%; border: 3px solid #ffb7c5;
+    object-fit: cover; margin-bottom: 5px;
+}
+
+/* ================= 🎓 5.0 成人礼 & 结算界面样式 ================= */
+
+/* 成人礼全屏弹窗 */
+.adult-modal {
+    background: linear-gradient(135deg, #fffbf0 0%, #fff 100%);
+    border: 4px double #d4af37;
+    width: 95%; max-width: 500px; height: 90vh; /* 稍微大一点 */
+    display: flex; flex-direction: column; padding: 0;
+    overflow: hidden; position: relative;
+}
+
+/* 顶部标题 */
+.adult-header {
+    background: #d4af37; color: white; padding: 15px; text-align: center;
+    font-size: 20px; font-weight: bold; letter-spacing: 2px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 核心内容区 */
+.adult-content {
+    flex: 1; overflow-y: auto; padding: 20px;
+}
+
+/* 1. 职业展示卡 */
+.career-card-large {
+    text-align: center; margin-bottom: 20px;
+    animation: zoomIn 0.8s ease;
+}
+.career-icon-big { font-size: 60px; margin-bottom: 10px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
+.career-title-big { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 5px; }
+.career-desc { color: #888; font-size: 12px; font-style: italic; }
+
+/* 2. 属性判定可视化 (条形对比) */
+.judge-box {
+    background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 15px;
+    margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+.judge-title { font-size: 13px; font-weight: bold; color: #555; margin-bottom: 10px; border-left: 3px solid #d4af37; padding-left: 8px; }
+.judge-row {
+    display: flex; align-items: center; margin-bottom: 8px; font-size: 12px;
+}
+.judge-label { width: 40px; color: #666; }
+.judge-track { flex: 1; height: 8px; background: #eee; border-radius: 4px; margin: 0 10px; position: relative; }
+.judge-bar { height: 100%; border-radius: 4px; background: #ccc; transition: width 1s; }
+.judge-bar.pass { background: #00b894; } /* 达标绿 */
+.judge-bar.fail { background: #ff7675; } /* 未达标红 */
+
+/* 达标线 (Indicator) */
+.judge-line {
+    position: absolute; top: -2px; bottom: -2px; width: 2px; background: #333;
+    z-index: 5;
+}
+.judge-val { width: 50px; text-align: right; font-family: monospace; }
+.pass-icon { color: #00b894; font-weight: bold; margin-left: 5px; }
+
+/* 3. 成就墙 */
+.achievement-grid {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px;
+}
+.ach-badge {
+    background: #fff0f5; color: #d66a80; border: 1px solid #ffb7c5;
+    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;
+    display: flex; align-items: center; gap: 4px;
+    animation: popIn 0.5s ease backwards;
+}
+
+/* 4. AI 离别信 */
+.farewell-letter {
+    background: #fff; padding: 15px; border-radius: 5px;
+    font-family: serif; color: #555; line-height: 1.8; font-size: 14px;
+    border: 1px dashed #ccc; position: relative; margin-top: 10px;
+}
+.farewell-letter::before { content: '❝'; font-size: 30px; color: #eee; position: absolute; top: -10px; left: 10px; }
 
     </style>
 
@@ -7985,44 +8144,49 @@ const HEIR_STAGES = [
 ];
 
 // ----------- 1. 按钮状态管理 (已修复防报错) -----------
-function updateHeirButtonState() {
-    const btn = document.getElementById('heirActionButton');
-    if (!btn) return;
-    
-    // 安全检查：如果没选中人，就不更新状态，防止报错
-    if (typeof viewingIndex === 'undefined' || viewingIndex === -1 || !items[viewingIndex]) return;
 
-    if (currentHeir) {
-        const item = items[viewingIndex];
-        if (currentHeir.fatherName === item.name) {
-            btn.innerText = `🧸 前往东宫 (看望${currentHeir.name})`;
-            btn.style.background = '#fff7d1'; btn.style.color = '#fa8c16'; btn.style.borderColor = '#ffd591';
-        } else {
-            btn.innerText = `🚫 宫中已有皇嗣 (父君:${currentHeir.fatherName})`;
-            btn.style.background = '#eee'; btn.style.color = '#999'; btn.style.borderColor = '#ddd';
-        }
+// 1. 更新按钮状态 (允许二胎版)
+function updateHeirButtonState() {
+    var btn = document.getElementById('heirActionButton');
+    if (!btn) return;
+    if (typeof viewingIndex==='undefined' || !items[viewingIndex]) return;
+    
+    // 如果没有孩子，或者孩子已成年/离家/死亡 -> 允许生新的
+    if (!currentHeir || currentHeir.age >= 18 || currentHeir.isRunaway || currentHeir.isDead) {
+        btn.innerText = `👶 祈福求子 (家族开枝散叶)`;
+        btn.style.background = '#fff0f5'; btn.style.color = '#ff6b6b';
+    } else if (currentHeir.fatherName === items[viewingIndex].name) {
+        btn.innerText = `🧸 前往东宫 (看望${currentHeir.name})`; 
+        btn.style.background = '#fff7d1'; btn.style.color = '#fa8c16';
     } else {
-        btn.innerText = `👶 祈福求子`;
-        btn.style.background = '#fff0f5'; btn.style.color = '#ff6b6b'; btn.style.borderColor = '#ff9a9e';
+        btn.innerText = `🚫 宫中已有幼子 (${currentHeir.name})`; 
+        btn.style.background = '#eee'; btn.style.color = '#999';
     }
 }
 
-// 按钮点击处理
+// 2. 处理点击 (允许二胎版)
 function handleHeirAction() {
     if (viewingIndex === -1) return;
-    const item = items[viewingIndex];
+    var item = items[viewingIndex];
 
-    if (!currentHeir) {
+    // 如果满足生二胎条件
+    if (!currentHeir || currentHeir.age >= 18 || currentHeir.isRunaway || currentHeir.isDead) {
+        // 如果当前有成年孩子，确保已经存进家族了
+        if(currentHeir && currentHeir.age >= 18) {
+             let existIdx = familyTree.findIndex(c => c.id === currentHeir.id);
+             if (existIdx === -1) { familyTree.push(currentHeir); localStorage.setItem('royal_family_tree', JSON.stringify(familyTree)); }
+        }
+
         document.getElementById('creationFatherName').innerText = item.name;
         document.getElementById('creationSettingInput').value = '';
         document.getElementById('heirCreationModal').classList.add('active');
     } else if (currentHeir.fatherName === item.name) {
         openEastPalace();
     } else {
-        auth.toast(`🚫 陛下，您已经和【${currentHeir.fatherName}】有孩子了，要专一哦！`);
-        if(navigator.vibrate) navigator.vibrate(200);
+        auth.toast(`🚫 陛下，现在的皇嗣【${currentHeir.name}】还未成年，不能生二胎哦！`);
     }
 }
+
 
 // ----------- 2. 创建皇嗣 -----------
 async function confirmCreateHeir() {
@@ -8338,6 +8502,32 @@ if (currentHeir) {
     localStorage.setItem('royal_heir_data', JSON.stringify(currentHeir));
 }
 
+// ================= 🎓 职业与成就数据库 (新增) =================
+const CAREER_DB = [
+    // 👑 皇权类
+    { name: "皇帝", type: "royal", req: { ambition: 90, wisdom: 80 } },
+    { name: "摄政王", type: "royal", req: { ambition: 85, fitness: 80 } },
+    { name: "皇后", type: "royal", req: { charm: 90, morality: 80 } },
+    // ⚔️ 武官类
+    { name: "大将军", type: "good", req: { fitness: 90, rebellion: 60 } },
+    { name: "御前侍卫", type: "good", req: { fitness: 80, morality: 80 } },
+    { name: "刺客", type: "bad", req: { fitness: 85, morality: 20 } },
+    // 📚 文官/技艺类
+    { name: "宰相", type: "good", req: { wisdom: 95, morality: 60 } },
+    { name: "太医", type: "good", req: { wisdom: 80, morality: 80 } },
+    { name: "状元郎", type: "good", req: { diligence: 90, wisdom: 80 } },
+    // 💰 市井类
+    { name: "皇商首富", type: "good", req: { wisdom: 70, ambition: 80 } },
+    { name: "青楼头牌", type: "bad", req: { charm: 90, morality: 30 } },
+    // 🏚️ 底层/特殊
+    { name: "种田农夫", type: "normal", req: { fitness: 50 } },
+    { name: "乞丐", type: "bad", req: { diligence: 10, wisdom: 10 } },
+    { name: "平民", type: "normal", req: {} } // 保底
+];
+
+// 初始化家族树（如果没有的话）
+var familyTree = JSON.parse(localStorage.getItem('royal_family_tree')) || [];
+
 // 2. 🌍 资源与地图
 var WORLD_MAPS = {
     'outside': {
@@ -8550,7 +8740,9 @@ function openEastPalace() {
         
         <div id="heirSceneBg" class="heir-bg-stage" style="background-image:url('${displayBg}'); height:150px; transition:background 0.5s; position:relative; overflow:hidden; border-bottom:3px solid #fff;">
             <div style="position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.9); padding:3px 8px; border-radius:10px; font-size:11px; font-weight:bold; color:#555; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-                📅 ${currentHeir.age}岁 · ${currentHeir.season}季
+               📅 ${currentHeir.age}岁 · ${currentHeir.season}季 
+${(currentHeir.age>=18 && currentHeir.career) ? `<span class="career-badge ${CAREER_DB.find(c=>c.name===currentHeir.career)?.type||'normal'}">${currentHeir.career}</span>` : ''}
+${(currentHeir.dating && currentHeir.dating.partners && currentHeir.dating.partners.length>0) ? '<span class="love-status-tag">💑 热恋</span>' : ''}
             </div>
             <button onclick="readMind()" style="position:absolute; top:10px; right:135px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.8); border-radius:20px; padding:3px 10px; font-size:10px; cursor:pointer;">🔮 读心</button>
             <button onclick="openMemories()" style="position:absolute; top:10px; right:50px; background:rgba(255,255,255,0.8); color:#555; border:1px solid #ddd; border-radius:20px; padding:3px 10px; font-size:10px; cursor:pointer; font-weight:bold;">📖 回忆录</button>
@@ -8734,102 +8926,326 @@ function wearOutfit(gender, idx, variantIdx) {
     openApp('clothing');
 }
 
-// ================= ❤️ 姻缘簿 (恋爱系统) =================
+// ================= ❤️ 恋爱系统 2.0 (循序渐进版) =================
 
+let currentPartnerIdx = -1; // 当前正在查看谁的详情
+
+// 1. 渲染姻缘簿入口 (列表页)
+
+// ❤️ 姻缘簿入口 (带自动修复补丁)
+
+// ❤️ 姻缘簿入口 (修复版：强制低好感开局)
 async function renderMatchmakerApp(container) {
+    // 1. 年龄检查
     if (currentHeir.age < 14) {
-        container.innerHTML = `<div class="app-header"><button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>姻缘簿</div><div style="text-align:center; padding:50px; color:#999;">👶 皇嗣才${currentHeir.age}岁，还不到谈婚论嫁的年纪。<br>(14岁开启)</div>`;
+        container.innerHTML = `<div class="app-header"><button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>姻缘簿</div><div class="app-content" style="text-align:center;padding-top:50px;color:#999;">👶 孩子还小，学业为重！<br>(14岁开启)</div>`;
         return;
     }
-
+    
+    // 2. 初始化与修复
     if (!currentHeir.dating) currentHeir.dating = { partners: [] };
     
-    // 如果没有对象，自动生成
-    if (currentHeir.dating.partners.length === 0) {
-        container.innerHTML = `<div class="app-header"><button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>姻缘簿</div><div style="text-align:center; padding:50px;">💘 正在京城物色良缘...<br>(AI 牵线中)</div>`;
-        await generatePartners();
-    }
+    // 🔥 关键修复：不再继承旧的高分 match，强制重置为低分
+    let needSave = false;
+    currentHeir.dating.partners.forEach(p => {
+        if (!p.status) { p.status = '相识'; needSave = true; }
+        
+        // 如果好感度未定义，或者好感度过高但状态却是“相识”（说明是旧数据错误继承了），强制重置
+        if (p.affinity === undefined || (p.affinity > 20 && p.status === '相识')) { 
+            p.affinity = Math.floor(Math.random() * 15); // 0-15分之间
+            needSave = true; 
+        }
+        
+        if (!p.logs) { p.logs = []; needSave = true; }
+    });
+    if (needSave) saveHeirData();
 
-    var listHtml = currentHeir.dating.partners.map((p, idx) => `
-        <div class="partner-card">
-            <div class="match-score">${p.match}%</div>
-            <div class="partner-header">
-                <img src="${p.avatar}" class="partner-avatar">
-                <div>
-                    <div style="font-weight:bold;">${p.name}</div>
-                    <div style="font-size:12px; color:#888;">${p.age}岁 | ${p.job}</div>
-                </div>
+    // 3. 如果没对象，生成新的
+    if (currentHeir.dating.partners.length === 0) await generatePartners();
+
+    // 4. 渲染列表
+    var listHtml = currentHeir.dating.partners.map((p, idx) => {
+        let statusColor = '#999';
+        if(p.status === '热恋') statusColor = '#ff4757';
+        if(p.status === '恋爱') statusColor = '#ff6b81';
+        if(p.status === '断联') statusColor = '#333';
+
+        return `
+        <div class="partner-card" onclick="openPartnerDetail(${idx})" style="cursor:pointer; display:flex; align-items:center; padding:15px;">
+            <img src="${p.avatar}" class="partner-avatar">
+            <div style="flex:1;">
+                <div style="font-weight:bold; font-size:14px;">${p.name} <span style="font-size:10px; background:${statusColor}; color:white; padding:2px 5px; border-radius:4px;">${p.status}</span></div>
+                <div style="font-size:11px; color:#888; margin-top:3px;">${p.job} | ${p.nature}</div>
             </div>
-            <div class="partner-tags">
-                <span class="p-tag ${p.nature==='良配'?'tag-good':(p.nature==='渣男/绿茶'?'tag-bad':'tag-normal')}">${p.nature}</span>
-                <span class="p-tag" style="background:#eee; color:#666;">喜好: ${p.like}</span>
-            </div>
-            <div style="font-size:12px; color:#666; font-style:italic; margin-bottom:10px;">"${p.desc}"</div>
-            <div style="display:flex; gap:5px;">
-                <button class="shop-btn" style="flex:1; background:#ff7675;" onclick="breakUp(${idx})">💔 拆散</button>
-                <button class="shop-btn" style="flex:1; background:#fdcb6e;" onclick="assistLove('${p.like}')">🎁 助攻(送礼)</button>
-            </div>
-        </div>
-    `).join('');
+            <div style="font-size:20px; color:#ddd;">›</div>
+        </div>`;
+    }).join('');
 
     container.innerHTML = `
         <div class="app-header">
             <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
-            <span>姻缘簿</span>
+            <span style="flex:1; text-align:center;">姻缘簿</span>
             <button class="app-header-btn" onclick="refreshPartners()">🔄</button>
         </div>
-        <div class="app-content">${listHtml}</div>
+        <div class="app-content" style="background:#f7f9fc;">
+            <div style="font-size:12px; color:#aaa; margin-bottom:10px; text-align:center;">点击头像查看详情与互动</div>
+            ${listHtml}
+        </div>
     `;
 }
 
-async function generatePartners() {
-    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
-    // 没 Key 用假数据
-    if(!config || !config.apiKey) {
-        currentHeir.dating.partners = [
-            { name: "王二丫", age: 15, job: "豆腐西施", avatar: "https://files.catbox.moe/fv8f8p.gif", nature: "良配", match: 95, like: "发簪", desc: "虽然穷，但是心地善良。" },
-            { name: "赵公子", age: 17, job: "纨绔子弟", avatar: "https://files.catbox.moe/3ofd6b.png", nature: "渣男/绿茶", match: 30, like: "名画", desc: "只想骗你的钱。" }
-        ];
-        saveHeirData();
-        return;
+
+   
+
+// 2. 打开对象详情页 (互动核心)
+
+// 2. 打开对象详情页 (修复返回键)
+
+// 2. 打开对象详情页 (修改版：去除按钮，改为语言干涉)
+function openPartnerDetail(idx) {
+    currentPartnerIdx = idx;
+    var p = currentHeir.dating.partners[idx];
+    
+    var win = document.getElementById('activeAppWindow');
+    var detailDiv = document.createElement('div');
+    detailDiv.className = 'app-window open';
+    detailDiv.style.zIndex = '30';
+
+    var progress = Math.min(100, Math.max(0, p.affinity));
+    
+    // 渲染日志
+    var logsHtml = (p.logs || []).slice().reverse().map(l => 
+        `<div class="love-log-item"><div class="love-log-date">${l.date}</div>${l.content}</div>`
+    ).join('') || '<div style="text-align:center; margin-top:20px; color:#ccc;">暂无互动记录</div>';
+
+    // 底部互动区：如果是断联，显示灰色；否则显示“约会”按钮 + “干涉对话框”
+    var actionArea = "";
+    
+    if (p.status === '断联') {
+        actionArea = `<button class="shop-btn" style="width:100%; background:#ccc; margin-top:10px;" disabled>💔 关系已破裂，无法挽回</button>`;
+    } else {
+        actionArea = `
+            <button class="shop-btn" style="width:100%; background:#ff9a9e; margin-bottom:10px;" onclick="dateWithPartner()">💌 接触/约会 (AI剧情)</button>
+            
+            <div style="border-top:1px dashed #eee; padding-top:10px; margin-top:5px;">
+                <div style="font-size:12px; color:#d66a80; margin-bottom:5px; font-weight:bold;">💬 家长建议 (干涉)：</div>
+                <div style="display:flex; gap:5px;">
+                    <input type="text" id="interveneInput" placeholder="想对皇嗣说什么？(如:离他远点)" style="flex:1; border:1px solid #ffb7c5; border-radius:15px; padding:6px 10px; font-size:12px; outline:none;">
+                    <button class="shop-btn" style="background:#fab1a0; width:auto; padding:6px 15px;" onclick="sendIntervention()">🗣️ 说教</button>
+                </div>
+            </div>
+        `;
     }
 
-    var targetGender = currentHeir.gender === '男' ? '女性' : '男性';
-    var prompt = `生成3个古代${targetGender}恋爱对象。JSON格式:[{"name":"","age":16,"job":"","avatar":"emoji","nature":"良配/渣男/绿茶/普通","match":80,"like":"喜欢的物品","desc":"性格描述"}]`;
+    detailDiv.innerHTML = `
+        <div class="app-header">
+            <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
+            <span style="flex:1; text-align:center;">${p.name}</span>
+            <span style="width:20px;"></span>
+        </div>
+        <div class="app-content" style="padding:15px; display:flex; flex-direction:column; height:calc(100% - 50px);">
+            <div class="partner-detail-header">
+                <img src="${p.avatar}" class="partner-big-avatar">
+                <div style="font-weight:bold; font-size:16px;">${p.name}</div>
+                <div style="color:#888; font-size:12px;">${p.desc}</div>
+            </div>
+
+            <div class="love-progress-box">
+                <div class="love-status-text">
+                    <span>关系：${p.status}</span>
+                    <span>好感：${p.affinity}/100</span>
+                </div>
+                <div class="love-bar-bg"><div class="love-bar-fill" style="width:${progress}%"></div></div>
+            </div>
+
+            <div class="love-log-area" id="loveLogArea" style="flex:1; margin-bottom:10px;">${logsHtml}</div>
+
+            <div style="margin-top:auto;">
+                ${actionArea}
+            </div>
+        </div>
+    `;
     
+    win.appendChild(detailDiv);
+}
+
+// 💬 发送家长干涉 (新功能)
+async function sendIntervention() {
+    var text = document.getElementById('interveneInput').value.trim();
+    if (!text) { auth.toast('请先输入你要说的话'); return; }
+    
+    // 1. 界面反馈
+    document.getElementById('interveneInput').value = '';
+    auth.toast('💬 正在传达家长的教诲...');
+
+    var p = currentHeir.dating.partners[currentPartnerIdx];
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+
+    // 2. 构建 Prompt
+    var prompt = `
+    我是家长。我对皇嗣说：“${text}”。
+    皇嗣当前在和 ${p.name} 交往 (好感 ${p.affinity})。
+    皇嗣的性格标签：${JSON.stringify(currentHeir.params)}。
+    皇嗣的叛逆值是 ${currentHeir.params.rebellion}。
+    
+    请生成：
+    1. 皇嗣的反应台词（体现性格）。
+    2. 对这段关系的影响分数（score）。
+    
+    逻辑参考：
+    - 如果是劝分，且皇嗣叛逆高，好感反而增加（逆反心理）。
+    - 如果是劝分，且皇嗣听话（亲密高/叛逆低），好感降低。
+    - 如果是支持/夸奖，好感增加。
+    
+    格式 JSON：{ "reply": "皇嗣的回嘴", "score": -5 }
+    `;
+
     try {
         var res = await fetchAI(prompt, config);
         var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
-        // 统一头像
-        data.forEach(d => d.avatar = "https://files.catbox.moe/fv8f8p.gif");
-        currentHeir.dating.partners = data;
+        
+        // 3. 弹出皇嗣的回答
+        alert(`皇嗣回应说：\n“${data.reply}”`);
+        
+        // 4. 更新好感度
+        p.affinity = Math.min(100, Math.max(-100, p.affinity + data.score));
+        
+        // 5. 写入日志
+        p.logs.push({ 
+            date: `${currentHeir.age}岁·家长干涉`, 
+            content: `家长："${text}"<br>皇嗣："${data.reply}" (好感${data.score>0?'+':''}${data.score})` 
+        });
+
+        // 6. 更新叛逆值 (如果是负面干涉)
+        if (data.score < 0 || text.includes("不许") || text.includes("分")) {
+             currentHeir.params.rebellion = Math.min(100, currentHeir.params.rebellion + 2);
+        }
+
+        // 7. 刷新状态
+        updateRelationshipStatus(p);
         saveHeirData();
-        if(document.querySelector('.app-window')) openApp('matchmaker');
+        
+        // 重新打开详情页以刷新显示
+        var oldWin = document.querySelector('.app-window.open');
+        if (oldWin) oldWin.remove();
+        openPartnerDetail(currentPartnerIdx);
+        
+    } catch(e) {
+        console.error(e);
+        auth.toast('❌ 没听清...(网络错误)');
+    }
+}
+
+
+// 3. 💌 接触/约会逻辑 (AI 生成)
+async function dateWithPartner() {
+    var p = currentHeir.dating.partners[currentPartnerIdx];
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    
+    if (!config || !config.apiKey) { auth.toast('🔑 需要 API Key 才能约会！'); return; }
+
+    auth.toast(`💌 皇嗣正在和 ${p.name} 接触中...`);
+
+    // 构建 Prompt
+    var prompt = `
+    我是女皇。
+    主角：皇嗣（${currentHeir.age}岁，性格：${JSON.stringify(currentHeir.params)}）。
+    对象：${p.name}（身份：${p.job}，性格：${p.desc}）。
+    当前关系：${p.status} (好感 ${p.affinity})。
+    
+    请生成一段两人互动的简短剧情（50字左右）。
+    并根据互动情况，判断好感度变化（-10 到 +10）。
+    
+    格式 JSON：{ "story": "剧情内容", "score": 5 }
+    `;
+
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        
+        // 更新数据
+        p.affinity += data.score;
+        p.logs.push({ date: `${currentHeir.age}岁·${currentHeir.season}`, content: data.story });
+        
+        // 状态判定逻辑
+        updateRelationshipStatus(p);
+        
+        saveHeirData();
+        
+        // 刷新页面
+        document.querySelector('.app-window.open').remove(); // 关掉旧详情页
+        openPartnerDetail(currentPartnerIdx); // 重新打开刷新
+        
+        auth.toast(data.score >= 0 ? '💖 感情升温了！' : '💔 发生了一些不愉快...');
+        
+    } catch(e) { console.error(e); auth.toast('❌ 约会失败'); }
+}
+
+// 4. 💬 家长干涉逻辑
+async function parentIntervene() {
+    var p = currentHeir.dating.partners[currentPartnerIdx];
+    var text = prompt(`你想对皇嗣说什么？\n(例如："离他远点，他是坏人" 或 "这孩子不错，多接触")`);
+    
+    if (!text) return;
+    
+    auth.toast('💬 正在对皇嗣进行说教...');
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    var prompt = `
+    我是家长。我对皇嗣说：“${text}”。
+    皇嗣当前在和 ${p.name} 交往 (好感 ${p.affinity})。
+    皇嗣的叛逆值是 ${currentHeir.params.rebellion}。
+    
+    请生成皇嗣的反应。
+    并判断对这段关系的影响（如果是劝分，且皇嗣叛逆高，好感反而可能增加；如果是劝合，也看性格）。
+    
+    格式 JSON：{ "reply": "皇嗣的回嘴", "score": -5 }
+    `;
+
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        
+        alert(`皇嗣说：\n“${data.reply}”`);
+        
+        // 更新数据
+        p.affinity += data.score;
+        // 如果是负面干涉，增加叛逆
+        if (data.score < 0) currentHeir.params.rebellion += 5;
+        
+        updateRelationshipStatus(p);
+        saveHeirData();
+        
+        // 刷新
+        document.querySelector('.app-window.open').remove();
+        openPartnerDetail(currentPartnerIdx);
+        
     } catch(e) {}
 }
 
-async function refreshPartners() {
-    document.querySelector('.app-content').innerHTML = '<div style="text-align:center; padding:50px;">💘 重新寻觅中...</div>';
-    await generatePartners();
+// 5. 状态判定机
+function updateRelationshipStatus(p) {
+    if (p.affinity <= -20) {
+        p.status = "断联"; // 分手/绝交
+        p.logs.push({ date: "系统", content: "💔 关系破裂，从此陌路。" });
+    } else if (p.affinity < 20) {
+        p.status = "相识";
+    } else if (p.affinity < 60) {
+        p.status = "暧昧";
+    } else if (p.affinity < 90) {
+        p.status = "恋爱";
+    } else {
+        p.status = "热恋";
+    }
 }
 
-function breakUp(idx) {
-    if (currentHeir.params.affection > currentHeir.params.rebellion + 10) {
-        auth.toast('✅ 苦口婆心劝说成功！皇嗣同意分手了。');
-        currentHeir.dating.partners.splice(idx, 1);
-    } else {
-        auth.toast('❌ 失败！皇嗣觉得你管太宽！(叛逆+10)');
-        currentHeir.params.rebellion += 10;
-    }
-    saveHeirData();
+// 刷新全部逻辑 (保留)
+async function refreshPartners() {
+    document.querySelector('.app-content').innerHTML = '<div style="text-align:center; padding:50px;">💘 正在重新寻觅...</div>';
+    await generatePartners();
     openApp('matchmaker');
 }
 
-function assistLove(gift) {
-    if(confirm(`确定要花钱买【${gift}】给皇嗣去送礼吗？`)) {
-        auth.toast('🎁 助攻成功！感情升温了！');
-    }
-}
 
 // ================= 🕵️ 监护人 (偷看日记) =================
 
@@ -8884,44 +9300,123 @@ async function openShopApp(type, title) {
     if(items.length === 0) refreshShopItems(type, title);
 }
 
+// 📜 渲染商品列表 (展示 AI 生成的想法)
 function renderShopList(items, type) {
     return items.map((item, idx) => {
-        // 生成皇嗣的想法
-        var thought = getHeirThought(item.name, type);
+        // 如果是老数据没有 heirThought，就给个默认值
+        var thought = item.heirThought || "这个看起来不错。";
+        var stars = item.preference || "⭐⭐⭐";
+
         return `
-        <div class="shop-item" onclick="showItemDetail('${type}', ${idx})">
+        <div class="shop-item" onclick="showItemDetail('${type}', ${idx})" style="background:white;padding:10px;margin-bottom:10px;border-radius:10px;border:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
             <div style="flex:1;">
-                <div style="font-weight:bold;">${item.name} ${item.icon||'📦'}</div>
-                <div style="font-size:10px; color:#999;">${item.effectDesc}</div>
-                <div class="heir-thought">${thought}</div>
+                <div style="font-weight:bold; font-size:13px;">${item.name} ${item.icon||'📦'}</div>
+                <div style="font-size:10px; color:#999; margin-bottom:4px;">${item.effectDesc}</div>
+                
+                <div class="heir-thought" style="background:#fff0f5; color:#d66a80; font-size:10px; padding:4px 8px; border-radius:8px; margin-top:5px; position:relative; font-style:italic;">
+                    💭 ${thought} <span style="float:right; font-style:normal;">${stars}</span>
+                </div>
             </div>
-            <button class="shop-btn" style="background:#74b9ff;" onclick="event.stopPropagation(); buyAIItem('${type}', ${idx})">购买</button>
+            <button class="shop-btn" style="background:#74b9ff; color:white; border:none; padding:5px 10px; border-radius:15px; cursor:pointer; margin-left:10px;" onclick="event.stopPropagation(); buyAIItem('${type}', ${idx})">购买</button>
         </div>`;
     }).join('');
 }
 
+
+// 🧠 皇嗣对物品的想法 (增强版：识别关键词+随机吐槽)
 function getHeirThought(name, type) {
-    if (type === 'hospital') return currentHeir.body.sick ? "我想快点好起来..." : "没病，不吃药！";
-    if (type === 'meituan') return "看起来好好吃！";
-    if (name.includes("书")) return currentHeir.params.diligence > 60 ? "想要这本书！" : "啊...又是书...";
+    // 辅助：从数组里随机选一句
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    
+    // 🏥 1. 医院 (太医局)
+    if (type === 'hospital') {
+        // 如果没病
+        if (!currentHeir.body.sick) {
+            return pick(["身体倍儿棒，不需要这个。", "虽然没病，备着也好？", "看着就苦...", "太医局的东西好贵。", "给父君留着？"]);
+        }
+        // 如果生病了，根据药名吐槽
+        if (name.includes('针') || name.includes('刺')) return pick(["呜...怕疼...", "能不能不扎针？", "看着好尖锐..."]);
+        if (name.includes('汤') || name.includes('药')) return pick(["闻着就好苦...", "一定要喝吗？", "良药苦口...呕...", "能加点糖吗？"]);
+        if (name.includes('丹') || name.includes('丸')) return pick(["这颗能治好我吗？", "一口吞掉！", "像糖豆，但肯定不好吃。"]);
+        if (name.includes('治愈') || name.includes('回春')) return pick(["救命稻草...", "希望能快点好起来。", "不想再躺着了..."]);
+        
+        // 默认生病反应
+        return pick(["难受...", "头好晕...", "想母皇了...", "什么时候能好啊..."]);
+    }
+    
+    // 🍱 2. 外卖 (御膳房)
+    if (type === 'meituan') {
+        if (currentHeir.body.waste > 80) return "饿得能吃下一头牛！";
+        if (name.includes('辣')) return pick(["看着就好爽！", "嘶哈...感觉会很辣！"]);
+        if (name.includes('甜') || name.includes('糖') || name.includes('奶')) return pick(["甜食是装在另一个胃里的！", "看着好幸福~"]);
+        if (name.includes('苦') || name.includes('凉')) return "这个...好吃吗？";
+        return pick(["看起来好好吃！", "流口水了...", "御膳房的手艺真不错。", "想吃！"]);
+    }
+
+    // 🛍️ 3. 商店 (珍宝阁)
+    if (type === 'shop') {
+        // 书籍类：看勤勉属性
+        if (name.includes('书') || name.includes('经') || name.includes('籍')) {
+            return currentHeir.params.diligence > 60 ? 
+                pick(["书香门第，正合我意。", "这本书我找了好久！", "一日不读书，面目可憎。"]) : 
+                pick(["啊...又要看书啊...", "看着就困...", "能不能买玩具？"]);
+        }
+        // 武器/运动类：看性别或体魄
+        if (name.includes('剑') || name.includes('武') || name.includes('弓')) {
+            return (currentHeir.gender === '男' || currentHeir.params.rebellion > 50) ? 
+                "酷！我想耍耍！" : "稍微有点重呢...";
+        }
+        // 玩具类
+        if (name.includes('玩') || name.includes('偶') || name.includes('球')) {
+            return pick(["想要这个！", "看着好玩！", "买给我嘛~"]);
+        }
+        // 默认
+        return pick(["这个有点意思。", "买买买！", "稍微有点贵呢...", "这是什么？"]);
+    }
+
     return "这个看起来不错。";
 }
 
+
+// 🛍️ 商店进货 (AI 生成物品 + 皇嗣想法 + 喜爱度)
 async function refreshShopItems(type, title) {
     var div = document.getElementById(`shopContent-${type}`);
-    div.innerHTML = '<div style="text-align:center; padding:50px;">🤖 正在进货中...</div>';
+    div.innerHTML = '<div style="text-align:center;padding:20px;">🤖 正在根据皇嗣的喜好进货...</div>';
     
     var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
-    var prompt = `生成3个${title}商品。JSON格式:[{"name":"","icon":"emoji","effectDesc":"功效","detail":"详细介绍(50字)"}]`;
+    if (!config || !config.apiKey) { div.innerHTML = '🚫 没 API Key'; return; }
+
+    // 构建更详细的 Prompt，把皇嗣的性格告诉 AI
+    var prompt = `
+    我是女皇。现在需要为皇嗣（性格：${JSON.stringify(currentHeir.params)}，年龄：${currentHeir.age}岁，性别：${currentHeir.gender}，状态：${currentHeir.body.sick?'生病':'健康'}）生成 3 个【${title}】里的商品。
+
+    请返回 JSON 数组，每个商品包含以下字段：
+    - name: 商品名称
+    - icon: emoji图标
+    - effectDesc: 功效简述 (如: 健康+20 / 心情+15)
+    - detail: 物品的详细介绍 (50字以内)
+    - heirThought: 皇嗣看到这个东西的第一反应/内心吐槽 (一定要符合Ta的性格！比如傲娇的要口是心非，贪吃的要流口水，生病要说难受)
+    - preference: 皇嗣的喜爱程度 (请直接返回星星符号，如 "⭐⭐⭐⭐" 或 "⭐")
+    `;
     
     try {
         var res = await fetchAI(prompt, config);
-        var newItems = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        // 清理 AI 可能返回的 Markdown 格式
+        var jsonStr = res.replace(/```json/g,'').replace(/```/g,'').trim();
+        var newItems = JSON.parse(jsonStr);
+        
+        // 存入手机数据
         currentHeir.phoneData.shops[type] = newItems;
         saveHeirData();
+        
+        // 刷新列表显示
         div.innerHTML = renderShopList(newItems, type);
-    } catch(e) { div.innerHTML = '❌ 进货失败'; }
+    } catch(e) { 
+        console.error(e);
+        div.innerHTML = '❌ 进货失败 (AI 格式错误)'; 
+    }
 }
+
 
 function showItemDetail(type, idx) {
     var item = currentHeir.phoneData.shops[type][idx];
@@ -9297,17 +9792,211 @@ writeDailyDiary();
     }
 }
 
-// 11. 🎂 长大
-function advanceYear() {
-    if (currentHeir.isDead || currentHeir.age >= 18) return;
-    currentHeir.age += 1; currentHeir.season = '春';
-    currentHeir.body.height += (5 + Math.floor(Math.random()*5));
-    currentHeir.body.weight += (2 + Math.floor(Math.random()*3));
-    currentHeir.bioLog.push(`——— ${currentHeir.age} 岁 ———`);
-    saveHeirData(); openEastPalace(); checkDeath();
-writeDailyDiary();
+// ================= 🎓 5.0 核心：成人礼与可视化结算 =================
 
+// 1. 检查并结算成就
+function checkAchievements() {
+    if (!currentHeir.achievements) currentHeir.achievements = [];
+    
+    ACHIEVEMENT_DB.forEach(ach => {
+        // 如果还没获得，且满足条件
+        if (!currentHeir.achievements.includes(ach.name) && ach.req(currentHeir)) {
+            currentHeir.achievements.push(ach.name);
+            auth.toast(`🏆 解锁成就：【${ach.name}】`);
+        }
+    });
 }
+
+// 2. 开启成人礼 (结算界面)
+async function openAdultCeremony() {
+    // 关闭其他窗口
+    document.querySelectorAll('.modal-overlay').forEach(el => el.classList.remove('active'));
+    
+    // 1. 判定职业
+    let bestCareer = CAREER_DB[CAREER_DB.length - 1]; // 默认平民
+    let bestIndex = CAREER_DB.length - 1;
+
+    // 倒序遍历，找到最高级且符合条件的职业
+    for (let i = 0; i < CAREER_DB.length; i++) {
+        let job = CAREER_DB[i];
+        let qualified = true;
+        
+        // 检查每一项硬性指标
+        for (let reqKey in job.req) {
+            let currentVal = currentHeir.params[reqKey] || 0;
+            // 如果是负数要求（例如 rebellion: -1），代表“不能超过”
+            if (job.req[reqKey] < 0) { 
+                 /* 暂不处理特殊逻辑，按标准大于等于处理 */ 
+            } else {
+                if (currentVal < job.req[reqKey]) { qualified = false; break; }
+            }
+        }
+        
+        if (qualified) {
+            bestCareer = job;
+            bestIndex = i;
+            break; // 找到了就停止 (前提是CAREER_DB按优先级排序了，或者反过来)
+        }
+    }
+
+    currentHeir.career = bestCareer.name;
+    
+    // 存入家族
+    archiveHeirToFamily(currentHeir);
+    saveHeirData();
+
+    // 2. 构建可视化 HTML
+    var modal = document.querySelector('#eastPalaceModal .modal');
+    // 临时改变样式为全屏
+    modal.className = "modal adult-modal"; 
+    document.getElementById('eastPalaceModal').classList.add('active');
+
+    // 生成属性判定条 HTML
+    let judgeHtml = "";
+    if (bestCareer.name === "平民") {
+        judgeHtml = "<div style='text-align:center;color:#999;font-size:12px;'>平平淡淡才是真...</div>";
+    } else {
+        for (let key in bestCareer.req) {
+            let reqVal = bestCareer.req[key];
+            let curVal = currentHeir.params[key] || 0;
+            let isPass = curVal >= reqVal;
+            let pct = Math.min(100, (curVal / 120) * 100); // 进度条长度
+            let lineLeft = Math.min(100, (reqVal / 120) * 100); // 达标线位置
+
+            // 属性名汉化
+            let label = {wisdom:'智慧',fitness:'体魄',charm:'魅力',diligence:'勤勉',rebellion:'叛逆',morality:'道德',ambition:'野心',affection:'亲密'}[key] || key;
+
+            judgeHtml += `
+            <div class="judge-row">
+                <span class="judge-label">${label}</span>
+                <div class="judge-track">
+                    <div class="judge-bar ${isPass?'pass':'fail'}" style="width:${pct}%"></div>
+                    <div class="judge-line" style="left:${lineLeft}%" title="要求: ${reqVal}"></div>
+                </div>
+                <div class="judge-val">
+                    ${curVal}/${reqVal} ${isPass?'✅':'❌'}
+                </div>
+            </div>`;
+        }
+    }
+
+    // 生成成就 HTML
+    let achHtml = currentHeir.achievements.map(a => `<span class="ach-badge">🏆 ${a}</span>`).join('');
+    if(!achHtml) achHtml = `<span style="color:#ccc;font-size:12px;">(本次人生暂无特殊成就)</span>`;
+
+    // 渲染界面
+    modal.innerHTML = `
+        <div class="adult-header">✨ 冠礼 · 成人结算 ✨</div>
+        <div class="adult-content">
+            
+            <div class="career-card-large">
+                <div class="career-icon-big">🎓</div>
+                <div class="career-title-big">${bestCareer.name}</div>
+                <div class="career-desc">"${bestCareer.type === 'bad' ? '有些路，一旦走错就回不去了...' : '前程似锦，未来可期。'}"</div>
+            </div>
+
+            <div class="judge-box">
+                <div class="judge-title">📋 职业资质判定书</div>
+                ${judgeHtml}
+            </div>
+
+            <div class="judge-box" style="border-left:3px solid #ff9a9e;">
+                <div class="judge-title">🏅 人生成就</div>
+                <div class="achievement-grid">${achHtml}</div>
+            </div>
+
+            <div class="judge-box" style="background:#fffbf0; border:none;">
+                <div class="judge-title">💌 ${currentHeir.name} 的离家留言</div>
+                <div id="careerLetter" class="farewell-letter">
+                    <div class="ai-loading">✍️ 正在挥泪写信...</div>
+                </div>
+            </div>
+
+            <button onclick="closeEastPalace(); location.reload();" class="primary-btn" style="width:100%; margin-top:20px; padding:15px; font-size:16px;">
+                👋 孩子长大了 (归档并允许生二胎)
+            </button>
+        </div>
+    `;
+
+    // 3. 调用 AI 生成离别信
+    generateCareerStory(bestCareer.name);
+}
+
+// 3. AI 生成就职感言
+async function generateCareerStory(job) {
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) {
+        document.getElementById('careerLetter').innerHTML = "（AI 没电了，孩子默默地走了...）";
+        return;
+    }
+
+    const prompt = `
+    我是女皇。我的皇嗣【${currentHeir.name}】今天18岁成年了。
+    经过多年的培养，他/她最终成为了【${job}】。
+    
+    性格属性：${JSON.stringify(currentHeir.params)}。
+    人生成就：${currentHeir.achievements.join(',')}。
+    
+    请以【皇嗣的第一人称】，写一封给我的“离家告别信”（100字左右）。
+    内容要求：
+    1. 提到自己对这个职业的看法（喜欢/无奈/野心）。
+    2. 回忆一件小时候的事（根据性格瞎编一件温馨或扎心的）。
+    3. 表达对母亲（女皇）的感谢或怨恨（看亲密度和叛逆值）。
+    `;
+
+    try {
+        const res = await fetchAI(prompt, config);
+        document.getElementById('careerLetter').innerHTML = res.replace(/\n/g, '<br>');
+        
+        // 存入生平
+        currentHeir.bioLog.push(`【18岁·结局】：${res}`);
+        saveHeirData();
+    } catch(e) {
+        document.getElementById('careerLetter').innerText = "（孩子走得太急，没留下书信...）";
+    }
+}
+
+// 11. 🎂 长大
+
+// 🎂 长大一岁 (职业判定 + 家族归档)
+
+// 🎂 长大一岁 (接入成人礼版)
+function advanceYear() {
+    if (currentHeir.isDead) return;
+    
+    // 🔍 每年检查一次成就
+    checkAchievements();
+
+    // 🎓 18岁成人礼触发点
+    if (currentHeir.age === 17) {
+        currentHeir.age = 18;
+        // 直接进入结算流程，不直接保存career，交给 openAdultCeremony 处理
+        openAdultCeremony();
+        return;
+    }
+
+    if (currentHeir.age >= 18) {
+        auth.toast('🎓 孩子已成年在外打拼...');
+        currentHeir.age += 1;
+    } else {
+        currentHeir.age += 1;
+        currentHeir.season = '春'; // 未成年重置季节
+        
+        // 生长发育 (身高体重)
+        currentHeir.body.height += (5 + Math.floor(Math.random()*5));
+        currentHeir.body.weight += (2 + Math.floor(Math.random()*3));
+    }
+
+    currentHeir.bioLog.push(`——— ${currentHeir.age} 岁 ———`);
+    
+    saveHeirData();
+    openEastPalace();
+    
+    if(typeof checkDeath === 'function') checkDeath();
+    if(typeof writeDailyDiary === 'function') writeDailyDiary();
+}
+
+
 
 // 12. 💀 死亡
 function checkDeath() {
@@ -9503,6 +10192,192 @@ async function writeDailyDiary() {
         
     } catch(e) {
         console.log("❌ 日记写入失败");
+    }
+}
+
+// ================= ❤️ 姻缘簿核心逻辑 (补全) =================
+
+// 1. 生成恋爱对象 (修正版：确保有初始属性)
+async function generatePartners() {
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    var targetGender = currentHeir.gender === '男' ? '女性' : '男性';
+    
+    // 没 Key 用假数据保底
+    if(!config || !config.apiKey) {
+        currentHeir.dating.partners = [
+            { name: "王二丫", age: 15, job: "卖花的", avatar: "https://files.catbox.moe/fv8f8p.gif", nature: "良配", affinity: 10, status: "相识", logs: [], desc: "勤劳善良。" },
+            { name: "赵公子", age: 17, job: "富家子", avatar: "https://files.catbox.moe/3ofd6b.png", nature: "渣男", affinity: 5, status: "相识", logs: [], desc: "眼神轻浮。" }
+        ];
+        saveHeirData();
+        return;
+    }
+
+    var prompt = `生成3个古代${targetGender}恋爱对象。
+    JSON格式: [{"name":"","age":16,"job":"","nature":"良配/绿茶/普通","desc":"性格描述"}]`;
+    
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        
+        // 🔥 关键：给新生成的对象手动加上初始属性，防止 undefined
+        data.forEach(d => {
+            d.avatar = "https://files.catbox.moe/fv8f8p.gif"; // 默认头像
+            d.affinity = Math.floor(Math.random() * 15); // 初始好感 0-15
+            d.status = "相识"; // 初始状态
+            d.logs = []; // 初始日志为空
+        });
+        
+        currentHeir.dating.partners = data;
+        saveHeirData();
+        
+        // 刷新界面
+        if(document.querySelector('.app-window')) openApp('matchmaker');
+    } catch(e) {
+        console.error("生成失败", e);
+        auth.toast("❌ 生成失败，请检查 API Key");
+    }
+}
+
+// 2. 刷新按钮逻辑
+async function refreshPartners() {
+    document.querySelector('.app-content').innerHTML = '<div style="text-align:center; padding:50px;">💘 正在重新寻觅...</div>';
+    await generatePartners();
+}
+
+// 3. 拆散逻辑
+function breakUp(idx) {
+    var p = currentHeir.dating.partners[idx];
+    // 成功率 = 亲密度 - 叛逆值
+    if (currentHeir.params.affection > currentHeir.params.rebellion + 10) {
+        auth.toast(`✅ 成功劝退了 ${p.name}！`);
+        currentHeir.dating.partners.splice(idx, 1);
+        saveHeirData();
+        openApp('matchmaker'); // 刷新列表
+    } else {
+        auth.toast('❌ 失败！皇嗣非常反感！(叛逆+10)');
+        currentHeir.params.rebellion += 10;
+        saveHeirData();
+    }
+}
+
+// 4. 助攻逻辑
+function assistLove(gift) {
+    if(confirm(`确定要花钱买【${gift}】给皇嗣去送礼吗？`)) {
+        auth.toast('🎁 助攻成功！感情升温了！');
+    }
+}
+
+// ================= ❤️ 恋爱互动逻辑 (补全包) =================
+
+// 1. 💌 接触/约会逻辑 (AI 生成剧情)
+async function dateWithPartner() {
+    // 获取当前对象
+    if (currentPartnerIdx === -1 || !currentHeir.dating.partners[currentPartnerIdx]) return;
+    var p = currentHeir.dating.partners[currentPartnerIdx];
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) { auth.toast('🔑 需要 API Key 才能约会！'); return; }
+
+    auth.toast(`💌 皇嗣正在和 ${p.name} 接触中...`);
+
+    // 构建 Prompt
+    var prompt = `
+    我是女皇。
+    主角：皇嗣（${currentHeir.age}岁，性格：${JSON.stringify(currentHeir.params)}）。
+    对象：${p.name}（身份：${p.job}，性格：${p.desc}）。
+    当前关系：${p.status} (好感 ${p.affinity})。
+    
+    请生成一段两人互动的简短剧情（50字左右）。
+    并根据互动情况，判断好感度变化（-10 到 +10）。
+    
+    格式 JSON：{ "story": "剧情内容", "score": 5 }
+    `;
+
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        
+        // 更新数据
+        p.affinity = Math.min(100, Math.max(-100, p.affinity + data.score)); // 限制范围
+        if (!p.logs) p.logs = [];
+        p.logs.push({ date: `${currentHeir.age}岁·${currentHeir.season}`, content: data.story });
+        
+        // 状态判定逻辑
+        updateRelationshipStatus(p);
+        
+        saveHeirData();
+        
+        // 刷新页面 (关掉旧的，重新打开)
+        var oldWin = document.querySelector('.app-window.open');
+        if (oldWin) oldWin.remove();
+        openPartnerDetail(currentPartnerIdx); 
+        
+        auth.toast(data.score >= 0 ? '💖 感情升温了！' : '💔 发生了一些不愉快...');
+        
+    } catch(e) { console.error(e); auth.toast('❌ 约会失败'); }
+}
+
+// 2. 💬 家长干涉逻辑 (你要找的按钮就是调用的这个！)
+async function parentIntervene() {
+    if (currentPartnerIdx === -1) return;
+    var p = currentHeir.dating.partners[currentPartnerIdx];
+    
+    var text = prompt(`你想对皇嗣说什么？\n(例如："离他远点，他是坏人" 或 "这孩子不错，多接触")`);
+    if (!text) return;
+    
+    auth.toast('💬 正在对皇嗣进行说教...');
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    var prompt = `
+    我是家长。我对皇嗣说：“${text}”。
+    皇嗣当前在和 ${p.name} 交往 (好感 ${p.affinity})。
+    皇嗣的叛逆值是 ${currentHeir.params.rebellion}。
+    
+    请生成皇嗣的反应。
+    并判断对这段关系的影响（如果是劝分，且皇嗣叛逆高，好感反而可能增加；如果是劝合，也看性格）。
+    
+    格式 JSON：{ "reply": "皇嗣的回嘴", "score": -5 }
+    `;
+
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        
+        alert(`皇嗣说：\n“${data.reply}”`);
+        
+        // 更新数据
+        p.affinity = Math.min(100, Math.max(-100, p.affinity + data.score));
+        
+        // 如果是负面干涉，增加叛逆
+        if (data.score < 0) currentHeir.params.rebellion = Math.min(100, currentHeir.params.rebellion + 5);
+        
+        updateRelationshipStatus(p);
+        saveHeirData();
+        
+        // 刷新
+        var oldWin = document.querySelector('.app-window.open');
+        if (oldWin) oldWin.remove();
+        openPartnerDetail(currentPartnerIdx);
+        
+    } catch(e) {}
+}
+
+// 3. 状态判定机 (必须有这个，不然关系状态不会变)
+function updateRelationshipStatus(p) {
+    if (p.affinity <= -20) {
+        p.status = "断联"; 
+        // 如果之前没断联，加一条日志
+        if (p.logs.length === 0 || !p.logs[p.logs.length-1].content.includes("断绝")) {
+             p.logs.push({ date: "系统", content: "💔 关系破裂，从此陌路。" });
+        }
+    } else if (p.affinity < 20) {
+        p.status = "相识";
+    } else if (p.affinity < 60) {
+        p.status = "暧昧";
+    } else if (p.affinity < 90) {
+        p.status = "恋爱";
+    } else {
+        p.status = "热恋";
     }
 }
 
