@@ -1767,92 +1767,6 @@
     border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
-/* ================= 👶 高级皇嗣养成系统样式 ================= */
-
-/* 东宫主界面弹窗 */
-#eastPalaceModal .modal {
-    width: 380px;
-    background: linear-gradient(to bottom, #fffbf0, #fff);
-    border: 3px solid #d4af37;
-    border-radius: 15px;
-    padding: 0;
-    overflow: hidden;
-}
-
-/* 顶部：画像区域 */
-.heir-portrait-stage {
-    height: 200px;
-    background: #ffe4e1; /* 默认粉底 */
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    position: relative;
-    border-bottom: 2px solid #d4af37;
-}
-/* 不同年龄段的背景图 (这里用颜色代替，你可以换成图片链接) */
-.stage-baby { background: linear-gradient(to top, #fddb92 0%, #d1fdff 100%); }
-.stage-child { background: linear-gradient(to top, #a8edea 0%, #fed6e3 100%); }
-.stage-teen { background: linear-gradient(to top, #d299c2 0%, #fef9d7 100%); }
-.stage-adult { background: linear-gradient(to top, #ebc0fd 0%, #d9ded8 100%); }
-
-/* 孩子画像 (用 emoji 或图片占位) */
-.heir-avatar {
-    font-size: 100px;
-    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
-    transition: all 0.5s;
-}
-
-/* 中部：信息面板 */
-.heir-info-panel {
-    padding: 15px;
-}
-.heir-name-title {
-    text-align: center;
-    color: #d4af37;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-/* 属性进度条格 */
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px; color: #666; }
-.stat-bar-bg { background: #eee; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 2px; }
-.stat-bar-fill { height: 100%; background: #ffd700; width: 20%; transition: width 0.5s; }
-/* 不同属性不同色 */
-.fill-wisdom { background: #81ecec; }
-.fill-fitness { background: #ff7675; }
-.fill-charm { background: #a29bfe; }
-
-/* 底部：生平记录与操作 */
-.heir-bio-box {
-    background: rgba(255,255,255,0.8);
-    border: 1px dashed #d4af37;
-    padding: 10px;
-    height: 80px;
-    overflow-y: auto;
-    font-size: 12px;
-    line-height: 1.6;
-    margin: 10px 15px;
-    border-radius: 5px;
-}
-.heir-actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    padding: 10px 15px 15px;
-    background: #fffbf0;
-    border-top: 1px solid #eee;
-}
-.heir-btn {
-    padding: 8px; border: 1px solid #d4af37; background: #fff; color: #d4af37; border-radius: 5px; font-size: 12px; cursor: pointer;
-}
-.heir-btn:hover { background: #fff7d1; }
-.heir-btn.graduate { background: #d4af37; color: white; font-weight: bold; }
-
-/* 创建时的输入框 */
-#creationSettingInput {
-    width: 100%; padding: 10px; border: 2px solid #d4af37; border-radius: 8px; min-height: 60px; font-family: inherit; margin: 10px 0;
-}
-
 /* ================= 👶 皇嗣系统：2D动态立绘版 ================= */
 
 /* 1. 东宫弹窗容器 */
@@ -1945,91 +1859,6 @@
     margin-top: 5px;
 }
 
-/* ================= 🌏 皇舆全览：上下布局版 ================= */
-
-#travelModal .modal {
-    width: 90%; height: 90%; max-width: 600px; /* 竖屏适配 */
-    background: #fff; padding: 0;
-    border: 3px solid #d4af37;
-    border-radius: 12px;
-    display: flex; flex-direction: column;
-    overflow: hidden;
-}
-
-/* 顶部标题栏 */
-.travel-header {
-    height: 45px; background: #222; color: #d4af37;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 15px; font-weight: bold; font-size: 14px;
-    border-bottom: 2px solid #d4af37;
-    flex-shrink: 0;
-}
-
-/* 主体容器：垂直排列 */
-.travel-body {
-    flex: 1; display: flex; flex-direction: column; /* 关键：改为纵向 */
-    overflow: hidden;
-}
-
-/* 上半部分：地图展示区 */
-.travel-map-view {
-    height: 35%; /* 地图占 35% 高度 */
-    position: relative; background: #000;
-    border-bottom: 2px solid #d4af37;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-.travel-bg {
-    width: 100%; height: 100%; 
-    object-fit: cover; /* 填满区域 */
-    opacity: 0.9; transition: opacity 0.3s;
-}
-
-/* 下半部分：地点列表区 */
-.travel-sidebar {
-    flex: 1; /* 占满剩余高度 */
-    background: #fffbf0;
-    overflow-y: auto; /* 允许滚动 */
-    padding: 10px;
-    
-    /* 🔥 核心：网格布局，一行3个 */
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 8px;
-    align-content: start; /* 内容靠上 */
-}
-
-/* 地点按钮 */
-.location-btn {
-    padding: 8px 5px; 
-    background: #fff; border: 1px solid #e0d0b0;
-    border-radius: 6px; cursor: pointer;
-    font-size: 12px; color: #5d4037;
-    text-align: center; /* 文字居中 */
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    min-height: 40px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-.location-btn:hover {
-    background: #ffe0b2; border-color: #d4af37; transform: translateY(-2px);
-}
-.location-btn.special { /* 切换点 */
-    background: #fff0f5; color: #c0392b; border-color: #ffb7c5; font-weight: bold;
-}
-
-/* 事件结果弹窗 (居中显示) */
-.travel-event-box {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 85%; max-width: 350px;
-    background: rgba(255, 255, 255, 0.98);
-    padding: 20px; border-radius: 12px;
-    border: 2px solid #d4af37;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.6);
-    display: none; text-align: center;
-    z-index: 100;
-}
-
 /* ================= 🌸 东宫修复补丁 (强制显示背景) ================= */
 .heir-bg-stage {
     display: block !important;
@@ -2055,6 +1884,336 @@
 
 /* 隐藏旧的小球相关样式 (防止干扰) */
 .heir-ball-wrapper, .heir-ball { display: none !important; }
+
+/* ================= 🧠 皇嗣系统 2.0 专属样式 ================= */
+
+/* 聊天气泡动画 */
+@keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* 属性条容器 */
+.heir-stat-row { display: flex; align-items: center; font-size: 12px; margin-bottom: 6px; color: #555; }
+.heir-stat-label { width: 32px; font-weight: bold; text-align: right; margin-right: 5px; }
+.heir-stat-track { flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
+.heir-stat-bar { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.heir-stat-num { width: 28px; text-align: right; font-family: monospace; opacity: 0.7; }
+
+/* 聊天区域 */
+.heir-chat-container {
+    flex: 1; overflow-y: auto; padding: 15px; 
+    background-color: #f7f9fc;
+    display: flex; flex-direction: column; gap: 12px;
+    scroll-behavior: smooth;
+}
+
+/* 消息气泡 */
+.heir-msg {
+    max-width: 80%; padding: 10px 14px; border-radius: 15px;
+    font-size: 13px; line-height: 1.5; position: relative;
+    animation: popIn 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.heir-msg.ai { align-self: flex-start; background: #fff; border-bottom-left-radius: 2px; color: #444; }
+.heir-msg.user { align-self: flex-end; background: #a29bfe; color: white; border-bottom-right-radius: 2px; }
+
+/* 底部输入区 */
+.heir-input-area {
+    padding: 10px; background: #fff; border-top: 1px solid #eee;
+    display: flex; flex-direction: column; gap: 8px;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
+}
+.heir-input-row { display: flex; gap: 8px; }
+.heir-input-box {
+    flex: 1; padding: 10px 15px; border: 2px solid #eee; border-radius: 20px;
+    font-size: 14px; outline: none; transition: 0.3s;
+}
+.heir-input-box:focus { border-color: #a29bfe; background: #fdfdfd; }
+.heir-send-btn {
+    background: #a29bfe; color: white; border: none; padding: 0 20px;
+    border-radius: 20px; font-weight: bold; cursor: pointer;
+    box-shadow: 0 4px 10px rgba(162, 155, 254, 0.3); transition: 0.2s;
+}
+.heir-send-btn:active { transform: scale(0.95); }
+
+/* 功能按钮行 */
+.heir-func-row { display: flex; justify-content: space-between; padding: 0 5px; }
+.heir-func-btn {
+    background: none; border: 1px dashed #ccc; color: #888;
+    padding: 4px 10px; border-radius: 15px; font-size: 11px; cursor: pointer;
+}
+.heir-func-btn:hover { border-color: #a29bfe; color: #a29bfe; }
+
+/* ================= 🗺️ 地图 & 回忆录样式 ================= */
+
+/* 地图弹窗容器 */
+.map-modal-body {
+    display: flex; flex-direction: column; height: 100%; background: #fffbf0;
+}
+
+/* 地图上半部分 */
+.map-header {
+    height: 180px; background-size: cover; background-position: center;
+    position: relative; border-bottom: 3px solid #d4af37;
+    flex-shrink: 0;
+}
+.map-title-badge {
+    position: absolute; top: 10px; left: 10px; 
+    background: rgba(0,0,0,0.6); color: #d4af37; 
+    padding: 5px 12px; border-radius: 20px; font-weight: bold; border: 1px solid #d4af37;
+}
+
+/* 地点网格 */
+.map-grid {
+    flex: 1; overflow-y: auto; padding: 15px; 
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    align-content: start;
+}
+.location-card {
+    background: #fff; border: 1px solid #e0d0b0; border-radius: 8px;
+    padding: 10px 5px; text-align: center; font-size: 12px; cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+}
+.location-card:hover { transform: translateY(-2px); border-color: #d4af37; background: #fff7d1; }
+
+/* 🏞️ 景点对话模式 */
+.travel-chat-view {
+    display: flex; flex-direction: column; height: 100%; background: #fff;
+}
+.travel-scene-area {
+    height: 200px; position: relative; 
+    background-size: cover; background-position: center;
+    display: flex; align-items: flex-end; justify-content: center;
+}
+/* 旅游时的小人 */
+.travel-avatar {
+    height: 140px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.8));
+    transition: transform 0.3s;
+}
+.travel-chat-box {
+    flex: 1; overflow-y: auto; padding: 15px; background: rgba(255,255,255,0.9);
+}
+.travel-controls {
+    padding: 10px; background: #fff; border-top: 1px solid #eee;
+    display: flex; gap: 10px;
+}
+
+/* 📖 回忆录列表 */
+.memory-list {
+    padding: 20px; overflow-y: auto; height: 100%; background: #fffaf0;
+}
+.memory-item {
+    position: relative; padding-left: 20px; margin-bottom: 20px; border-left: 2px solid #ffb7c5;
+}
+.memory-item::before {
+    content: '🌸'; position: absolute; left: -9px; top: 0; background: #fffaf0;
+}
+.memory-content {
+    background: #fff; padding: 10px; border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 13px; line-height: 1.6; color: #555;
+}
+
+/* ================= 📱 手机 & 状态面板样式 ================= */
+
+/* 切换按钮 */
+.switch-btn {
+    font-size: 10px; background: #fff; border: 1px solid #ddd;
+    border-radius: 10px; padding: 2px 8px; cursor: pointer; color: #888;
+    margin-bottom: 5px; display: inline-block;
+}
+.switch-btn.active { background: #a29bfe; color: white; border-color: #a29bfe; }
+
+/* 身体档案面板 */
+.info-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; color: #555;
+    background: #fdfdfd; padding: 5px; border-radius: 5px;
+}
+.info-item { border-bottom: 1px dashed #eee; padding-bottom: 2px; }
+.info-label { color: #999; margin-right: 5px; }
+.status-tag { padding: 1px 4px; border-radius: 4px; color: white; font-size: 10px; }
+.status-good { background: #00b894; }
+.status-bad { background: #d63031; }
+.status-warn { background: #fdcb6e; }
+
+/* ================= 📱 手机系统 (最终美化·白身粉框版) ================= */
+
+/* 1. 手机外壳：纯白机身 + 少女粉边框 */
+.iphone-modal {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 340px; height: 660px; /* 稍微加长一点，视野更好 */
+    background: #ffffff; /* 纯白机身 */
+    border: 6px solid #ffb7c5; /* 💖 可爱的粉色边框 */
+    border-radius: 40px;
+    box-shadow: 
+        0 0 0 2px #fff inset, /* 内发光 */
+        0 20px 50px rgba(255, 183, 197, 0.4); /* 粉色光晕投影 */
+    z-index: 10000; display: none; flex-direction: column; overflow: hidden;
+    font-family: sans-serif;
+    animation: popUp 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+@keyframes popUp { from {transform: translate(-50%, 0) scale(0.9); opacity: 0;} to {transform: translate(-50%, -50%) scale(1); opacity: 1;} }
+
+/* 2. 额头与下巴 */
+.iphone-chin-top { height: 35px; background: #fff; flex-shrink: 0; position: relative; border-bottom: 1px solid #f5f5f5; }
+.iphone-camera { 
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 60px; height: 12px; background: #eee; border-radius: 20px; 
+}
+.iphone-chin-bottom { height: 55px; background: #fff; flex-shrink: 0; display: flex; justify-content: center; align-items: center; border-top: 1px solid #f5f5f5; }
+.iphone-home-btn {
+    width: 45px; height: 45px; border-radius: 50%; 
+    background: #fff; border: 3px solid #ffb7c5; /* 粉色Home键环 */
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05); cursor: pointer; transition: 0.2s;
+}
+.iphone-home-btn:active { transform: scale(0.9); background: #f0f0f0; }
+
+/* 3. 屏幕区域 */
+.iphone-screen {
+    flex: 1; position: relative; overflow: hidden; display: flex; flex-direction: column;
+    /* 清新壁纸，加一点模糊遮罩让图标更清晰 */
+    background: url('https://files.catbox.moe/gsn7fd.png') center/cover;
+}
+.iphone-screen::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255,255,255,0.3); pointer-events: none;
+}
+
+.iphone-statusbar {
+    height: 24px; padding: 0 15px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; font-weight: bold; color: #555; z-index: 5;
+    background: rgba(255,255,255,0.6); backdrop-filter: blur(5px);
+}
+
+/* 4. APP 图标网格 (可爱风) */
+.app-grid {
+    padding: 30px 20px; display: grid; grid-template-columns: repeat(4, 1fr); 
+    gap: 20px 10px; align-content: start; flex: 1; z-index: 5;
+}
+/* 图标外壳 */
+.app-icon-wrapper {
+    display: flex; flex-direction: column; align-items: center; cursor: pointer;
+    transition: transform 0.2s;
+}
+.app-icon-wrapper:hover { transform: translateY(-3px); }
+.app-icon-wrapper:active { transform: scale(0.95); }
+
+/* 图标本体 */
+.app-icon {
+    width: 52px; height: 52px; border-radius: 14px; 
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    position: relative; overflow: hidden;
+    border: 2px solid #fff;
+}
+/* 给图标加高光 */
+.app-icon::after {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    pointer-events: none;
+}
+.app-name { 
+    font-size: 11px; color: #333; margin-top: 6px; font-weight: bold; 
+    text-shadow: 0 1px 1px #fff;
+}
+
+/* 5. APP 内部窗口 (全屏覆盖) */
+.app-window {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #f7f9fc; /* APP内部淡灰背景 */
+    transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 20; display: flex; flex-direction: column;
+}
+.app-window.open { transform: translateY(0); }
+
+/* 头部导航栏 (两端对齐修复版) */
+.app-header {
+    height: 50px; background: rgba(255,255,255,0.95); 
+    border-bottom: 1px solid #ffe6eb;
+    display: flex; align-items: center; justify-content: space-between; /* 👈 修复：两端对齐 */
+    padding: 0 10px; font-weight: bold; font-size: 15px; color: #d66a80;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02); z-index: 10;
+}
+.app-header-btn {
+    font-size: 20px; cursor: pointer; color: #ff8fa3; background:none; border:none; padding: 5px;
+    min-width: 40px; /* 保证按钮好点 */
+}
+
+/* 内容区域 */
+.app-content { flex: 1; overflow-y: auto; padding: 12px; }
+
+/* 6. 卡片通用样式 (锦衣阁/商店/微聊/姻缘簿) */
+.clothing-card, .shop-item, .partner-card, .chat-list-item {
+    background: #fff; border-radius: 12px; 
+    padding: 10px; margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid #fff0f5;
+    transition: all 0.2s;
+}
+.clothing-card:hover, .shop-item:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+
+/* 锦衣阁图片 */
+.clothing-img { width: 100%; height: 100px; object-fit: contain; margin: 5px 0; }
+.clothing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* 聊天气泡 (美化版) */
+.phone-chat-box { background: #f2f2f2; padding: 15px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; }
+.phone-msg { max-width: 78%; padding: 10px 14px; border-radius: 18px; font-size: 13px; line-height: 1.4; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.phone-msg.left { align-self: flex-start; background: #fff; color: #333; border-bottom-left-radius: 4px; }
+.phone-msg.right { align-self: flex-end; background: #ff9a9e; color: white; border-bottom-right-radius: 4px; }
+
+/* 按钮美化 */
+.shop-btn {
+    padding: 6px 12px; border-radius: 15px; font-size: 11px; border: none; 
+    color: white; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 物品详情弹窗 */
+.item-detail-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255,255,255,0.98); z-index: 50;
+    display: flex; flex-direction: column; padding: 25px; box-sizing: border-box;
+    transform: translateY(100%); transition: transform 0.3s;
+}
+.item-detail-overlay.show { transform: translateY(0); }
+.item-big-icon { font-size: 70px; text-align: center; margin: 30px 0; animation: float 3s infinite ease-in-out; }
+@keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+
+/* 🔧 微信图片修复补丁 */
+.chat-list-item img {
+    width: 45px !important;    /* 强制宽度 */
+    height: 45px !important;   /* 强制高度 */
+    border-radius: 8px !important;
+    object-fit: cover !important; /* 裁剪不留白 */
+    flex-shrink: 0 !important;    /* 禁止被挤压 */
+    margin-right: 10px !important;
+    display: block !important;
+}
+
+/* 修复列表布局，防止文字被挤下去 */
+.chat-list-item {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important; /* 强制横向排列 */
+}
+
+/* 🔧 姻缘簿头像强制修复补丁 */
+.partner-avatar {
+    width: 50px !important;     /* 强制限制宽度 */
+    height: 50px !important;    /* 强制限制高度 */
+    border-radius: 50% !important; /* 变成圆形 */
+    object-fit: cover !important;  /* 自动裁剪，防止变形 */
+    flex-shrink: 0 !important;     /* 禁止被挤压 */
+    margin-right: 10px !important; /* 和文字保持距离 */
+    border: 2px solid #ff7675 !important; /* 加个粉色边框更好看 */
+    display: block !important;
+}
+
+/* 确保卡片头部横向排列 */
+.partner-header {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important;
+}
+
 
     </style>
 
@@ -3159,337 +3318,6 @@ var aiConfig = JSON.parse(localStorage.getItem('my_ai_config')) || {
     apiKey: '',
     model: 'gpt-3.5-turbo'
 };
-
-// ================= 🚑 皇嗣系统 (防白屏安全版) =================
-
-// 1. 读取存档 (使用 var 防止报错)
-var currentHeir = JSON.parse(localStorage.getItem('royal_heir_data')) || null;
-
-// ================= 🖼️ 全新图片配置 (已按您的要求更新) =================
-
-// 1. 基础背景池：平时没事干时，根据季节随机展示
-var HEIR_ASSETS = {
-    boy: {
-        bg: { 
-            // 🌸 春天：钓鱼、玩耍、赏花、书房读书
-            '春': [
-                "https://files.catbox.moe/87xa1i.png", // 钓鱼
-                "https://files.catbox.moe/7lhq83.png", // 玩耍
-                "https://files.catbox.moe/3wx26e.png", // 赏花
-                "https://files.catbox.moe/3lwe0w.png"  // 读书
-            ],
-            // 🍃 夏天：(你给的夏季图较少，混入通用的室内图，防止空白)
-            '夏': [
-                "https://files.catbox.moe/3lwe0w.png", // 读书
-                "https://files.catbox.moe/11wud2.png", // 练字
-                "https://files.catbox.moe/75je6d.png", // 训练
-                "https://files.catbox.moe/xyp7uw.png"  // 食堂
-            ],
-            // 🍁 秋天：钓鱼、玩耍、逗鸟
-            '秋': [
-                "https://files.catbox.moe/87xa1i.png", // 钓鱼
-                "https://files.catbox.moe/7lhq83.png", // 玩耍
-                "https://files.catbox.moe/f539et.png", // 逗鸟
-                "https://files.catbox.moe/3lwe0w.png"  // 读书
-            ], 
-            // ❄️ 冬天：赏梅、寝宫、打雪仗
-            '冬': [
-                "https://files.catbox.moe/idu2gw.jpg", // 赏梅
-                "https://files.catbox.moe/fkfstg.jpg", // 寝宫
-                "https://files.catbox.moe/937inc.png"  // 打雪仗
-            ]
-        },
-        // 🕺 人物立绘 (沿用旧的，防止没有小人)
-        idle: [ "https://files.catbox.moe/fv8f8p.gif", "https://files.catbox.moe/vdvz1m.gif" ],
-        shy: "https://files.catbox.moe/fv8f8p.gif", 
-        yawn: "https://files.catbox.moe/vdvz1m.gif"
-    },
-    girl: {
-        bg: {
-            // 🌸 春天：风筝、后宫玩耍、毽子、秋千
-            '春': [
-                "https://files.catbox.moe/zqx3jl.png", // 风筝
-                "https://files.catbox.moe/j1mo4r.png", // 花园
-                "https://files.catbox.moe/vmn42f.png", // 毽子
-                "https://files.catbox.moe/84wild.png"  // 秋千
-            ],
-            // 🍃 夏天：池塘、西瓜、府里休息
-            '夏': [
-                "https://files.catbox.moe/tw4s8u.jpg", // 池塘
-                "https://files.catbox.moe/qzmagd.png", // 吃瓜
-                "https://files.catbox.moe/gsn7fd.png"  // 休息
-            ],
-            // 🍁 秋天：风筝、毽子
-            '秋': [
-                "https://files.catbox.moe/zqx3jl.png", // 风筝
-                "https://files.catbox.moe/vmn42f.png"  // 毽子
-            ],
-            // ❄️ 冬天：冬日池塘、过年、府外玩耍
-            '冬': [
-                "https://files.catbox.moe/hjnmf4.jpg", // 冬日池塘
-                "https://files.catbox.moe/divoox.png", // 过年
-                "https://files.catbox.moe/vsqo8k.jpg"  // 府外玩耍
-            ] 
-        },
-        // 💃 人物立绘
-        idle: [ "https://files.catbox.moe/8q61ys.gif", "https://files.catbox.moe/4hxxkv.gif" ],
-        shy: "https://files.catbox.moe/cokcdl.gif",
-        yawn: "https://files.catbox.moe/mezusb.gif"
-    }
-};
-
-// 2. 智能场景库：触发特定关键词时，强制切换到这张图
-var HEIR_SCENES = {
-    boy: [
-        // 冬季专属
-        { seasons: ['冬'], keywords: ['梅', '赏梅', '长椅'], url: ['https://files.catbox.moe/idu2gw.jpg'] },
-        { seasons: ['冬'], keywords: ['寝宫', '睡觉', '休息', '起床'], url: ['https://files.catbox.moe/fkfstg.jpg'] },
-        { seasons: ['冬'], keywords: ['雪', '雪仗', '打雪'], url: ['https://files.catbox.moe/937inc.png'] },
-        
-        // 春秋专属
-        { seasons: ['春','秋'], keywords: ['钓鱼', '池塘', '垂钓'], url: ['https://files.catbox.moe/87xa1i.png'] },
-        { seasons: ['春','秋'], keywords: ['玩耍', '游戏', '跑'], url: ['https://files.catbox.moe/7lhq83.png'] },
-        { seasons: ['秋'], keywords: ['鸟', '逗鸟', '长亭'], url: ['https://files.catbox.moe/f539et.png'] },
-        { seasons: ['春'], keywords: ['花', '赏花', '花丛'], url: ['https://files.catbox.moe/3wx26e.png'] },
-
-        // 全季节通用
-        { seasons: ['春','夏','秋','冬'], keywords: ['画画', '丹青', '涂鸦'], url: ['https://files.catbox.moe/6iwmot.png'] },
-        { seasons: ['春','夏','秋','冬'], keywords: ['读书', '看书', '阅读'], url: ['https://files.catbox.moe/3lwe0w.png'] },
-        { seasons: ['春','夏','秋','冬'], keywords: ['学习', '练字', '书法', '上课'], url: ['https://files.catbox.moe/11wud2.png'] },
-        { seasons: ['春','夏','秋','冬'], keywords: ['比赛', '比试', '臣子'], url: ['https://files.catbox.moe/3kderq.png'] },
-        { seasons: ['春','夏','秋','冬'], keywords: ['训诫', '责骂', '受罚'], url: ['https://files.catbox.moe/v1hnmu.png'] },
-        { seasons: ['春','夏','秋','冬'], keywords: ['食堂', '吃饭', '展示'], url: ['https://files.catbox.moe/xyp7uw.png'] },
-        { seasons: ['春','夏','秋','冬'], keywords: ['训练', '习武', '士兵'], url: ['https://files.catbox.moe/75je6d.png'] }
-    ],
-    girl: [
-        // 春秋专属
-        { seasons: ['春','秋'], keywords: ['风筝'], url: ['https://files.catbox.moe/zqx3jl.png'] },
-        { seasons: ['春','秋'], keywords: ['毽子', '踢毽'], url: ['https://files.catbox.moe/vmn42f.png'] },
-        { seasons: ['春'], keywords: ['玩耍', '后宫', '花园'], url: ['https://files.catbox.moe/j1mo4r.png'] },
-        { seasons: ['春'], keywords: ['秋千', '荡秋千'], url: ['https://files.catbox.moe/84wild.png'] },
-
-        // 夏季专属
-        { seasons: ['夏'], keywords: ['玩水', '池塘', '戏水'], url: ['https://files.catbox.moe/tw4s8u.jpg'] },
-        { seasons: ['夏'], keywords: ['西瓜', '吃瓜', '解暑'], url: ['https://files.catbox.moe/qzmagd.png'] },
-        { seasons: ['夏'], keywords: ['休息', '睡觉', '纳凉'], url: ['https://files.catbox.moe/gsn7fd.png'] },
-
-        // 冬季专属
-        { seasons: ['冬'], keywords: ['玩耍', '池塘', '冬日'], url: ['https://files.catbox.moe/hjnmf4.jpg'] },
-        { seasons: ['冬'], keywords: ['过年', '春节', '灯笼'], url: ['https://files.catbox.moe/divoox.png'] },
-        { seasons: ['冬'], keywords: ['府外', '出宫', '逛街'], url: ['https://files.catbox.moe/vsqo8k.jpg'] }
-    ]
-};
-
-// 4. 辅助函数：保存数据
-function saveHeirData() {
-    localStorage.setItem('royal_heir_data', JSON.stringify(currentHeir));
-}
-
-// 5. 辅助函数：更新动图 (没有这个函数也会报错)
-function updateAvatarDisplay(forceState) {
-    const img = document.getElementById('heirDynamicGif');
-    if (!img || !currentHeir) return;
-
-    const isBoy = currentHeir.gender === '男';
-    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
-
-    let targetUrl = "";
-    // 强制状态
-    if (forceState === 'shy') targetUrl = assets.shy;
-    else if (forceState === 'yawn') targetUrl = assets.yawn;
-    // 自动状态 (疲劳高)
-    else if ((currentHeir.stress || 0) > 80) targetUrl = assets.yawn;
-    // 默认随机
-    else {
-        targetUrl = assets.idle[Math.floor(Math.random() * assets.idle.length)];
-    }
-    img.src = targetUrl;
-}
-
-// 6. 辅助函数：毕业 (防止报错)
-function graduateHeir() {
-    if(!confirm('确定要让皇嗣出宫建府吗？(数据将归档)')) return;
-    auth.toast('🎓 皇嗣已赐府成家！(功能待完善)');
-    // 暂时先只关闭窗口，后续可以加归档逻辑
-    closeEastPalace();
-}
-
-// 7. 智能匹配逻辑 (增强版：强制随机切换)
-function smartUpdateHeirScene(actionText) {
-    if (!currentHeir) return;
-    const isBoy = currentHeir.gender === '男';
-    const sceneList = isBoy ? HEIR_SCENES.boy : HEIR_SCENES.girl;
-    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
-    
-    // 1. 先从默认季节池子里【随机】捞一张图 (作为保底)
-    // 关键修复：原来这里只取第0张，现在改为随机取
-    let pool = assets.bg[currentSeason] || assets.bg['春'];
-    if (!Array.isArray(pool)) pool = [pool]; //以此防错
-    
-    let finalUrl = pool[Math.floor(Math.random() * pool.length)];
-
-    // 2. 尝试匹配关键词 (如果有特殊剧情，覆盖保底图)
-    if (actionText) {
-        for (let scene of sceneList) {
-            // 季节符合，且关键词匹配
-            if (scene.seasons.includes(currentSeason)) {
-                if (scene.keywords.some(key => actionText.includes(key))) {
-                    // 也是随机取一张，增加新鲜感
-                    finalUrl = Array.isArray(scene.url) 
-                        ? scene.url[Math.floor(Math.random() * scene.url.length)] 
-                        : scene.url;
-                    // console.log("✨ 触发特殊场景:", scene.keywords[0]);
-                    break; // 匹配到一个就停止
-                }
-            }
-        }
-    }
-
-    // 3. 执行换图
-    const bgEl = document.getElementById('heirSceneBg');
-    if (bgEl) {
-        // 只有当图片真的变了，才执行切换，避免闪烁
-        const currentBgUrl = bgEl.style.backgroundImage;
-        if (!currentBgUrl.includes(finalUrl)) {
-            bgEl.style.transition = 'opacity 0.3s';
-            bgEl.style.opacity = 0.6; // 先淡出一点
-            setTimeout(() => {
-                bgEl.style.backgroundImage = `url('${finalUrl}')`;
-                bgEl.style.opacity = 1; // 再淡入
-            }, 300);
-        }
-    }
-}
-
-
-// 8. 东宫渲染
-function openEastPalace() {
-    if (!currentHeir) return;
-    document.getElementById('eastPalaceModal').classList.add('active');
-
-    const isBoy = currentHeir.gender === '男';
-    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
-    if (typeof currentSeason === 'undefined') currentSeason = '春';
-
-    let defaultBg = "https://files.catbox.moe/3ofd6b.png";
-    if (assets && assets.bg) {
-        let pool = assets.bg[currentSeason] || assets.bg['春'];
-        if (Array.isArray(pool)) defaultBg = pool[0]; else defaultBg = pool;
-    }
-
-    const sTheme = {
-        '春': { color: '#ffb7c5', icon: '🌸' },
-        '夏': { color: '#81ecec', icon: '🍃' },
-        '秋': { color: '#ffcc80', icon: '🍁' },
-        '冬': { color: '#b0bec5', icon: '❄️' }
-    }[currentSeason] || { color: '#ffb7c5', icon: '🌸' };
-
-    const modalContent = document.querySelector('#eastPalaceModal .modal');
-    modalContent.innerHTML = `
-        <button class="close-modal" onclick="closeEastPalace()" style="position:absolute; right:10px; top:10px; z-index:200; color:#fff; font-size:28px; background:none; border:none;">×</button>
-        <div id="heirSceneBg" class="heir-bg-stage" style="background-image:url('${defaultBg}');">
-            <button class="season-toggle-btn" onclick="toggleHeirSeason()">${sTheme.icon} 切换季节</button>
-            <div style="position:absolute; bottom:10px; left:10px; background:${sTheme.color}; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">${currentSeason}季</div>
-        </div>
-        <div class="heir-middle-section" style="flex:1; display:flex; position:relative; padding:10px; background:linear-gradient(to bottom, #fff0f5 0%, #fff 100%); overflow:visible;">
-            <div class="heir-info-left" style="flex:1; padding-right:110px;">
-                <div style="color:#d4af37; font-size:16px; font-weight:bold; margin-bottom:5px;">${currentHeir.title} · ${currentHeir.name} <span style="font-size:12px; color:#888;">(${currentHeir.age}岁)</span></div>
-                <div class="stat-row"><div class="stat-name">智慧</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.wisdom}%; background:#81ecec"></div></div>${currentHeir.stats.wisdom}</div>
-                <div class="stat-row"><div class="stat-name">体魄</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.fitness}%; background:#ff7675"></div></div>${currentHeir.stats.fitness}</div>
-                <div class="stat-row"><div class="stat-name">魅力</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stats.charm}%; background:#a29bfe"></div></div>${currentHeir.stats.charm}</div>
-                <div class="stat-row"><div class="stat-name">疲劳</div><div class="stat-track"><div class="stat-val" style="width:${currentHeir.stress || 0}%; background:#636e72"></div></div>${currentHeir.stress || 0}</div>
-                <div style="font-size:10px; color:#999; margin-top:5px;">父君: ${currentHeir.fatherName}</div>
-            </div>
-            <div class="heir-avatar-box"><img id="heirDynamicGif" class="heir-gif" src="" onclick="touchHeir2D()"></div>
-        </div>
-        <div class="heir-bio-scroll" id="heirBioText">${currentHeir.bioLog.slice().reverse().join('<br>')}</div>
-        <div class="heir-btn-grid" id="normalActions">
-            <button class="heir-action-btn" onclick="interactHeir('study')">📖 上课</button>
-            <button class="heir-action-btn" onclick="interactHeir('play')">🪁 出去玩</button>
-            <button class="heir-action-btn" onclick="interactHeir('doctor')">💊 去医院</button>
-            <button class="heir-action-btn" onclick="openTravelMap()" style="grid-column: span 3; background:#fff7e6; color:#d46b08; border-color:#ffbb96;">🌏 带他/她去游历</button>
-            <button class="heir-action-btn next-year-btn" onclick="advanceYear()">🎍 辞旧迎新 (进入下一年)</button>
-        </div>
-        <div class="heir-btn-grid" id="graduateActions" style="display:none">
-            <button class="heir-action-btn next-year-btn" style="background:#d4af37" onclick="graduateHeir()">🎓 赐府成家 (存档)</button>
-        </div>
-    `;
-
-    updateAvatarDisplay();
-    const lastLog = currentHeir.bioLog[currentHeir.bioLog.length - 1] || "";
-    smartUpdateHeirScene(lastLog);
-
-    if (currentHeir.age >= 18) {
-        document.getElementById('normalActions').style.display = 'none';
-        document.getElementById('graduateActions').style.display = 'grid';
-    }
-}
-
-// 9. 换季
-function toggleHeirSeason() {
-    const seasons = ['春', '夏', '秋', '冬'];
-    let idx = seasons.indexOf(currentSeason);
-    idx = (idx + 1) % 4;
-    currentSeason = seasons[idx];
-    auth.toast(`🍂 时令已变，入【${currentSeason}】了`);
-    openEastPalace(); 
-}
-
-// 10. 关闭东宫
-function closeEastPalace() {
-    document.getElementById('eastPalaceModal').classList.remove('active');
-}
-
-// 11. 互动逻辑
-async function interactHeir(actionType) {
-    auth.toast('⏳ 正在与皇嗣互动...');
-    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
-    
-    if (currentHeir.stats.fitness < 30 && actionType !== 'doctor') {
-        auth.toast('❌ 皇嗣病倒了，请先带去【医院】医治！');
-        updateAvatarDisplay('yawn'); 
-        return;
-    }
-
-    const actionMap = { 'study': '去书房上课/练字', 'play': '在宫里玩耍', 'doctor': '去医院看病' };
-    
-    const prompt = `
-    皇嗣：【${currentHeir.name}】，${currentHeir.age}岁。
-    季节：${currentSeason}。
-    动作：${actionMap[actionType]}。
-    
-    请生成 JSON：
-    {
-        "story": "互动描写(包含具体动作，如读书、钓鱼、赏梅等，方便匹配场景)",
-        "statsChange": { "wisdom": 0, "fitness": 0, "charm": 0 },
-        "stressChange": 0,
-        "mood": "happy/shy/tired"
-    }
-    `;
-
-    try {
-        const res = await fetchAI(prompt, config);
-        const data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
-
-        currentHeir.stats.wisdom += (data.statsChange.wisdom || 0);
-        currentHeir.stats.fitness += (data.statsChange.fitness || 0);
-        currentHeir.stats.charm += (data.statsChange.charm || 0);
-        currentHeir.stress += (data.stressChange || 0);
-        
-        if(actionType === 'doctor') { currentHeir.stats.fitness = 70; currentHeir.stress = 0; }
-
-        currentHeir.bioLog.push(`【${currentHeir.age}岁·${currentSeason}】：${data.story}`);
-        saveHeirData();
-        
-        openEastPalace(); // 刷新
-        smartUpdateHeirScene(data.story); // 换背景
-
-    } catch (e) {
-        console.error(e);
-        auth.toast('❌ 互动失败');
-    }
-}
-// ================= 👑 皇嗣代码结束 =================
 
         // ================= 🔒 安全系统 (AuthSystem) =================
         const auth = {
@@ -8147,50 +7975,6 @@ async function openHoroscope() {
 }
 
 
-// ================= 🌏 皇舆全览：地点数据配置 =================
-
-let currentMapId = 'outside'; // 默认在宫外
-let currentSeason = '春'; 
-
-const WORLD_MAPS = {
-    // === 🗺️ 宫外地图 ===
-    'outside': {
-        name: '京城',
-        bg: 'https://files.catbox.moe/acbius.jpeg',
-        // 宫外地点列表
-        locations: [
-            // 🛑 特殊点：点这个进宫
-            { name: '皇宫', type: 'transition', target: 'inside', desc: '回宫' },
-            
-            // 普通游历点
-            { name: '永定门' }, { name: '颐和园' }, { name: '圆明园' }, { name: '香山' },
-            { name: '玉渊潭' }, { name: '八大处' }, { name: '朝阳门' }, { name: '先农坛' },
-            { name: '地坛' }, { name: '东直门' }, { name: '国子监' }, { name: '西直门' },
-            { name: '北海公园' }, { name: '什刹海' }, { name: '钟楼' }, { name: '鼓楼' },
-            { name: '南锣鼓巷' }, { name: '颐和宫' }, { name: '西四' }, { name: '后海' },
-            { name: '白塔寺' }, { name: '琉璃厂' }, { name: '阜成门' }, { name: '广济寺' },
-            { name: '天桥' }, { name: '前门大街' }, { name: '正阳门' }
-        ]
-    },
-
-    // === 🏯 宫内地图 ===
-    'inside': {
-        name: '紫禁城',
-        bg: 'https://files.catbox.moe/kp648j.jpeg',
-        locations: [
-            // 🛑 特殊点：点这个出宫
-            { name: '午门', type: 'transition', target: 'outside', desc: '出宫' },
-
-            // 普通宫殿
-            { name: '养心殿' }, { name: '乾清宫' }, { name: '御花园' }, { name: '太和殿' },
-            { name: '寿康宫' }, { name: '慈宁宫' }, { name: '慈宁宫花园' }, { name: '东六宫' },
-            { name: '内务府' }, { name: '神武门' }, { name: '雨花阁' }, { name: '体仁阁' },
-            { name: '弘义阁' }, { name: '乾清门' }, { name: '交泰殿' }, { name: '钦安殿' },
-            { name: '箭亭' }, { name: '中和殿' }, { name: '保和殿' }, { name: '斋宫' },
-            { name: '文华殿' }, { name: '武英殿' }, { name: '奉先殿' }, { name: '太和门' }
-        ]
-    }
-};
 
 // 年龄阶段
 const HEIR_STAGES = [
@@ -8474,204 +8258,6 @@ function touchHeir(event) {
     }, 2000);
 }
 
-// ================= 👶 皇嗣系统：2D 养成版 =================
-
-// 打开东宫 (渲染界面)
-
-// ================= 🎮 互动逻辑：强制治愈版 =================
-
-// 🎍 辞旧迎新：手动进入下一年
-async function advanceYear() {
-    if(!confirm(`这一年过得怎么样？确定要让【${currentHeir.name}】长大一岁吗？`)) return;
-
-    currentHeir.age += 1;
-    currentHeir.stress = Math.max(0, currentHeir.stress - 30); // 过年开心，疲劳下降
-    currentHeir.bioLog.push(`——— ✨ 皇嗣长到了 ${currentHeir.age} 岁 ✨ ———`);
-    
-    saveHeirData();
-    openEastPalace();
-    auth.toast('🎆 新年快乐！皇嗣又长大了一岁！');
-    
-    // 过年特效：放个鞭炮或者撒花
-    if(navigator.vibrate) navigator.vibrate([100,100,200]);
-}
-
-// 🖼️ 核心：动图切换逻辑
-function updateAvatarDisplay(forceState) {
-    const img = document.getElementById('heirDynamicGif');
-    if (!img || !currentHeir) return;
-
-    const isBoy = currentHeir.gender === '男';
-    const assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
-
-    let targetUrl = "";
-
-    // 1. 强制状态 (害羞/打哈欠)
-    if (forceState === 'shy') targetUrl = assets.shy;
-    else if (forceState === 'yawn') targetUrl = assets.yawn;
-    
-    // 2. 自动状态 (疲劳高 -> 打哈欠)
-    else if ((currentHeir.stress || 0) > 80) {
-        targetUrl = assets.yawn;
-    }
-    
-    // 3. 默认随机待机
-    else {
-        // 随机选 idle1 或 idle2
-        const randomIndex = Math.floor(Math.random() * assets.idle.length);
-        targetUrl = assets.idle[randomIndex];
-    }
-
-    img.src = targetUrl;
-}
-
-// 👉 2D 触摸互动
-function touchHeir2D() {
-    // 随机触发害羞
-    updateAvatarDisplay('shy');
-    auth.toast(`👉 戳了戳 ${currentHeir.name} 的脸蛋`);
-    
-    // 3秒后恢复正常
-    setTimeout(() => {
-        updateAvatarDisplay('idle');
-    }, 3000);
-}
-
-// ================= 🌏 皇嗣游历：列表版逻辑 =================
-
-// 打开地图
-function openTravelMap() {
-    if (!currentHeir) return;
-    document.getElementById('travelModal').classList.add('active');
-    renderTravelMap();
-}
-
-// 渲染界面 (列表+地图)
-function renderTravelMap() {
-    const data = WORLD_MAPS[currentMapId];
-    
-    // 1. 更新顶部信息
-    document.getElementById('travelMapName').innerText = data.name;
-    document.getElementById('travelSeasonTag').innerText = currentSeason;
-    
-    // 2. 更新右侧图片
-    const img = document.getElementById('travelBgImg');
-    img.src = data.bg;
-
-    // 3. 生成左侧列表
-    const list = document.getElementById('locationList');
-    list.innerHTML = ''; // 清空旧列表
-
-    data.locations.forEach(loc => {
-        const btn = document.createElement('div');
-        
-        // 样式判断：如果是切换地图的点(皇宫/午门)，加特殊样式
-        if (loc.type === 'transition') {
-            btn.className = 'location-btn special';
-            btn.innerHTML = `<span>🚪 ${loc.name}</span><span style="font-size:10px; opacity:0.6;">➜</span>`;
-        } else {
-            btn.className = 'location-btn';
-            btn.innerHTML = `<span>📍 ${loc.name}</span>`;
-        }
-        
-        // 点击事件
-        btn.onclick = () => handleLocationClick(loc);
-        
-        list.appendChild(btn);
-    });
-}
-
-// 处理点击
-function handleLocationClick(loc) {
-    // A. 切换地图 (进宫/出宫)
-    if (loc.type === 'transition') {
-        // 淡出效果
-        const img = document.getElementById('travelBgImg');
-        img.style.opacity = 0;
-        
-        setTimeout(() => {
-            currentMapId = loc.target; // 切换ID
-            renderTravelMap();         // 重新渲染
-            img.style.opacity = 1;     // 淡入
-            auth.toast(`🔄 已前往：${WORLD_MAPS[currentMapId].name}`);
-        }, 200);
-    } 
-    // B. 普通游历 (触发AI)
-    else {
-        triggerTravelEvent(loc);
-    }
-}
-
-// 触发 AI 事件
-
-// ================= 🌏 触发 AI 事件 (带记录功能版) =================
-async function triggerTravelEvent(loc) {
-    const box = document.getElementById('travelEventResult');
-    const text = document.getElementById('travelEventText');
-    box.style.display = 'block';
-    text.innerHTML = '<div class="ai-loading">🐴 车马劳顿...正在生成奇遇...</div>';
-
-    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
-    
-    // Prompt
-    const prompt = `
-    我是女皇。
-    我带着皇嗣【${currentHeir.name}】(${currentHeir.age}岁) 出游。
-    当前季节：${currentSeason}。
-    地点：【${WORLD_MAPS[currentMapId].name}】的【${loc.name}】。
-    
-    请生成一个简短的亲子游历剧情(60字左右)。
-    要求：
-    1. 描写在${loc.name}看到的景色。
-    2. 皇嗣的反应（开心/好奇/学到了东西）。
-    `;
-
-    try {
-        const res = await fetchAI(prompt, config);
-        // 清理一下返回的文本
-        const cleanText = res.replace(/\n/g, '').trim();
-        
-        // 显示给用户看
-        text.innerHTML = cleanText;
-        
-        // 🔥🔥🔥 核心修改：写入起居注 🔥🔥🔥
-        if (currentHeir) {
-            // 1. 构造记录文本
-            const logEntry = `【${currentHeir.age}岁·游历】：在${loc.name}，${cleanText}`;
-            
-            // 2. 存入数组
-            currentHeir.bioLog.push(logEntry);
-            
-            // 3. 游历奖励：减少疲劳，心情变好
-            if (typeof currentHeir.stress !== 'undefined') {
-                currentHeir.stress = Math.max(0, currentHeir.stress - 8);
-            }
-
-            // 4. 保存数据
-            saveHeirData();
-        }
-
-    } catch (e) {
-        text.innerText = "❌ 游历途中遇到了大雾（网络错误）...";
-    }
-}
-
-// 关闭弹窗时，刷新东宫界面，让用户立刻看到记录
-function closeTravelEvent() {
-    document.getElementById('travelEventResult').style.display = 'none';
-    openEastPalace(); // 刷新界面，显示新增加的记录
-}
-
-
-// 换季
-function changeSeason() {
-    const seasons = ['春', '夏', '秋', '冬'];
-    let idx = seasons.indexOf(currentSeason);
-    currentSeason = seasons[(idx + 1) % 4];
-    renderTravelMap(); 
-    auth.toast(`🌸 时令已变，入${currentSeason}了`);
-}
-
 // ================= 🧠 场景智能匹配 (多图随机版) =================
 function smartUpdateHeirScene(actionText) {
     if (!currentHeir) return;
@@ -8724,6 +8310,1205 @@ function smartUpdateHeirScene(actionText) {
         }, 200);
     }
 }
+
+// ================= 🧠 皇嗣系统 2.0 (全功能完整无缺版) =================
+
+// 1. 读取存档
+var currentHeir = JSON.parse(localStorage.getItem('royal_heir_data')) || null;
+
+// 🟢 数据自动修复
+if (currentHeir) {
+    if (!currentHeir.params) currentHeir.params = {};
+    var defaults = { diligence: 50, rebellion: 10, affection: 60, ambition: 50, morality: 50, wisdom: 50, fitness: 50 };
+    for (var k in defaults) {
+        if (currentHeir.params[k] === undefined) currentHeir.params[k] = defaults[k];
+    }
+    if (currentHeir.mood === undefined) currentHeir.mood = 80;
+    if (!currentHeir.history) currentHeir.history = [];
+    if (currentHeir.isWaitingForReply === undefined) currentHeir.isWaitingForReply = false;
+    if (!currentHeir.season) currentHeir.season = '春';
+    
+    // 补全生存数据
+    if (!currentHeir.body) {
+        currentHeir.body = { health: 100, sick: false, waste: 0, height: 110, weight: 18, heartRate: 85 };
+    }
+    if (!currentHeir.currentScene) currentHeir.currentScene = null;
+    if (currentHeir.panelMode === undefined) currentHeir.panelMode = 'stats';
+
+    localStorage.setItem('royal_heir_data', JSON.stringify(currentHeir));
+}
+
+// 2. 🌍 资源与地图
+var WORLD_MAPS = {
+    'outside': {
+        name: '京城繁华地',
+        bg: 'https://files.catbox.moe/acbius.jpeg',
+        locations: [
+            { name: '西市', icon: '🏮', desc: '热闹的集市' },
+            { name: '护城河', icon: '🌊', desc: '垂柳依依' },
+            { name: '大报恩寺', icon: '🔔', desc: '祈福圣地' },
+            { name: '状元楼', icon: '🍲', desc: '最好的酒楼' },
+            { name: '城郊马场', icon: '🐎', desc: '骑射之地' },
+            { name: '桃花坞', icon: '🌸', desc: '赏花胜地' },
+            { name: '戏园子', icon: '🎭', desc: '听曲看戏' },
+            { name: '回宫', icon: '🚪', type: 'exit' }
+        ]
+    }
+};
+
+var HEIR_ASSETS = {
+    boy: {
+        bg: { 
+            '春': ["https://files.catbox.moe/87xa1i.png", "https://files.catbox.moe/7lhq83.png", "https://files.catbox.moe/3wx26e.png", "https://files.catbox.moe/3lwe0w.png"],
+            '夏': ["https://files.catbox.moe/3lwe0w.png", "https://files.catbox.moe/11wud2.png", "https://files.catbox.moe/75je6d.png", "https://files.catbox.moe/xyp7uw.png"],
+            '秋': ["https://files.catbox.moe/87xa1i.png", "https://files.catbox.moe/7lhq83.png", "https://files.catbox.moe/f539et.png", "https://files.catbox.moe/3lwe0w.png"], 
+            '冬': ["https://files.catbox.moe/idu2gw.jpg", "https://files.catbox.moe/fkfstg.jpg", "https://files.catbox.moe/937inc.png"]
+        },
+        idle: [ "https://files.catbox.moe/fv8f8p.gif", "https://files.catbox.moe/vdvz1m.gif" ],
+        shy: "https://files.catbox.moe/fv8f8p.gif", 
+        yawn: "https://files.catbox.moe/vdvz1m.gif"
+    },
+    girl: {
+        bg: {
+            '春': ["https://files.catbox.moe/zqx3jl.png", "https://files.catbox.moe/j1mo4r.png", "https://files.catbox.moe/vmn42f.png", "https://files.catbox.moe/84wild.png"],
+            '夏': ["https://files.catbox.moe/tw4s8u.jpg", "https://files.catbox.moe/qzmagd.png", "https://files.catbox.moe/gsn7fd.png"],
+            '秋': ["https://files.catbox.moe/zqx3jl.png", "https://files.catbox.moe/vmn42f.png"],
+            '冬': ["https://files.catbox.moe/hjnmf4.jpg", "https://files.catbox.moe/divoox.png", "https://files.catbox.moe/vsqo8k.jpg"] 
+        },
+        idle: [ "https://files.catbox.moe/8q61ys.gif", "https://files.catbox.moe/4hxxkv.gif" ],
+        shy: "https://files.catbox.moe/cokcdl.gif",
+        yawn: "https://files.catbox.moe/mezusb.gif"
+    }
+};
+
+var HEIR_SCENES = {
+    boy: [
+        { seasons: ['冬'], keywords: ['梅', '赏梅', '长椅'], url: ['https://files.catbox.moe/idu2gw.jpg'] },
+        { seasons: ['冬'], keywords: ['寝宫', '睡觉', '休息', '起床'], url: ['https://files.catbox.moe/fkfstg.jpg'] },
+        { seasons: ['冬'], keywords: ['雪', '雪仗', '打雪'], url: ['https://files.catbox.moe/937inc.png'] },
+        { seasons: ['春','秋'], keywords: ['钓鱼', '池塘', '垂钓'], url: ['https://files.catbox.moe/87xa1i.png'] },
+        { seasons: ['春','秋'], keywords: ['玩耍', '游戏', '跑'], url: ['https://files.catbox.moe/7lhq83.png'] },
+        { seasons: ['春'], keywords: ['花', '赏花'], url: ['https://files.catbox.moe/3wx26e.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['画画', '丹青'], url: ['https://files.catbox.moe/6iwmot.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['读书', '看书', '阅读'], url: ['https://files.catbox.moe/3lwe0w.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['练字', '书法', '上课'], url: ['https://files.catbox.moe/11wud2.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['吃饭', '展示'], url: ['https://files.catbox.moe/xyp7uw.png'] },
+        { seasons: ['春','夏','秋','冬'], keywords: ['训练', '习武', '士兵'], url: ['https://files.catbox.moe/75je6d.png'] }
+    ],
+    girl: [
+        { seasons: ['春','秋'], keywords: ['风筝'], url: ['https://files.catbox.moe/zqx3jl.png'] },
+        { seasons: ['春','秋'], keywords: ['毽子'], url: ['https://files.catbox.moe/vmn42f.png'] },
+        { seasons: ['春'], keywords: ['玩耍', '花园'], url: ['https://files.catbox.moe/j1mo4r.png'] },
+        { seasons: ['春'], keywords: ['秋千'], url: ['https://files.catbox.moe/84wild.png'] },
+        { seasons: ['夏'], keywords: ['玩水', '池塘'], url: ['https://files.catbox.moe/tw4s8u.jpg'] },
+        { seasons: ['夏'], keywords: ['西瓜'], url: ['https://files.catbox.moe/qzmagd.png'] },
+        { seasons: ['夏'], keywords: ['休息', '睡觉'], url: ['https://files.catbox.moe/gsn7fd.png'] },
+        { seasons: ['冬'], keywords: ['玩耍', '冬日'], url: ['https://files.catbox.moe/hjnmf4.jpg'] },
+        { seasons: ['冬'], keywords: ['过年', '灯笼'], url: ['https://files.catbox.moe/divoox.png'] },
+        { seasons: ['冬'], keywords: ['府外', '逛街'], url: ['https://files.catbox.moe/vsqo8k.jpg'] }
+    ]
+};
+
+// ================= 👗 新增：锦衣阁服装数据库 =================
+const CLOTHING_DB = {
+    boy: [
+        { name: "蓝色官帽服", url: "https://files.catbox.moe/9gp0ek.gif", desc: "小小年纪就有官威" },
+        { name: "摄政王装", url: "https://files.catbox.moe/be9pdw.gif", desc: "霸气侧漏，权倾朝野" },
+        { name: "皇子装", url: "https://files.catbox.moe/xeario.gif", desc: "标准的宫廷常服" },
+        { name: "运动健身装", url: "https://files.catbox.moe/9bj1yr.gif", desc: "强身健体，活力满满" },
+        { name: "骑马装", url: "https://files.catbox.moe/k3llhx.gif", desc: "鲜衣怒马少年郎" },
+        { name: "逗鸟装", url: "https://files.catbox.moe/lyipsc.gif", desc: "闲情逸致" },
+        { name: "冬天雪地装", url: "https://files.catbox.moe/qpcrp5.gif", desc: "瑞雪兆丰年" },
+        // 👇 这套是双图，点击可以切换
+        { name: "书社学习装", url: ["https://files.catbox.moe/nnjk7t.gif", "https://files.catbox.moe/aj9p4u.gif"], desc: "两款样式随心换" },
+        { name: "紫色赏花装", url: "https://files.catbox.moe/4nfj1y.gif", desc: "花前月下，风流倜傥" },
+        { name: "战场练武装", url: "https://files.catbox.moe/4rm59z.gif", desc: "保家卫国" }
+    ],
+    girl: [
+        { name: "鹅黄色襦裙", url: "https://files.catbox.moe/x2g8fs.gif", desc: "温婉可人" },
+        { name: "蓝粉夏日裙", url: "https://files.catbox.moe/qyq1sy.gif", desc: "清凉一夏" },
+        { name: "紫色襦裙", url: "https://files.catbox.moe/xez8lk.gif", desc: "高贵典雅" },
+        { name: "冬日虎头装", url: "https://files.catbox.moe/sbxewc.gif", desc: "虎头虎脑" },
+        { name: "上粉下蓝可爱装", url: "https://files.catbox.moe/360a8k.gif", desc: "俏皮可爱" },
+        { name: "大红过年装", url: "https://files.catbox.moe/1h3cy5.gif", desc: "喜气洋洋" },
+        { name: "玩耍装", url: "https://files.catbox.moe/izucss.gif", desc: "方便跑跳" },
+        { name: "春日赏景装", url: "https://files.catbox.moe/md5dz9.gif", desc: "人比花娇" },
+        { name: "妩媚摇扇装", url: "https://files.catbox.moe/xuzyz4.gif", desc: "风情万种" },
+        { name: "过节喜庆装", url: "https://files.catbox.moe/cgn0b2.gif", desc: "热闹非凡" }
+    ]
+};
+
+// 3. 诞生逻辑
+async function confirmCreateHeir() {
+    var setting = document.getElementById('creationSettingInput').value.trim();
+    if (!setting) { auth.toast('请许愿...'); return; }
+    
+    var father = items[viewingIndex];
+    document.getElementById('heirCreationModal').classList.remove('active');
+    auth.toast('✨ 祈福中...');
+
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    var prompt = `我是女皇。父亲【${father.name}】(标签:${(father.tags||[]).join(',')})。期望:【${setting}】。生成皇嗣JSON:{ "name":"", "title":"", "gender":"男/女", "bio":"", "params":{ "diligence":50, "rebellion":10, "affection":80, "ambition":50, "morality":50, "wisdom":50, "fitness":50 }}`;
+
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+
+        currentHeir = {
+            fatherName: father.name,
+            name: data.name, title: data.title, gender: data.gender,
+            age: 5, isRunaway: false, isAdult: false, isDead: false,
+            params: data.params, mood: 80, history: [], bioLog: [`【诞生】：${data.bio}`],
+            setting: setting, lastThought: "世界真大...", isWaitingForReply: false, season: '春',
+            body: { health: 100, sick: false, waste: 0, height: 110, weight: 18, heartRate: 85 },
+            currentScene: null, panelMode: 'stats'
+        };
+        saveHeirData();
+        auth.toast('🎉 皇嗣诞生！');
+        updateHeirButtonState();
+        openEastPalace();
+    } catch (e) { auth.toast('❌ 诞生失败'); }
+}
+
+// 4. 🎨 东宫界面渲染 (修复版：高亮手机按钮)
+function openEastPalace() {
+    if (!currentHeir) return;
+    if (!currentHeir.params || !currentHeir.body) { location.reload(); return; }
+
+    if (currentHeir.isDead && !currentHeir.isViewingMemories) { renderDeadView(); return; }
+    if (currentHeir.isRunaway && !currentHeir.isViewingMemories) { renderRunawayView(); return; }
+    if (currentHeir.isViewingMemories) { renderMemoryBook(); return; }
+
+    document.getElementById('eastPalaceModal').classList.add('active');
+
+    var isBoy = currentHeir.gender === '男';
+    var assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
+    
+    var displayBg = "";
+    if (currentHeir.currentScene) {
+        displayBg = currentHeir.currentScene;
+    } else {
+        var pool = assets.bg[currentHeir.season] || assets.bg['春'];
+        displayBg = Array.isArray(pool) ? pool[0] : pool;
+        currentHeir.currentScene = displayBg;
+        saveHeirData();
+    }
+
+    var avatarState = currentHeir.body.sick ? 'yawn' : 'idle';
+    var avatarUrl = getAvatarUrl(avatarState);
+
+    var modalContent = document.querySelector('#eastPalaceModal .modal');
+    
+    var renderBar = (label, val, color) => `
+        <div style="display:flex; align-items:center; margin-bottom:3px; font-size:10px; line-height:1;">
+            <span style="width:24px; text-align:right; margin-right:4px; color:#666;">${label}</span>
+            <div style="flex:1; height:6px; background:#f0f0f0; border-radius:3px; overflow:hidden;">
+                <div style="width:${val}%; height:100%; background:${color}; transition:width 0.5s;"></div>
+            </div>
+            <span style="width:20px; text-align:right; color:#999; font-family:monospace;">${val}</span>
+        </div>
+    `;
+
+    var renderInfoPanel = () => `
+        <div class="info-grid">
+            <div class="info-item"><span class="info-label">生日</span>${currentHeir.season}季</div>
+            <div class="info-item"><span class="info-label">身高</span>${currentHeir.body.height}cm</div>
+            <div class="info-item"><span class="info-label">体重</span>${currentHeir.body.weight}kg</div>
+            <div class="info-item"><span class="info-label">心率</span>${currentHeir.body.heartRate}bpm</div>
+            <div class="info-item"><span class="info-label">健康</span>
+                <span class="status-tag ${currentHeir.body.health>60?'status-good':'status-bad'}">${currentHeir.body.health}%</span>
+            </div>
+            <div class="info-item"><span class="info-label">状态</span>
+                ${currentHeir.body.sick ? '<span class="status-tag status-bad">生病中</span>' : '<span class="status-tag status-good">健康</span>'}
+            </div>
+            <div class="info-item"><span class="info-label">废品</span>
+                <span class="status-tag ${currentHeir.body.waste<50?'status-good':'status-warn'}">${currentHeir.body.waste}%</span>
+            </div>
+        </div>
+    `;
+
+    var middlePanelHtml = "";
+    if (currentHeir.panelMode === 'info') {
+        middlePanelHtml = renderInfoPanel();
+    } else {
+        middlePanelHtml = `
+            <div style="display:grid; grid-template-columns: 1fr 1fr; grid-gap: 2px 10px;">
+                ${renderBar('亲密', currentHeir.params.affection, '#ff7675')}
+                ${renderBar('勤勉', currentHeir.params.diligence, '#0984e3')}
+                ${renderBar('叛逆', currentHeir.params.rebellion, '#636e72')}
+                ${renderBar('野心', currentHeir.params.ambition, '#6c5ce7')}
+                ${renderBar('心情', currentHeir.mood, '#fdcb6e')}
+                ${renderBar('道德', currentHeir.params.morality, '#00b894')}
+                ${renderBar('智慧', currentHeir.params.wisdom, '#00cec9')}
+                ${renderBar('体魄', currentHeir.params.fitness, '#d63031')}
+            </div>
+        `;
+    }
+
+    modalContent.innerHTML = `
+        <button class="close-modal" onclick="closeEastPalace()" style="position:absolute; right:10px; top:10px; z-index:200; color:#fff; font-size:24px; background:none; border:none; text-shadow:0 1px 2px rgba(0,0,0,0.3);">×</button>
+        
+        <div id="heirSceneBg" class="heir-bg-stage" style="background-image:url('${displayBg}'); height:150px; transition:background 0.5s; position:relative; overflow:hidden; border-bottom:3px solid #fff;">
+            <div style="position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.9); padding:3px 8px; border-radius:10px; font-size:11px; font-weight:bold; color:#555; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+                📅 ${currentHeir.age}岁 · ${currentHeir.season}季
+            </div>
+            <button onclick="readMind()" style="position:absolute; top:10px; right:135px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.8); border-radius:20px; padding:3px 10px; font-size:10px; cursor:pointer;">🔮 读心</button>
+            <button onclick="openMemories()" style="position:absolute; top:10px; right:50px; background:rgba(255,255,255,0.8); color:#555; border:1px solid #ddd; border-radius:20px; padding:3px 10px; font-size:10px; cursor:pointer; font-weight:bold;">📖 回忆录</button>
+
+            <button onclick="openPhone()" style="position:absolute; bottom:10px; left:10px; width:40px; height:40px; border-radius:50%; background:#fff; border:2px solid #ddd; font-size:22px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.2); display:flex; align-items:center; justify-content:center; z-index:50;" title="打开手机">
+                📱
+            </button>
+            <div id="heirBubble" style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:#fff; padding:8px 12px; border-radius:15px; font-size:12px; max-width:80%; box-shadow:0 5px 15px rgba(0,0,0,0.2); opacity:0; transition:all 0.3s; pointer-events:none; z-index:30; color:#444; text-align:center;">...</div>
+        </div>
+
+        <div style="display:flex; height:140px; background:#fff; border-bottom:1px dashed #eee; padding:10px;">
+            <div style="width:100px; height:100%; position:relative; flex-shrink:0; border-right:1px dashed #eee; margin-right:10px; display:flex; align-items:flex-end; justify-content:center;">
+                <img id="heirDynamicGif" class="heir-gif" src="${avatarUrl}" onclick="touchHeir2D()" style="max-height:100%; max-width:100%; object-fit:contain; filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.1));">
+            </div>
+            <div style="flex:1; overflow-y:auto;">
+                <div style="text-align:right;">
+                    <button class="switch-btn ${currentHeir.panelMode==='stats'?'active':''}" onclick="switchPanel('stats')">性格</button>
+                    <button class="switch-btn ${currentHeir.panelMode==='info'?'active':''}" onclick="switchPanel('info')">档案</button>
+                </div>
+                ${middlePanelHtml}
+            </div>
+        </div>
+
+        <div style="flex:1; display:flex; flex-direction:column; background:#f9f9f9; overflow:hidden;">
+            <div id="heirChatArea" class="heir-chat-container" style="padding:10px;">
+                ${(currentHeir.history || []).map(h => `<div class="heir-msg ${h.role}">${h.content}</div>`).join('')}
+            </div>
+            <div class="heir-input-area" style="padding:8px;">
+                <div class="heir-input-row">
+                    <input type="text" id="heirInput" class="heir-input-box" placeholder="说点什么..." onkeydown="if(event.key==='Enter') sendToHeir()">
+                    <button class="heir-send-btn" onclick="sendToHeir()" style="padding:0 15px; font-size:13px;">发送</button>
+                </div>
+                <div class="heir-func-row" style="margin-top:5px;">
+                    <button class="heir-func-btn" onclick="toggleHeirSeason()">🍃 换季</button>
+                    <button class="heir-func-btn" onclick="advanceYear()">⏩ 跳过今年</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    var chatArea = document.getElementById('heirChatArea');
+    if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+
+// 7. 📱 手机系统逻辑
+
+// ================= 📱 手机系统核心逻辑 (完整功能版) =================
+
+// 1. 打开/关闭手机
+function openPhone() {
+    if (!document.getElementById('iphoneModal')) {
+        var modal = document.createElement('div');
+        modal.id = 'iphoneModal';
+        modal.className = 'iphone-modal';
+        document.body.appendChild(modal);
+    }
+    document.getElementById('iphoneModal').style.display = 'flex';
+    renderPhoneHome();
+}
+
+function closePhone() {
+    document.getElementById('iphoneModal').style.display = 'none';
+    openEastPalace(); // 刷新主界面
+}
+
+// 2. 渲染手机桌面
+function renderPhoneHome() {
+    var modal = document.getElementById('iphoneModal');
+    // 强制粉色外观
+    modal.style.border = "6px solid #ffb7c5";
+    modal.style.borderRadius = "35px";
+    modal.style.background = "#fff0f5";
+
+    var now = new Date();
+    var timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+    modal.innerHTML = `
+        <div class="iphone-chin-top"><div class="iphone-camera"></div><div class="iphone-speaker"></div></div>
+        <div class="iphone-screen" style="background: url('https://files.catbox.moe/gsn7fd.png') center/cover;">
+            <div class="iphone-statusbar" style="background:rgba(255,255,255,0.6); color:#333;">
+                <span>HD</span><span>${timeStr}</span><span>88%</span>
+            </div>
+            
+            <div class="app-grid" style="padding: 20px; gap: 15px;">
+                <div class="app-icon" style="background:linear-gradient(135deg, #07c160, #2ecc71);" onclick="openApp('wechat')"><div style="font-size:24px;">💬</div><div class="app-name">微聊</div></div>
+                <div class="app-icon" style="background:linear-gradient(135deg, #5352ed, #70a1ff);" onclick="openApp('spyware')"><div style="font-size:24px;">👁️</div><div class="app-name">监护人</div></div>
+                <div class="app-icon" style="background:linear-gradient(135deg, #ff9ff3, #f368e0);" onclick="openApp('matchmaker')"><div style="font-size:24px;">❤️</div><div class="app-name">姻缘簿</div></div>
+                <div class="app-icon" style="background:linear-gradient(135deg, #ff6b81, #ff4757);" onclick="openApp('clothing')"><div style="font-size:24px;">👗</div><div class="app-name">锦衣阁</div></div>
+                
+                <div class="app-icon" style="background:linear-gradient(135deg, #ff7675, #fab1a0);" onclick="openShopApp('hospital', '太医局')"><div style="font-size:24px;">🏥</div><div class="app-name">太医局</div></div>
+                <div class="app-icon" style="background:linear-gradient(135deg, #74b9ff, #0984e3);" onclick="openShopApp('shop', '珍宝阁')"><div style="font-size:24px;">🛍️</div><div class="app-name">珍宝阁</div></div>
+                <div class="app-icon" style="background:linear-gradient(135deg, #ffeaa7, #fdcb6e);" onclick="openShopApp('meituan', '御膳房')"><div style="font-size:24px;">🍱</div><div class="app-name">御膳房</div></div>
+            </div>
+            
+            <div id="activeAppWindow"></div>
+        </div>
+        <div class="iphone-chin-bottom" style="background:#fff0f5;"><button class="iphone-home-btn" onclick="closePhone()" style="border:2px solid #ffb7c5;"></button></div>
+    `;
+}
+
+// 3. 通用路由 (解决白屏的关键)
+function openApp(name) {
+    var win = document.getElementById('activeAppWindow');
+    win.innerHTML = '';
+    var appDiv = document.createElement('div');
+    appDiv.className = 'app-window';
+    appDiv.style.background = "#f7f9fc"; // APP内部背景色
+    
+    // 这里调用具体的渲染函数，如果没有这些函数就会白屏
+    if (name === 'wechat') renderWeChat(appDiv);
+    else if (name === 'clothing') renderClothingApp(appDiv);
+    else if (name === 'spyware') renderSpywareApp(appDiv);
+    else if (name === 'matchmaker') renderMatchmakerApp(appDiv);
+    
+    win.appendChild(appDiv);
+    requestAnimationFrame(() => appDiv.classList.add('open'));
+}
+
+// ================= 👗 锦衣阁 (服装店) =================
+
+function renderClothingApp(container) {
+    var gender = currentHeir.gender === '男' ? 'boy' : 'girl';
+    var list = CLOTHING_DB[gender]; // 读取刚才定义的数据
+    
+    if (!currentHeir.inventory) currentHeir.inventory = [];
+    
+    var gridHtml = list.map((item, idx) => {
+        var isOwned = currentHeir.inventory.includes(item.name);
+        // 处理双图逻辑
+        var displayUrl = Array.isArray(item.url) ? item.url[0] : item.url;
+        
+        var btnText = isOwned ? (currentHeir.currentOutfit === displayUrl ? "已穿戴" : "穿戴") : "购买";
+        var btnAction = isOwned ? `wearOutfit('${gender}', ${idx}, 0)` : `buyOutfit('${item.name}')`;
+        var btnStyle = isOwned ? "background:#00b894" : "background:#ff7675";
+        
+        // 切换样式的按钮
+        var toggleBtn = (Array.isArray(item.url) && isOwned) 
+            ? `<button class="shop-btn" style="background:#a29bfe; margin-top:5px; font-size:10px; width:100%;" onclick="wearOutfit('${gender}', ${idx}, 1)">🔄 换个样式</button>` 
+            : '';
+
+        return `
+            <div class="clothing-card" style="background:white; border-radius:8px; padding:10px; border:1px solid #eee; position:relative;">
+                ${isOwned ? '<span class="clothing-tag owned">已拥有</span>' : ''}
+                <img src="${displayUrl}" class="clothing-img">
+                <div style="font-weight:bold; font-size:12px; margin-bottom:2px;">${item.name}</div>
+                <div style="font-size:10px; color:#999; margin-bottom:5px;">${item.desc}</div>
+                <button class="shop-btn" style="${btnStyle}; width:100%;" onclick="${btnAction}">${btnText}</button>
+                ${toggleBtn}
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = `
+        <div class="app-header">
+            <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
+            <span>锦衣阁</span>
+            <span></span>
+        </div>
+        <div class="app-content">
+            <div class="clothing-grid">${gridHtml}</div>
+        </div>
+    `;
+}
+
+function buyOutfit(name) {
+    if (!currentHeir.inventory.includes(name)) {
+        currentHeir.inventory.push(name);
+        saveHeirData();
+        auth.toast('🛍️ 购买成功！');
+        openApp('clothing'); // 刷新
+    }
+}
+
+function wearOutfit(gender, idx, variantIdx) {
+    var item = CLOTHING_DB[gender][idx];
+    var url = Array.isArray(item.url) ? item.url[variantIdx] : item.url;
+    currentHeir.currentOutfit = url;
+    saveHeirData();
+    auth.toast('👗 换装成功！');
+    openApp('clothing');
+}
+
+// ================= ❤️ 姻缘簿 (恋爱系统) =================
+
+async function renderMatchmakerApp(container) {
+    if (currentHeir.age < 14) {
+        container.innerHTML = `<div class="app-header"><button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>姻缘簿</div><div style="text-align:center; padding:50px; color:#999;">👶 皇嗣才${currentHeir.age}岁，还不到谈婚论嫁的年纪。<br>(14岁开启)</div>`;
+        return;
+    }
+
+    if (!currentHeir.dating) currentHeir.dating = { partners: [] };
+    
+    // 如果没有对象，自动生成
+    if (currentHeir.dating.partners.length === 0) {
+        container.innerHTML = `<div class="app-header"><button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>姻缘簿</div><div style="text-align:center; padding:50px;">💘 正在京城物色良缘...<br>(AI 牵线中)</div>`;
+        await generatePartners();
+    }
+
+    var listHtml = currentHeir.dating.partners.map((p, idx) => `
+        <div class="partner-card">
+            <div class="match-score">${p.match}%</div>
+            <div class="partner-header">
+                <img src="${p.avatar}" class="partner-avatar">
+                <div>
+                    <div style="font-weight:bold;">${p.name}</div>
+                    <div style="font-size:12px; color:#888;">${p.age}岁 | ${p.job}</div>
+                </div>
+            </div>
+            <div class="partner-tags">
+                <span class="p-tag ${p.nature==='良配'?'tag-good':(p.nature==='渣男/绿茶'?'tag-bad':'tag-normal')}">${p.nature}</span>
+                <span class="p-tag" style="background:#eee; color:#666;">喜好: ${p.like}</span>
+            </div>
+            <div style="font-size:12px; color:#666; font-style:italic; margin-bottom:10px;">"${p.desc}"</div>
+            <div style="display:flex; gap:5px;">
+                <button class="shop-btn" style="flex:1; background:#ff7675;" onclick="breakUp(${idx})">💔 拆散</button>
+                <button class="shop-btn" style="flex:1; background:#fdcb6e;" onclick="assistLove('${p.like}')">🎁 助攻(送礼)</button>
+            </div>
+        </div>
+    `).join('');
+
+    container.innerHTML = `
+        <div class="app-header">
+            <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
+            <span>姻缘簿</span>
+            <button class="app-header-btn" onclick="refreshPartners()">🔄</button>
+        </div>
+        <div class="app-content">${listHtml}</div>
+    `;
+}
+
+async function generatePartners() {
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    // 没 Key 用假数据
+    if(!config || !config.apiKey) {
+        currentHeir.dating.partners = [
+            { name: "王二丫", age: 15, job: "豆腐西施", avatar: "https://files.catbox.moe/fv8f8p.gif", nature: "良配", match: 95, like: "发簪", desc: "虽然穷，但是心地善良。" },
+            { name: "赵公子", age: 17, job: "纨绔子弟", avatar: "https://files.catbox.moe/3ofd6b.png", nature: "渣男/绿茶", match: 30, like: "名画", desc: "只想骗你的钱。" }
+        ];
+        saveHeirData();
+        return;
+    }
+
+    var targetGender = currentHeir.gender === '男' ? '女性' : '男性';
+    var prompt = `生成3个古代${targetGender}恋爱对象。JSON格式:[{"name":"","age":16,"job":"","avatar":"emoji","nature":"良配/渣男/绿茶/普通","match":80,"like":"喜欢的物品","desc":"性格描述"}]`;
+    
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        // 统一头像
+        data.forEach(d => d.avatar = "https://files.catbox.moe/fv8f8p.gif");
+        currentHeir.dating.partners = data;
+        saveHeirData();
+        if(document.querySelector('.app-window')) openApp('matchmaker');
+    } catch(e) {}
+}
+
+async function refreshPartners() {
+    document.querySelector('.app-content').innerHTML = '<div style="text-align:center; padding:50px;">💘 重新寻觅中...</div>';
+    await generatePartners();
+}
+
+function breakUp(idx) {
+    if (currentHeir.params.affection > currentHeir.params.rebellion + 10) {
+        auth.toast('✅ 苦口婆心劝说成功！皇嗣同意分手了。');
+        currentHeir.dating.partners.splice(idx, 1);
+    } else {
+        auth.toast('❌ 失败！皇嗣觉得你管太宽！(叛逆+10)');
+        currentHeir.params.rebellion += 10;
+    }
+    saveHeirData();
+    openApp('matchmaker');
+}
+
+function assistLove(gift) {
+    if(confirm(`确定要花钱买【${gift}】给皇嗣去送礼吗？`)) {
+        auth.toast('🎁 助攻成功！感情升温了！');
+    }
+}
+
+// ================= 🕵️ 监护人 (偷看日记) =================
+
+function renderSpywareApp(container) {
+    // 没日记生成一条
+    if (!currentHeir.diary || currentHeir.diary.length === 0) {
+        currentHeir.diary.push({ date: "昨日", content: "今天家长又逼我学习了，好烦啊..." });
+    }
+
+    var listHtml = currentHeir.diary.slice().reverse().map(d => `
+        <div class="diary-paper" style="background:#fffbf0; padding:12px; margin-bottom:10px; border-radius:6px; border-left:3px solid #ffb7c5; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="font-size:12px; color:#999; border-bottom:1px dashed #ccc; margin-bottom:5px;">${d.date}</div>
+            <div style="font-size:13px; color:#555; line-height:1.5;">${d.content}</div>
+        </div>
+    `).join('');
+
+    container.innerHTML = `
+        <div class="app-header">
+            <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
+            <span>监护人 Pro</span>
+            <span></span>
+        </div>
+        <div class="app-content" style="background:#f0f0f0;">
+            <div style="font-size:12px; color:#666; margin-bottom:10px;">📊 正在同步皇嗣设备数据...</div>
+            <div style="font-weight:bold; margin-bottom:5px; color:#333;">📖 私密日记本 (已破解)</div>
+            ${listHtml}
+        </div>
+    `;
+}
+
+// ================= 🛍️ 商店 & 物品详情 (带想法) =================
+
+async function openShopApp(type, title) {
+    var win = document.getElementById('activeAppWindow'); win.innerHTML = '';
+    var appDiv = document.createElement('div'); appDiv.className = 'app-window';
+    var items = currentHeir.phoneData.shops[type] || [];
+    
+    appDiv.innerHTML = `
+        <div class="app-header">
+            <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
+            <span>${title}</span>
+            <button class="app-header-btn" onclick="refreshShopItems('${type}', '${title}')">🔄</button>
+        </div>
+        <div class="app-content" id="shopContent-${type}">
+            ${items.length === 0 ? '<div style="text-align:center; padding:50px; color:#999;">暂无商品<br>点击右上角进货</div>' : renderShopList(items, type)}
+        </div>
+        <div id="itemDetailModal" class="item-detail-overlay"></div>
+    `;
+    win.appendChild(appDiv);
+    requestAnimationFrame(() => appDiv.classList.add('open'));
+    
+    if(items.length === 0) refreshShopItems(type, title);
+}
+
+function renderShopList(items, type) {
+    return items.map((item, idx) => {
+        // 生成皇嗣的想法
+        var thought = getHeirThought(item.name, type);
+        return `
+        <div class="shop-item" onclick="showItemDetail('${type}', ${idx})">
+            <div style="flex:1;">
+                <div style="font-weight:bold;">${item.name} ${item.icon||'📦'}</div>
+                <div style="font-size:10px; color:#999;">${item.effectDesc}</div>
+                <div class="heir-thought">${thought}</div>
+            </div>
+            <button class="shop-btn" style="background:#74b9ff;" onclick="event.stopPropagation(); buyAIItem('${type}', ${idx})">购买</button>
+        </div>`;
+    }).join('');
+}
+
+function getHeirThought(name, type) {
+    if (type === 'hospital') return currentHeir.body.sick ? "我想快点好起来..." : "没病，不吃药！";
+    if (type === 'meituan') return "看起来好好吃！";
+    if (name.includes("书")) return currentHeir.params.diligence > 60 ? "想要这本书！" : "啊...又是书...";
+    return "这个看起来不错。";
+}
+
+async function refreshShopItems(type, title) {
+    var div = document.getElementById(`shopContent-${type}`);
+    div.innerHTML = '<div style="text-align:center; padding:50px;">🤖 正在进货中...</div>';
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    var prompt = `生成3个${title}商品。JSON格式:[{"name":"","icon":"emoji","effectDesc":"功效","detail":"详细介绍(50字)"}]`;
+    
+    try {
+        var res = await fetchAI(prompt, config);
+        var newItems = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        currentHeir.phoneData.shops[type] = newItems;
+        saveHeirData();
+        div.innerHTML = renderShopList(newItems, type);
+    } catch(e) { div.innerHTML = '❌ 进货失败'; }
+}
+
+function showItemDetail(type, idx) {
+    var item = currentHeir.phoneData.shops[type][idx];
+    var overlay = document.getElementById('itemDetailModal');
+    overlay.innerHTML = `
+        <button class="app-header-btn" style="align-self:flex-end;" onclick="document.getElementById('itemDetailModal').classList.remove('show')">×</button>
+        <div class="item-big-icon">${item.icon}</div>
+        <h2 style="text-align:center; color:#d66a80;">${item.name}</h2>
+        <div style="text-align:center; color:#999; margin-bottom:20px;">${item.effectDesc}</div>
+        <div style="background:#f9f9f9; padding:15px; border-radius:15px; font-size:13px; color:#555; line-height:1.6;">
+            ${item.detail || "暂无详细介绍..."}
+        </div>
+        <button class="shop-btn" style="width:100%; margin-top:20px; background:#74b9ff;" onclick="buyAIItem('${type}', ${idx}); document.getElementById('itemDetailModal').classList.remove('show')">立即购买使用</button>
+    `;
+    requestAnimationFrame(() => overlay.classList.add('show'));
+}
+
+function buyAIItem(type, idx) {
+    var item = currentHeir.phoneData.shops[type][idx];
+    if(type==='hospital') { currentHeir.body.health = 100; if(item.name.includes('神')) currentHeir.body.sick = false; }
+    if(type==='shop') currentHeir.mood += 10;
+    if(type==='meituan') currentHeir.body.waste = Math.max(0, currentHeir.body.waste - 20);
+    
+    saveHeirData();
+    auth.toast(`✨ 使用了 ${item.name}！`);
+}
+
+
+    
+
+
+// 💬 5. 微聊防骚扰补丁 (请把这个函数覆盖掉)
+function openChatDetail(role, name) {
+    // ... (前部分渲染代码保持不变，参考上文 openChatDetail) ...
+    
+    // 初始化数据
+    if(!currentHeir.phoneData.chats[role]) currentHeir.phoneData.chats[role] = { msgs: [], lastSender: 'ai' };
+    var chatData = currentHeir.phoneData.chats[role];
+    
+    // ... 渲染聊天框 DOM ...
+    // (为了节省篇幅，这里假设 DOM 已经建好，重点在下面的逻辑)
+
+    // 🔥 核心逻辑：只有当最后一条是我发的(user)，或者没记录时，对方才说话
+    // 如果最后一条是 AI 发的(ai)，他会等你，绝对不发第二条骚扰你。
+    if (chatData.msgs.length === 0 || chatData.lastSender === 'user') {
+        setTimeout(() => triggerPhoneReply(role, "INIT"), 1000);
+    }
+}
+
+// ================= 💬 微聊逻辑 (核心新增) =================
+
+function renderWeChat(container) {
+    // 1. 获取父君的名字和头像
+    var fatherName = currentHeir.fatherName || "父君";
+    var fatherAvatar = "https://files.catbox.moe/kp648j.jpeg"; // 默认头像
+    
+    // 尝试在物品库里找到父亲，获取他的真实头像
+    var fatherItem = items.find(i => i.name === fatherName);
+    if (fatherItem) {
+        var imgs = fatherItem.resources.filter(r => r.type === 'image');
+        if (imgs.length > 0) fatherAvatar = imgs[Math.min(fatherItem.coverIndex||0, imgs.length-1)].content;
+    }
+
+    container.innerHTML = `
+        <div class="app-header" style="background:#ededed; border-bottom:1px solid #dcdcdc;">
+            <span class="app-back" onclick="this.parentElement.parentElement.remove()" style="color:#333;">‹ 微信(3)</span>
+            微聊
+        </div>
+        <div class="app-content" style="padding:0; background:#fff;">
+            
+            <div class="chat-list-item" onclick="openChatDetail('father', '${fatherName}', '${fatherAvatar}')">
+                <img src="${fatherAvatar}" class="chat-avatar">
+                <div class="chat-info">
+                    <div class="chat-name">${fatherName}</div>
+                    <div class="chat-desc">[在线] 今天的折子批完了吗？</div>
+                </div>
+            </div>
+
+            <div class="chat-list-item" onclick="openChatDetail('eunuch', '小德子', 'https://files.catbox.moe/fv8f8p.gif')">
+                <img src="https://files.catbox.moe/fv8f8p.gif" class="chat-avatar" style="background:#eee;">
+                <div class="chat-info">
+                    <div class="chat-name">小德子 (总管)</div>
+                    <div class="chat-desc">奴才随时听候差遣...</div>
+                </div>
+            </div>
+
+            <div class="chat-list-item" onclick="openChatDetail('nanny', '掌事姑姑', 'https://files.catbox.moe/4hxxkv.gif')">
+                <img src="https://files.catbox.moe/4hxxkv.gif" class="chat-avatar" style="background:#eee;">
+                <div class="chat-info">
+                    <div class="chat-name">掌事姑姑 (保姆)</div>
+                    <div class="chat-desc">小殿下今天吃了一碗蛋羹...</div>
+                </div>
+            </div>
+
+        </div>
+    `;
+}
+
+// 打开聊天详情页
+var currentChatRole = null;
+function openChatDetail(role, name, avatar) {
+    currentChatRole = role; // 记录当前在和谁聊
+    
+    // 创建一个新的子窗口覆盖在列表上
+    var detailDiv = document.createElement('div');
+    detailDiv.className = 'app-window open'; // 直接显示
+    detailDiv.style.zIndex = '20';
+    
+    detailDiv.innerHTML = `
+        <div class="app-header" style="background:#ededed;">
+            <span class="app-back" onclick="this.parentElement.parentElement.remove()" style="color:#333;">‹</span>
+            ${name}
+        </div>
+        <div id="phoneChatBox" class="phone-chat-box">
+            <div style="text-align:center; color:#ccc; font-size:10px; margin-top:10px;">—— 现在可以开始聊天了 ——</div>
+        </div>
+        <div style="padding:10px; background:#f5f5f5; border-top:1px solid #ddd; display:flex; gap:8px;">
+            <input type="text" id="phoneChatInput" style="flex:1; padding:8px; border:1px solid #ddd; border-radius:5px; outline:none;" placeholder="发消息..." onkeydown="if(event.key==='Enter') sendPhoneMsg()">
+            <button onclick="sendPhoneMsg()" style="background:#07c160; color:white; border:none; padding:0 12px; border-radius:5px; font-weight:bold;">发送</button>
+        </div>
+    `;
+    
+    document.getElementById('activeAppWindow').appendChild(detailDiv);
+    
+    // 触发第一句问候
+    triggerPhoneGreeting(role, name);
+}
+
+// 手机发消息逻辑
+async function sendPhoneMsg() {
+    var input = document.getElementById('phoneChatInput');
+    var text = input.value.trim();
+    if (!text) return;
+
+    // 上屏
+    appendPhoneMsg('right', text);
+    input.value = '';
+
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) { appendPhoneMsg('left', '（对方信号不好，请检查 API Key）'); return; }
+
+    // 构建 Prompt
+    var roleDesc = "";
+    if (currentChatRole === 'father') roleDesc = `你是皇嗣的父亲【${currentHeir.fatherName}】，性格傲娇或深情。`;
+    else if (currentChatRole === 'eunuch') roleDesc = `你是太监总管【小德子】，卑微、狗腿、忠诚。`;
+    else if (currentChatRole === 'nanny') roleDesc = `你是照顾皇嗣的【掌事姑姑】，慈祥、唠叨、关注孩子健康。`;
+
+    var prompt = `
+    【短信聊天模式】
+    ${roleDesc}
+    
+    谈话对象：女皇陛下（用户）。
+    相关皇嗣：${currentHeir.name} (${currentHeir.age}岁, 状态:${currentHeir.body.sick?'生病':'健康'})。
+    
+    用户发来微信："${text}"
+    
+    请回复短信内容（简短，口语化，不要动作描写）。
+    `;
+
+    try {
+        var res = await fetchAI(prompt, config);
+        // 模拟延迟
+        setTimeout(() => {
+            appendPhoneMsg('left', res);
+        }, 1000);
+    } catch(e) {
+        appendPhoneMsg('left', '（发送失败...）');
+    }
+}
+
+// 自动触发开场白
+async function triggerPhoneGreeting(role, name) {
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) return;
+
+    var prompt = "";
+    if (role === 'father') prompt = `你是${name}，女皇的男宠，孩子的父亲。孩子${currentHeir.age}岁了。请给女皇发一条微信，问问孩子的情况，或者撒个娇。`;
+    else if (role === 'eunuch') prompt = `你是小德子。请给女皇发微信，请安，并汇报今天宫里平安无事。`;
+    else if (role === 'nanny') prompt = `你是掌事姑姑。请给女皇发微信，汇报皇嗣${currentHeir.name}今天的吃饭/睡觉情况。`;
+
+    try {
+        var res = await fetchAI(prompt, config);
+        appendPhoneMsg('left', res);
+    } catch(e) {}
+}
+
+function appendPhoneMsg(side, text) {
+    var box = document.getElementById('phoneChatBox');
+    if (!box) return;
+    var div = document.createElement('div');
+    div.className = `phone-msg ${side}`;
+    div.innerText = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+// ================= 🏥 其他 APP 渲染逻辑 =================
+
+function renderHospital(container) {
+    container.innerHTML = `
+        <div class="app-header"><span class="app-back" onclick="this.parentElement.parentElement.remove()">‹</span>太医局在线</div>
+        <div class="app-content">
+            <div style="padding:15px; background:#fff0f0; border-radius:10px; margin-bottom:15px; text-align:center; color:#d63031; border:1px solid #ffcccc;">
+                <div style="font-size:30px; margin-bottom:5px;">${currentHeir.body.sick ? '😷' : '😊'}</div>
+                <div style="font-weight:bold;">${currentHeir.name} 的病历</div>
+                <div style="font-size:12px; margin-top:5px;">健康值: ${currentHeir.body.health}%</div>
+                <div style="font-size:12px;">状态: ${currentHeir.body.sick ? '患病中 (需治疗)' : '身体健康'}</div>
+            </div>
+            
+            <div style="font-size:12px; color:#999; margin-bottom:5px; margin-left:5px;">专家号</div>
+            
+            <div class="shop-item">
+                <div>
+                    <div style="font-weight:bold;">💊 回春丹 (治愈生病)</div>
+                    <div style="font-size:10px; color:#999;">太医院秘制，包治百病</div>
+                </div>
+                <button class="shop-btn hospital" onclick="buyItem('cure')">问诊</button>
+            </div>
+            
+            <div class="shop-item">
+                <div>
+                    <div style="font-weight:bold;">💉 强身汤 (健康+20)</div>
+                    <div style="font-size:10px; color:#999;">人参鹿茸熬制</div>
+                </div>
+                <button class="shop-btn hospital" onclick="buyItem('heal')">开药</button>
+            </div>
+        </div>
+    `;
+}
+
+function renderShop(container) {
+    container.innerHTML = `
+        <div class="app-header"><span class="app-back" onclick="this.parentElement.parentElement.remove()">‹</span>珍宝阁</div>
+        <div class="app-content">
+            <div class="shop-item">
+                <div>🧸 <b>布老虎</b> <span style="color:#aaa;font-size:10px;">心情+10</span></div>
+                <button class="shop-btn" onclick="buyItem('toy')">购买</button>
+            </div>
+            <div class="shop-item">
+                <div>📚 <b>四书五经</b> <span style="color:#aaa;font-size:10px;">智慧+5</span></div>
+                <button class="shop-btn" onclick="buyItem('book')">购买</button>
+            </div>
+            <div class="shop-item">
+                <div>⚔️ <b>桃木剑</b> <span style="color:#aaa;font-size:10px;">体魄+5</span></div>
+                <button class="shop-btn" onclick="buyItem('sword')">购买</button>
+            </div>
+        </div>
+    `;
+}
+
+function renderMeituan(container) {
+    container.innerHTML = `
+        <div class="app-header"><span class="app-back" onclick="this.parentElement.parentElement.remove()">‹</span>御膳房外卖</div>
+        <div class="app-content">
+            <div style="background:#fff7e6; padding:10px; font-size:12px; color:#d46b08; border-radius:8px; margin-bottom:15px;">
+                🥡 只有吃饱了，才能消除疲劳(废品值)哦！
+            </div>
+            
+            <div class="shop-item">
+                <div>🥤 <b>冰镇酸梅汤</b> <span style="color:#aaa;font-size:10px;">废品-10</span></div>
+                <button class="shop-btn food" onclick="buyItem('tea')">下单</button>
+            </div>
+            <div class="shop-item">
+                <div>🍲 <b>满汉全席(单人)</b> <span style="color:#aaa;font-size:10px;">废品-30</span></div>
+                <button class="shop-btn food" onclick="buyItem('hotpot')">下单</button>
+            </div>
+        </div>
+    `;
+}
+
+// 5. 购买逻辑 (通用)
+function buyItem(type) {
+    if (type === 'cure') {
+        if (!currentHeir.body.sick) { auth.toast('身体倍儿棒，不用治！'); return; }
+        currentHeir.body.sick = false; currentHeir.body.health = 100; auth.toast('✨ 妙手回春！痊愈了！');
+    } else if (type === 'heal') {
+        currentHeir.body.health = Math.min(100, currentHeir.body.health + 20); auth.toast('💉 喝了药，感觉好多了');
+    } else if (type === 'toy') {
+        currentHeir.mood = Math.min(100, currentHeir.mood + 10); auth.toast('🧸 收到礼物很开心！');
+    } else if (type === 'book') {
+        currentHeir.params.wisdom += 5; auth.toast('📚 读了书，变聪明了');
+    } else if (type === 'sword') {
+        currentHeir.params.fitness += 5; auth.toast('⚔️ 嘿哈！体魄增强了');
+    } else if (type === 'tea') {
+        currentHeir.body.waste = Math.max(0, currentHeir.body.waste - 10); auth.toast('🥤 好喝！解乏！');
+    } else if (type === 'hotpot') {
+        currentHeir.body.waste = Math.max(0, currentHeir.body.waste - 30); auth.toast('🍲 吃撑了！疲劳全消！');
+    }
+    
+    saveHeirData();
+    
+    // 刷新一下当前APP的显示 (如果在医院，刷新病历状态)
+    var activeApp = document.querySelector('.app-window:last-child');
+    if(activeApp && activeApp.innerHTML.includes('病历')) {
+        renderHospital(activeApp); // 重新渲染医院界面
+    }
+}
+
+// 8. 切换面板
+function switchPanel(mode) { currentHeir.panelMode = mode; saveHeirData(); openEastPalace(); }
+
+// 9. 💬 发送消息
+async function sendToHeir() {
+    if (currentHeir.isDead) return;
+    var input = document.getElementById('heirInput');
+    var text = input.value.trim();
+    if (!text) return;
+
+    addChatBubble('user', text);
+    input.value = '';
+    currentHeir.isWaitingForReply = false;
+    currentHeir.body.waste += 2;
+    if(currentHeir.body.waste > 80 && !currentHeir.body.sick && Math.random() > 0.7) {
+        currentHeir.body.sick = true; auth.toast('😷 太累了，生病了！');
+    }
+    saveHeirData();
+
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) { addChatBubble('ai', '（无API Key）'); return; }
+
+    var prompt = `
+    角色:${currentHeir.name},${currentHeir.age}岁,${currentHeir.season}季。
+    状态:健康${currentHeir.body.health},生病:${currentHeir.body.sick},心情${currentHeir.mood}。
+    属性:${JSON.stringify(currentHeir.params)}。
+    用户说:"${text}"
+    任务:
+    1. 如用户问“出去玩/出宫”，同意则allowTravel:true。
+    2. 如果生病了，回复要虚弱。
+    JSON: { "reply":"", "innerThought":"", "action":"", "allowTravel":false, "changes":{} }
+    `;
+
+    showTyping();
+
+    try {
+        var res = await fetchAI(prompt, config);
+        var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        updateHeirStats(data.changes);
+        currentHeir.lastThought = data.innerThought; 
+        
+        var replyHtml = data.reply;
+        if (data.allowTravel && !currentHeir.body.sick) replyHtml += `<br><button onclick="openTravelMap()" style="margin-top:5px; background:#ff9a9e; color:white; border:none; padding:4px 12px; border-radius:15px; cursor:pointer; font-size:12px;">🚗 备车出发</button>`;
+        
+        var area = document.getElementById('heirChatArea');
+        var div = document.createElement('div');
+        div.className = `heir-msg ai`; div.innerHTML = replyHtml; 
+        area.appendChild(div); area.scrollTop = area.scrollHeight;
+        
+        if (!currentHeir.history) currentHeir.history = [];
+        currentHeir.history.push({ role: 'ai', content: data.reply }); 
+        if (data.action) smartUpdateHeirScene(data.action);
+        
+        saveHeirData();
+        checkRunaway(); checkDeath();
+    } catch (e) { addChatBubble('ai', '...'); }
+}
+
+// 10. 🌸 换季
+function toggleHeirSeason() {
+    if (currentHeir.isDead || currentHeir.age >= 18) return;
+    var seasons = ['春', '夏', '秋', '冬'];
+    var nextIdx = seasons.indexOf(currentHeir.season) + 1;
+
+    if (currentHeir.body.sick) { currentHeir.body.health -= 30; auth.toast('⚠️ 病情加重！'); }
+    else if (Math.random() > 0.85) { currentHeir.body.sick = true; auth.toast('😷 换季生病了！'); }
+
+    if (nextIdx > 3) advanceYear(); 
+    else {
+        currentHeir.season = seasons[nextIdx];
+        currentHeir.bioLog.push(`【${currentHeir.age}岁·${currentHeir.season}】：换季了。`);
+        saveHeirData(); openEastPalace(); checkDeath();
+writeDailyDiary(); 
+
+    }
+}
+
+// 11. 🎂 长大
+function advanceYear() {
+    if (currentHeir.isDead || currentHeir.age >= 18) return;
+    currentHeir.age += 1; currentHeir.season = '春';
+    currentHeir.body.height += (5 + Math.floor(Math.random()*5));
+    currentHeir.body.weight += (2 + Math.floor(Math.random()*3));
+    currentHeir.bioLog.push(`——— ${currentHeir.age} 岁 ———`);
+    saveHeirData(); openEastPalace(); checkDeath();
+writeDailyDiary();
+
+}
+
+// 12. 💀 死亡
+function checkDeath() {
+    if (currentHeir.body.health <= 0) {
+        currentHeir.isDead = true;
+        currentHeir.bioLog.push(`【${currentHeir.age}岁】：因病重不治，不幸夭折。`);
+        saveHeirData(); renderDeadView();
+    }
+}
+function renderDeadView() {
+    var modalContent = document.querySelector('#eastPalaceModal .modal');
+    modalContent.innerHTML = `<button class="close-modal" onclick="closeEastPalace()" style="position:absolute; right:10px; top:10px; color:#aaa;">×</button><div style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#000; color:#fff;"><div style="font-size:60px;">🪦</div><h3 style="margin:10px 0; color:#d63031;">香消玉殒</h3><p style="font-size:12px; text-align:center; padding:0 30px; color:#aaa;">${currentHeir.name} 的生命永远停留在了 ${currentHeir.age} 岁。</p><button onclick="openMemories()" style="margin-top:20px; padding:10px 20px; border:1px solid #555; background:#333; color:#fff; border-radius:20px;">📖 查看生平</button></div>`;
+}
+
+// 13. 辅助
+function getAvatarUrl(state) {
+    var isBoy = currentHeir.gender === '男';
+    var assets = isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
+    if (state === 'yawn') return assets.yawn;
+    if (state === 'shy') return assets.shy;
+    return Array.isArray(assets.idle) ? assets.idle[Math.floor(Math.random()*assets.idle.length)] : assets.idle;
+}
+function addChatBubble(role, text) {
+    var area = document.getElementById('heirChatArea');
+    var div = document.createElement('div');
+    div.className = `heir-msg ${role}`; div.innerText = text;
+    area.appendChild(div); area.scrollTop = area.scrollHeight;
+    if (!currentHeir.history) currentHeir.history = [];
+    currentHeir.history.push({ role: role, content: text });
+}
+function showTyping() {
+    var area = document.getElementById('heirChatArea');
+    var div = document.createElement('div');
+    div.id = 'heirTyping'; div.innerText = '✍️...'; div.style.cssText = "font-size:10px; color:#aaa; margin-left:15px;";
+    area.appendChild(div); area.scrollTop = area.scrollHeight;
+}
+function updateHeirStats(changes) {
+    if (!changes) return;
+    for (var key in changes) {
+        if (key === 'mood') currentHeir.mood = Math.min(Math.max(currentHeir.mood + changes[key], 0), 100);
+        else if (currentHeir.params[key] !== undefined) currentHeir.params[key] = Math.min(Math.max(currentHeir.params[key] + changes[key], 0), 100);
+    }
+}
+function saveHeirData() { localStorage.setItem('royal_heir_data', JSON.stringify(currentHeir)); }
+function updateHeirButtonState() {
+    var btn = document.getElementById('heirActionButton');
+    if (!btn) return;
+    if (typeof viewingIndex === 'undefined' || viewingIndex === -1 || !items[viewingIndex]) return;
+    if (currentHeir && currentHeir.fatherName === items[viewingIndex].name && !currentHeir.isRunaway && !currentHeir.isDead) {
+        btn.innerText = `🧸 前往东宫 (看望${currentHeir.name})`;
+        btn.style.background = '#fff7d1'; btn.style.color = '#fa8c16';
+    } else {
+        btn.innerText = `👶 祈福求子`;
+        btn.style.background = '#fff0f5'; btn.style.color = '#ff6b6b';
+    }
+}
+function handleHeirAction() {
+    if (viewingIndex === -1) return;
+    var item = items[viewingIndex];
+    if (currentHeir && currentHeir.fatherName === item.name && !currentHeir.isRunaway && !currentHeir.isDead) {
+        openEastPalace();
+    } else {
+        document.getElementById('creationFatherName').innerText = item.name;
+        document.getElementById('creationSettingInput').value = '';
+        document.getElementById('heirCreationModal').classList.add('active');
+    }
+}
+function closeEastPalace() { document.getElementById('eastPalaceModal').classList.remove('active'); }
+function smartUpdateHeirScene(actionText) {
+    if (!currentHeir) return;
+    var isBoy = currentHeir.gender === '男';
+    var sceneList = isBoy ? HEIR_SCENES.boy : HEIR_SCENES.girl;
+    var pool = (isBoy ? HEIR_ASSETS.boy : HEIR_ASSETS.girl).bg[currentHeir.season];
+    if(!Array.isArray(pool)) pool = [pool];
+    var finalUrl = pool[Math.floor(Math.random() * pool.length)];
+    if (actionText) {
+        for (var i=0; i<sceneList.length; i++) {
+            if (sceneList[i].seasons.includes(currentHeir.season) && sceneList[i].keywords.some(k => actionText.includes(k))) {
+                finalUrl = Array.isArray(sceneList[i].url) ? sceneList[i].url[0] : sceneList[i].url;
+                break;
+            }
+        }
+    }
+    currentHeir.currentScene = finalUrl; saveHeirData();
+    var bgEl = document.getElementById('heirSceneBg');
+    if (bgEl) bgEl.style.backgroundImage = `url('${finalUrl}')`;
+}
+function touchHeir2D() {
+    currentHeir.mood = Math.min(100, currentHeir.mood + 2); saveHeirData(); auth.toast(`👉 摸摸头 (心情+2)`);
+}
+function readMind() {
+    if (!currentHeir.lastThought) { auth.toast('😶 ...'); return; }
+    var bubble = document.getElementById('heirBubble');
+    bubble.innerText = `💭 ${currentHeir.lastThought}`;
+    bubble.style.opacity = 1; bubble.style.top = '20px';
+    setTimeout(() => { bubble.style.opacity = 0; bubble.style.top = '50px'; }, 3000);
+}
+function openMemories() { currentHeir.isViewingMemories = true; renderMemoryBook(); }
+function exitMemories() { currentHeir.isViewingMemories = false; openEastPalace(); }
+function renderMemoryBook() {
+    var modalContent = document.querySelector('#eastPalaceModal .modal');
+    var logs = currentHeir.bioLog || [];
+    modalContent.innerHTML = `<button class="close-modal" onclick="exitMemories()" style="position:absolute; right:10px; top:10px; z-index:200; font-size:24px; background:none; border:none;">×</button><div style="text-align:center; padding:15px; border-bottom:2px solid #ffb7c5; background:#fff;"><h3>📜 ${currentHeir.name} 的生平</h3></div><div class="memory-list">${logs.slice().reverse().map(log => `<div class="memory-item"><div class="memory-content">${log}</div></div>`).join('')}</div><button onclick="exitMemories()" style="width:100%; padding:15px; background:#fff; border:none;">🔙 返回</button>`;
+}
+function checkRunaway() {
+    if (currentHeir.params.rebellion > 90 && currentHeir.params.affection < 20) {
+        currentHeir.isRunaway = true; currentHeir.bioLog.push(`【${currentHeir.age}岁】：离家出走。`); saveHeirData(); renderRunawayView();
+    }
+}
+function renderRunawayView() {
+    var modalContent = document.querySelector('#eastPalaceModal .modal');
+    modalContent.innerHTML = `<button class="close-modal" onclick="closeEastPalace()" style="position:absolute;right:10px;top:10px">×</button><div style="height:100%;display:flex;justify-content:center;align-items:center;flex-direction:column"><h3>🏚️ 人去楼空</h3><button onclick="openMemories()">📖 回忆录</button></div>`;
+}
+// 14. 🗺️ 地图逻辑
+function openTravelMap() {
+    var modalContent = document.querySelector('#eastPalaceModal .modal');
+    var mapData = WORLD_MAPS['outside'];
+    var locHtml = mapData.locations.map(loc => `<div class="location-card" onclick="enterLocation('${loc.name}', '${loc.desc}', '${loc.type}')"><div style="font-size:24px;">${loc.icon}</div><div>${loc.name}</div>${loc.desc?`<div style="color:#999;font-size:10px;">${loc.desc}</div>`:''}</div>`).join('');
+    modalContent.innerHTML = `<div class="map-modal-body"><div class="map-header" style="background-image:url('${mapData.bg}')"><div class="map-title-badge">🌏 ${mapData.name}</div><button onclick="closeTravelMode()" style="position:absolute;right:10px;top:10px;background:rgba(0,0,0,0.5);color:#fff;border:none;padding:5px 12px;border-radius:15px;">✖ 关闭</button></div><div class="map-grid">${locHtml}</div></div>`;
+}
+var currentTravelLoc = null;
+function enterLocation(name, desc, type) {
+    if (type === 'exit') { closeTravelMode(); return; }
+    currentTravelLoc = name;
+    var modalContent = document.querySelector('#eastPalaceModal .modal');
+    var bgUrl = WORLD_MAPS['outside'].bg; 
+    var assets = currentHeir.gender === '男' ? HEIR_ASSETS.boy : HEIR_ASSETS.girl;
+    var avatarUrl = Array.isArray(assets.idle) ? assets.idle[0] : assets.idle;
+    modalContent.innerHTML = `<div class="travel-chat-view"><div class="travel-scene-area" style="background-image:url('${bgUrl}')"><div style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.9);padding:5px 10px;border-radius:10px;font-weight:bold;color:#d46b08;">📍 ${name}</div><img src="${avatarUrl}" class="travel-avatar"></div><div id="travelChatBox" class="travel-chat-box"></div><div class="travel-controls"><input type="text" id="travelInput" style="flex:1;border:1px solid #ddd;padding:8px;border-radius:20px;" placeholder="聊聊风景..."><button onclick="sendTravelChat()" style="background:#ff9a9e;color:#fff;border:none;padding:0 15px;border-radius:20px;">说</button><button onclick="openTravelMap()" style="background:#eee;color:#666;border:none;padding:0 15px;border-radius:20px;">🔙</button></div></div>`;
+    triggerTravelStart(name);
+}
+async function sendTravelChat() {
+    var input = document.getElementById('travelInput'); var text = input.value.trim(); if (!text) return;
+    appendTravelMsg('user', text); input.value = '';
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    var prompt = `地点:${currentTravelLoc}。性格:${JSON.stringify(currentHeir.params)}。用户:${text}。JSON:{ "reply":"", "changes":{ "mood":2 } }`;
+    try {
+        var res = await fetchAI(prompt, config); var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        appendTravelMsg('ai', data.reply); updateHeirStats(data.changes); saveHeirData();
+    } catch(e) { appendTravelMsg('ai', '...'); }
+}
+async function triggerTravelStart(locName) {
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    var prompt = `到了${locName}。性格:${JSON.stringify(currentHeir.params)}。一句感想。JSON:{"reply":""}`;
+    try {
+        var res = await fetchAI(prompt, config); var data = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        appendTravelMsg('ai', data.reply); currentHeir.bioLog.push(`【${currentHeir.age}岁·游历】：${locName}，${data.reply}`); saveHeirData();
+    } catch(e) {}
+}
+function appendTravelMsg(role, text) {
+    var box = document.getElementById('travelChatBox'); var div = document.createElement('div');
+    div.style.cssText = `background:${role==='user'?'#ffeaa7':'#fff'};padding:8px;border-radius:10px;margin-bottom:8px;align-self:${role==='user'?'flex-end':'flex-start'};max-width:85%;margin-left:${role==='user'?'auto':'0'};`;
+    div.innerText = text; box.appendChild(div); box.scrollTop = box.scrollHeight;
+}
+function closeTravelMode() { openEastPalace(); }
+
+// 📓 自动写日记逻辑 (新增)
+async function writeDailyDiary() {
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) return;
+
+    // 1. 获取最近发生的 3 件事作为素材
+    var recentLogs = currentHeir.bioLog.slice(-3).join("；");
+    if (!recentLogs) recentLogs = "今天平平淡淡，没什么特别的事。";
+
+    // 2. 构建 Prompt
+    var prompt = `
+    角色：${currentHeir.name}，${currentHeir.age}岁。
+    性格：${JSON.stringify(currentHeir.params)}。
+    
+    请根据以下【近期经历】，写一篇简短的私密日记（50字左右）。
+    要求：
+    1. 用第一人称“我”。
+    2. 语气要符合性格（比如傲娇的要口是心非，病娇的要提到对'那个人'的执念）。
+    3. 这是一个不可告人的秘密日记，写出真实想法。
+    
+    【近期经历】：${recentLogs}
+    `;
+
+    try {
+        // 3. 悄悄请求 AI (不显示加载动画，后台执行)
+        var res = await fetchAI(prompt, config);
+        
+        // 4. 存入日记本
+        var dateStr = `${currentHeir.age}岁·${currentHeir.season}`;
+        currentHeir.diary.push({ date: dateStr, content: res });
+        
+        // 保持日记最多 10 条，防止存太多
+        if (currentHeir.diary.length > 10) currentHeir.diary.shift();
+        
+        saveHeirData();
+        console.log("📓 日记已更新");
+        
+    } catch(e) {
+        console.log("❌ 日记写入失败");
+    }
+}
+
+// ================= 👑 皇嗣代码结束 =================
+
+
 
     </script>
 </body>
