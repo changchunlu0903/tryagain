@@ -10406,6 +10406,188 @@ function updateRelationshipStatus(p) {
     }
 }
 
+// ================= 🎓 职业与成就系统 (强行覆盖补丁) =================
+
+// 1. 职业数据库 (挂载到 window，防止重复报错)
+window.CAREER_DB = [
+    // 👑 皇权
+    { name: "皇帝", type: "royal", req: { ambition: 90, wisdom: 80 } },
+    { name: "摄政王", type: "royal", req: { ambition: 85, fitness: 80 } },
+    { name: "皇后", type: "royal", req: { charm: 90, morality: 80 } },
+    { name: "和亲公主", type: "royal", req: { charm: 80, rebellion: -1 } },
+    // ⚔️ 武官
+    { name: "大将军", type: "good", req: { fitness: 90, rebellion: 60 } },
+    { name: "御前侍卫", type: "good", req: { fitness: 80, morality: 80 } },
+    { name: "刺客", type: "bad", req: { fitness: 85, morality: 20 } },
+    // 📚 文官
+    { name: "宰相", type: "good", req: { wisdom: 95, morality: 60 } },
+    { name: "太医", type: "good", req: { wisdom: 80, morality: 80 } },
+    { name: "状元郎", type: "good", req: { diligence: 90, wisdom: 80 } },
+    { name: "大诗人", type: "good", req: { wisdom: 80, charm: 70 } },
+    // 💰 市井
+    { name: "皇商首富", type: "good", req: { wisdom: 70, ambition: 80 } },
+    { name: "青楼头牌", type: "bad", req: { charm: 90, morality: 30 } },
+    // 🏚️ 底层
+    { name: "得道高僧", type: "good", req: { ambition: 10, morality: 90 } },
+    { name: "种田农夫", type: "normal", req: { fitness: 50 } },
+    { name: "乞丐", type: "bad", req: { diligence: 10, wisdom: 10 } },
+    { name: "平民", type: "normal", req: {} }
+];
+
+// 2. 成就数据库
+window.ACHIEVEMENT_DB = [
+    { name: "绝世情圣", req: function(h){ return h.dating && h.dating.partners.length > 5; } },
+    { name: "注孤生", req: function(h){ return (!h.dating || h.dating.partners.length === 0) && h.age > 20; } },
+    { name: "富可敌国", req: function(h){ return h.career === "皇商首富"; } },
+    { name: "千古一帝", req: function(h){ return h.career === "皇帝"; } },
+    { name: "逆子", req: function(h){ return h.params.rebellion > 95; } },
+    { name: "妈宝", req: function(h){ return h.params.affection > 95; } },
+    { name: "体弱多病", req: function(h){ return h.body.health < 40; } },
+    { name: "武林神话", req: function(h){ return h.params.fitness > 95; } },
+    { name: "智多星", req: function(h){ return h.params.wisdom > 95; } },
+    { name: "万人迷", req: function(h){ return h.params.charm > 95; } }
+];
+
+// 3. 家族树初始化
+if (!window.familyTree) {
+    window.familyTree = JSON.parse(localStorage.getItem('royal_family_tree')) || [];
+}
+
+// 4. 检查成就函数
+window.checkAchievements = function() {
+    if (!currentHeir) return;
+    if (!currentHeir.achievements) currentHeir.achievements = [];
+    
+    window.ACHIEVEMENT_DB.forEach(function(ach) {
+        if (!currentHeir.achievements.includes(ach.name) && ach.req(currentHeir)) {
+            currentHeir.achievements.push(ach.name);
+            auth.toast("🏆 解锁成就：【" + ach.name + "】");
+        }
+    });
+};
+
+// 5. 家族归档函数
+window.archiveHeirToFamily = function(heir) {
+    var existingIndex = window.familyTree.findIndex(function(h){ return h.id === heir.id; });
+    if (existingIndex !== -1) window.familyTree[existingIndex] = heir;
+    else window.familyTree.push(heir);
+    localStorage.setItem('royal_family_tree', JSON.stringify(window.familyTree));
+};
+
+// 6. 生成离别信 (AI)
+window.generateCareerStory = async function(job) {
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if (!config || !config.apiKey) { 
+        var letterEl = document.getElementById('careerLetter');
+        if(letterEl) letterEl.innerHTML = "（孩子默默地走了，去追寻【" + job + "】的道路...）"; 
+        return; 
+    }
+    
+    var prompt = "我是女皇。皇嗣【" + currentHeir.name + "】18岁成年，成为了【" + job + "】。请以第一人称写一封给我的“离家告别信”（100字）。包含对职业的看法、回忆和对母亲的感情。";
+    
+    try {
+        var res = await fetchAI(prompt, config);
+        var letterEl = document.getElementById('careerLetter');
+        if(letterEl) letterEl.innerHTML = res.replace(/\n/g, '<br>');
+        
+        currentHeir.bioLog.push("【18岁·结局】：" + res); 
+        saveHeirData();
+    } catch(e) {}
+};
+
+// 7. 打开成人礼结算界面
+window.openAdultCeremony = function() {
+    // 关闭所有弹窗
+    document.querySelectorAll('.modal-overlay').forEach(function(el){ el.classList.remove('active'); });
+    
+    // 职业判定
+    var bestCareer = window.CAREER_DB[window.CAREER_DB.length - 1]; 
+    for (var i = 0; i < window.CAREER_DB.length; i++) {
+        var job = window.CAREER_DB[i];
+        var qualified = true;
+        for (var reqKey in job.req) {
+            var val = currentHeir.params[reqKey] || 0;
+            if (val < job.req[reqKey]) { qualified = false; break; }
+        }
+        if (qualified) { bestCareer = job; break; }
+    }
+
+    currentHeir.career = bestCareer.name;
+    archiveHeirToFamily(currentHeir);
+    saveHeirData();
+
+    // 渲染界面
+    var modal = document.querySelector('#eastPalaceModal .modal');
+    modal.className = "modal adult-modal"; // 切换样式
+    document.getElementById('eastPalaceModal').classList.add('active');
+
+    // 进度条 HTML
+    var judgeHtml = bestCareer.name === "平民" ? "<div style='text-align:center;color:#999;font-size:12px;'>平平淡淡才是真...</div>" : "";
+    if (bestCareer.name !== "平民") {
+        for (var key in bestCareer.req) {
+            var reqVal = bestCareer.req[key];
+            var curVal = currentHeir.params[key] || 0;
+            var isPass = curVal >= reqVal;
+            var pct = Math.min(100, (curVal / 120) * 100);
+            
+            var labelMap = {wisdom:'智慧',fitness:'体魄',charm:'魅力',diligence:'勤勉',rebellion:'叛逆',morality:'道德',ambition:'野心',affection:'亲密'};
+            var label = labelMap[key] || key;
+
+            judgeHtml += "<div class='judge-row'><span class='judge-label'>" + label + "</span><div class='judge-track'><div class='judge-bar " + (isPass?'pass':'fail') + "' style='width:" + pct + "%'></div></div><div class='judge-val'>" + curVal + "/" + reqVal + (isPass?"✅":"❌") + "</div></div>";
+        }
+    }
+
+    var achHtml = currentHeir.achievements.map(function(a){ return "<span class='ach-badge'>🏆 " + a + "</span>"; }).join('') || "<span style='color:#ccc;font-size:12px;'>(无特殊成就)</span>";
+
+    modal.innerHTML = `
+        <div class="adult-header">✨ 冠礼 · 成人结算 ✨</div>
+        <div class="adult-content">
+            <div class="career-card-large">
+                <div class="career-icon-big">🎓</div>
+                <div class="career-title-big">${bestCareer.name}</div>
+                <div class="career-desc">前程似锦，未来可期。</div>
+            </div>
+            <div class="judge-box"><div class="judge-title">📋 资质判定</div>${judgeHtml}</div>
+            <div class="judge-box" style="border-left:3px solid #ff9a9e;"><div class="judge-title">🏅 人生成就</div><div class="achievement-grid">${achHtml}</div></div>
+            <div class="judge-box" style="background:#fffbf0; border:none;"><div class="judge-title">💌 离家留言</div><div id="careerLetter" class="farewell-letter"><div style="text-align:center;">✍️ 正在写信...</div></div></div>
+            <button onclick="closeEastPalace(); location.reload();" class="primary-btn" style="width:100%; margin-top:20px; padding:15px; font-size:16px;">👋 孩子长大了 (归档并允许二胎)</button>
+        </div>
+    `;
+
+    generateCareerStory(bestCareer.name);
+};
+
+// 8. 长大一岁 (覆盖版)
+window.advanceYear = function() {
+    if (currentHeir.isDead) return;
+    
+    checkAchievements();
+
+    // 17 -> 18岁 触发成人礼
+    if (currentHeir.age === 17) {
+        currentHeir.age = 18;
+        openAdultCeremony();
+        return;
+    }
+
+    if (currentHeir.age >= 18) {
+        auth.toast('🎓 孩子已成年在外打拼...');
+        currentHeir.age += 1;
+    } else {
+        currentHeir.age += 1;
+        currentHeir.season = '春';
+        currentHeir.body.height += 3;
+        currentHeir.body.weight += 1;
+    }
+
+    currentHeir.bioLog.push("——— " + currentHeir.age + " 岁 ———");
+    saveHeirData();
+    openEastPalace();
+    
+    if(typeof checkDeath === 'function') checkDeath();
+    if(typeof writeDailyDiary === 'function') writeDailyDiary();
+};
+
 // ================= 👑 皇嗣代码结束 =================
 
 
