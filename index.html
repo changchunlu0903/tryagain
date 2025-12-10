@@ -10734,6 +10734,70 @@ window.buyAIItem = function(type, idx) {
     auth.toast(`✨ 成功购买并使用了【${item.name}】！`);
 };
 
+// ================= 🕵️ 监护人 APP 强力修复补丁 =================
+
+// 1. 强制覆盖渲染逻辑 (带数据自动修复)
+window.renderSpywareApp = function(container) {
+    // 🚑 救急：如果数据不存在，立刻补全
+    if (!currentHeir) return;
+    if (!currentHeir.diary) currentHeir.diary = [];
+    
+    // 如果日记是空的，自动写一条初始日记，防止空白难看
+    if (currentHeir.diary.length === 0) {
+        currentHeir.diary.push({ 
+            date: "昨日", 
+            content: "给我的手机装了好多奇怪的软件...这就是大人的世界吗？" 
+        });
+        saveHeirData(); // 保存修复后的数据
+    }
+
+    // 生成列表 HTML
+    var listHtml = currentHeir.diary.slice().reverse().map(function(d) {
+        return `
+        <div class="diary-paper" style="background:#fffbf0; padding:12px; margin-bottom:10px; border-radius:6px; border-left:3px solid #ffb7c5; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="font-size:12px; color:#999; border-bottom:1px dashed #ccc; margin-bottom:5px;">${d.date}</div>
+            <div style="font-size:13px; color:#555; line-height:1.5;">${d.content}</div>
+        </div>`;
+    }).join('');
+    
+    // 渲染界面
+    container.innerHTML = `
+        <div class="app-header">
+            <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
+            <span style="flex:1; text-align:center;">监护人 Pro</span>
+            <span style="width:20px;"></span>
+        </div>
+        <div class="app-content" style="padding:15px; background:#f0f0f0;">
+            <div style="font-size:12px; color:#666; margin-bottom:10px;">📊 正在同步皇嗣设备数据...</div>
+            <div style="font-weight:bold; margin-bottom:5px; color:#333;">📖 私密日记本 (已破解)</div>
+            ${listHtml}
+        </div>
+    `;
+};
+
+// 2. 确保路由能找到它 (再次确认)
+// 如果你之前的 openApp 没写对，这段会强制修正它
+var originalOpenApp = window.openApp; 
+window.openApp = function(name) {
+    // 如果是监护人，直接调用上面的修复版函数
+    if (name === 'spyware') {
+        var win = document.getElementById('activeAppWindow');
+        if (!win) return;
+        win.innerHTML = '';
+        var appDiv = document.createElement('div');
+        appDiv.className = 'app-window';
+        appDiv.style.background = "#f7f9fc";
+        
+        renderSpywareApp(appDiv); // 调用修复后的函数
+        
+        win.appendChild(appDiv);
+        requestAnimationFrame(function() { appDiv.classList.add('open'); });
+    } else {
+        // 其他软件照常运行
+        if (originalOpenApp) originalOpenApp(name);
+    }
+};
+
 // ================= 👑 皇嗣代码结束 =================
 
 
