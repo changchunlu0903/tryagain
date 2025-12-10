@@ -10588,6 +10588,152 @@ window.advanceYear = function() {
     if(typeof writeDailyDiary === 'function') writeDailyDiary();
 };
 
+// ================= 📱 手机APP 修复补丁 (监护人+商店) =================
+
+// 1. 通用路由修复 (解决点图标没反应)
+window.openApp = function(name) {
+    var win = document.getElementById('activeAppWindow');
+    if (!win) return; // 防止报错
+    win.innerHTML = '';
+    
+    var appDiv = document.createElement('div');
+    appDiv.className = 'app-window';
+    appDiv.style.background = "#f7f9fc"; 
+    
+    if (name === 'wechat') {
+        if(typeof renderWeChat === 'function') renderWeChat(appDiv);
+    } 
+    else if (name === 'clothing') {
+        if(typeof renderClothingApp === 'function') renderClothingApp(appDiv);
+    } 
+    else if (name === 'spyware') {
+        renderSpywareApp(appDiv); // 修复监护人
+    } 
+    else if (name === 'matchmaker') {
+        if(typeof renderMatchmakerApp === 'function') renderMatchmakerApp(appDiv);
+    }
+    
+    win.appendChild(appDiv);
+    requestAnimationFrame(function() { appDiv.classList.add('open'); });
+};
+
+// 2. 🕵️ 监护人逻辑 (偷看日记)
+window.renderSpywareApp = function(container) {
+    // 如果没日记，生成一条默认的
+    if(!currentHeir.diary || currentHeir.diary.length === 0) {
+        currentHeir.diary.push({ date: "昨日", content: "今天家长好像很忙..." });
+    }
+
+    var html = currentHeir.diary.slice().reverse().map(function(d) {
+        return `<div class="diary-paper" style="background:#fffbf0; padding:12px; margin-bottom:10px; border-radius:6px; border-left:3px solid #ffb7c5; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="font-size:12px; color:#999; border-bottom:1px dashed #ccc; margin-bottom:5px;">${d.date}</div>
+            <div style="font-size:13px; color:#555; line-height:1.5;">${d.content}</div>
+        </div>`;
+    }).join('');
+    
+    container.innerHTML = `<div class="app-header"><button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button><span style="flex:1;text-align:center;">监护人 Pro</span><span style="width:20px;"></span></div><div class="app-content" style="padding:15px;background:#f0f0f0;"><div style="font-weight:bold;margin-bottom:10px;color:#333;">📖 私密日记本</div>${html}</div>`;
+};
+
+// 3. 🛍️ 商店入口 (修复太医局/珍宝阁/御膳房)
+window.openShopApp = async function(type, title) {
+    var win = document.getElementById('activeAppWindow');
+    if (!win) return;
+    win.innerHTML = '';
+    
+    var appDiv = document.createElement('div');
+    appDiv.className = 'app-window';
+    appDiv.style.background = "#f7f9fc"; 
+
+    // 获取缓存数据
+    if (!currentHeir.phoneData) currentHeir.phoneData = { shops: { hospital:[], shop:[], meituan:[] } };
+    var items = currentHeir.phoneData.shops[type] || [];
+    
+    appDiv.innerHTML = `
+        <div class="app-header">
+            <button class="app-header-btn" onclick="this.parentElement.parentElement.remove()">‹</button>
+            <span style="flex:1; text-align:center;">${title}</span>
+            <button class="app-header-btn" onclick="refreshShopItems('${type}', '${title}')">🔄</button>
+        </div>
+        <div class="app-content" id="shopContent-${type}" style="padding:15px; overflow-y:auto; flex:1;">
+            ${items.length === 0 ? '<div style="text-align:center; padding:50px; color:#999;">暂无商品<br>点击右上角进货</div>' : renderShopList(items, type)}
+        </div>
+        <div id="itemDetailModal" class="item-detail-overlay"></div>
+    `;
+    win.appendChild(appDiv);
+    requestAnimationFrame(function() { appDiv.classList.add('open'); });
+    
+    if(items.length === 0) refreshShopItems(type, title);
+};
+
+// 4. 渲染商店列表
+window.renderShopList = function(items, type) {
+    return items.map(function(item, idx) {
+        var thought = getHeirThought(item.name, type);
+        var icon = item.icon || '📦';
+        return `
+        <div class="shop-item" onclick="showItemDetail('${type}', ${idx})" style="background:white; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+            <div style="flex:1;">
+                <div style="font-weight:bold; font-size:13px;">${item.name} ${icon}</div>
+                <div style="font-size:10px; color:#999; margin-bottom:4px;">${item.effectDesc}</div>
+                <div class="heir-thought" style="background:#fff0f5; color:#d66a80; font-size:10px; padding:4px 8px; border-radius:8px; margin-top:5px; position:relative; font-style:italic;">💭 ${thought}</div>
+            </div>
+            <button class="shop-btn" style="background:#74b9ff; color:white; border:none; padding:5px 10px; border-radius:15px; cursor:pointer; margin-left:10px;" onclick="event.stopPropagation(); buyAIItem('${type}', ${idx})">购买</button>
+        </div>`;
+    }).join('');
+};
+
+// 5. 商店辅助函数 (皇嗣想法、刷新、购买)
+window.getHeirThought = function(name, type) {
+    if (type === 'hospital') return currentHeir.body.sick ? "我想快点好..." : "没病不吃药！";
+    if (type === 'meituan') return "看起来好好吃！";
+    if (name.includes("书")) return currentHeir.params.diligence > 60 ? "这本书我找了好久！" : "啊...又是书...";
+    return "这个看起来不错。";
+};
+
+window.refreshShopItems = async function(type, title) {
+    var div = document.getElementById(`shopContent-${type}`);
+    div.innerHTML = '<div style="text-align:center; padding:50px;">🤖 正在进货中...</div>';
+    
+    var config = window.aiConfig || JSON.parse(localStorage.getItem('my_ai_config'));
+    if(!config || !config.apiKey) { div.innerHTML = '🚫 请先配置 API Key'; return; }
+
+    var prompt = `生成3个${title}商品。JSON格式:[{"name":"名称","icon":"emoji","effectDesc":"功效","detail":"详细介绍(50字)"}]`;
+    
+    try {
+        var res = await fetchAI(prompt, config);
+        var newItems = JSON.parse(res.replace(/```json/g,'').replace(/```/g,'').trim());
+        currentHeir.phoneData.shops[type] = newItems;
+        saveHeirData();
+        div.innerHTML = renderShopList(newItems, type);
+    } catch(e) { div.innerHTML = '❌ 进货失败'; }
+};
+
+window.showItemDetail = function(type, idx) {
+    var item = currentHeir.phoneData.shops[type][idx];
+    var overlay = document.getElementById('itemDetailModal');
+    overlay.innerHTML = `
+        <button class="app-header-btn" style="position:absolute; right:15px; top:15px; border:none; font-size:24px; background:none;" onclick="document.getElementById('itemDetailModal').classList.remove('show')">×</button>
+        <div class="item-big-icon" style="font-size:60px; text-align:center; margin-top:30px;">${item.icon}</div>
+        <h2 style="text-align:center; color:#d66a80;">${item.name}</h2>
+        <div style="text-align:center; color:#999; margin-bottom:20px;">${item.effectDesc}</div>
+        <div style="background:#f9f9f9; padding:15px; border-radius:15px; font-size:13px; color:#555; line-height:1.6;">
+            ${item.detail || "暂无详细介绍..."}
+        </div>
+        <button class="shop-btn" style="width:100%; margin-top:20px; padding:12px; background:#74b9ff; color:white; border:none; border-radius:20px; font-weight:bold;" onclick="buyAIItem('${type}', ${idx}); document.getElementById('itemDetailModal').classList.remove('show')">立即购买使用</button>
+    `;
+    requestAnimationFrame(function() { overlay.classList.add('show'); });
+};
+
+window.buyAIItem = function(type, idx) {
+    var item = currentHeir.phoneData.shops[type][idx];
+    if(type==='hospital') { currentHeir.body.health = 100; if(item.name.includes('神')) currentHeir.body.sick = false; }
+    if(type==='shop') currentHeir.mood = Math.min(100, currentHeir.mood + 10);
+    if(type==='meituan') currentHeir.body.waste = Math.max(0, currentHeir.body.waste - 20);
+    
+    saveHeirData();
+    auth.toast(`✨ 成功购买并使用了【${item.name}】！`);
+};
+
 // ================= 👑 皇嗣代码结束 =================
 
 
